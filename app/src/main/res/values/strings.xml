@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">Covid19</string>
+    <string name="user_photo">Your photo</string>
+    <string name="covid_stats">Stats</string>
+    <string name="encounters">Encounters</string>
+    <string name="symptoms">Symptoms</string>
+    <string name="greeting">Hi %s</string>
+    <string name="confirmed">Confirmed</string>
+    <string name="deaths">Deaths</string>
+    <string name="recovered">Recovered</string>
+
+
+
+    <string name="facebook_application_id" translatable="false">244589726704648</string>
+    <string name="facebook_login_protocol_scheme" translatable="false">fb244589726704648</string>
+    <string name="com.twitter.sdk.android.CONSUMER_KEY" translatable="false">0o7y6OO2gYSihUj4lHXX0rMwv</string>
+    <string name="com.twitter.sdk.android.CONSUMER_SECRET" translatable="false">4zhhyxzr0Os6ezzKQ6y46ybLrAhTn2bPQuJ6lJ9KpcTcCBYpLG</string>
+</resources>

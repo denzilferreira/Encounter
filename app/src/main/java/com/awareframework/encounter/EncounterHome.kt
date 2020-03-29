@@ -10,6 +10,7 @@ import android.os.Bundle
 import android.view.ContextMenu
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.room.Room
 import com.awareframework.encounter.database.CovidDatabase
 import com.awareframework.encounter.database.User
@@ -26,6 +27,7 @@ import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_main.*
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.imageBitmap
+import org.jetbrains.anko.toast
 import org.jetbrains.anko.uiThread
 import java.io.ByteArrayOutputStream
 import java.util.*
@@ -38,18 +40,45 @@ class EncounterHome : AppCompatActivity(), GoogleApiClient.ConnectionCallbacks,
     lateinit var db: CovidDatabase
     lateinit var user: User
 
+    lateinit var tab_view : View
+
     val RC_SIGN_IN = 12345
 
     companion object {
         val ACTION_NEW_DATA = "ACTION_NEW_DATA"
-        var selectedTab = ""
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        selectedTab = "stats"
+        tab_view = tab_view_container.inflate()
+
+        bottom_nav.setOnNavigationItemSelectedListener { menuItem ->
+            when(menuItem.itemId) {
+                R.id.bottom_stats -> {
+                    tab_view = layoutInflater.inflate(R.layout.layout_stats, null)
+
+                    toast("Killing the virus, a country at a time").show()
+                    true
+                }
+                R.id.bottom_encounters -> {
+                    tab_view = layoutInflater.inflate(R.layout.layout_encounters, null)
+
+                    toast("Encounters with strangers...").show()
+                    true
+                }
+                R.id.bottom_symptoms -> {
+                    tab_view = layoutInflater.inflate(R.layout.layout_symptoms, null)
+
+                    toast("Your symptoms...").show()
+                    true
+                }
+                else -> {
+                    true
+                }
+            }
+        }
 
         val messageListener = object : MessageListener() {
             override fun onFound(p0: Message?) {
@@ -88,6 +117,7 @@ class EncounterHome : AppCompatActivity(), GoogleApiClient.ConnectionCallbacks,
             }
             db.close()
         }
+
         startService(Intent(applicationContext, EncounterService::class.java))
     }
 

@@ -1,10 +1,14 @@
 package com.awareframework.encounter
 
 import android.app.Activity
+import android.content.BroadcastReceiver
+import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.os.Bundle
+import android.view.ContextMenu
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.room.Room
 import com.awareframework.encounter.database.CovidDatabase
@@ -26,7 +30,7 @@ import org.jetbrains.anko.uiThread
 import java.io.ByteArrayOutputStream
 import java.util.*
 
-class MainActivity : AppCompatActivity(), GoogleApiClient.ConnectionCallbacks,
+class EncounterHome : AppCompatActivity(), GoogleApiClient.ConnectionCallbacks,
     GoogleApiClient.OnConnectionFailedListener {
 
     lateinit var googleApiClient: GoogleApiClient
@@ -36,9 +40,16 @@ class MainActivity : AppCompatActivity(), GoogleApiClient.ConnectionCallbacks,
 
     val RC_SIGN_IN = 12345
 
+    companion object {
+        val ACTION_NEW_DATA = "ACTION_NEW_DATA"
+        var selectedTab = ""
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        selectedTab = "stats"
 
         val messageListener = object : MessageListener() {
             override fun onFound(p0: Message?) {
@@ -53,12 +64,14 @@ class MainActivity : AppCompatActivity(), GoogleApiClient.ConnectionCallbacks,
         getGoogleClient()
 
         doAsync {
-            db = Room.databaseBuilder(applicationContext, CovidDatabase::class.java, "covid").build()
+            db =
+                Room.databaseBuilder(applicationContext, CovidDatabase::class.java, "covid").build()
             val users = db.UserDao().getUser()
             if (users.isNotEmpty()) {
                 user = users.first()
                 uiThread {
-                    user_photo.imageBitmap = BitmapFactory.decodeByteArray(user.photo,0,user.photo?.size!!)
+                    user_photo.imageBitmap =
+                        BitmapFactory.decodeByteArray(user.photo, 0, user.photo?.size!!)
                     user_name.text = getString(R.string.greeting).format(user.name)
                 }
             } else {
@@ -75,9 +88,7 @@ class MainActivity : AppCompatActivity(), GoogleApiClient.ConnectionCallbacks,
             }
             db.close()
         }
-
         startService(Intent(applicationContext, EncounterService::class.java))
-
     }
 
     fun getGoogleClient() {
@@ -132,6 +143,14 @@ class MainActivity : AppCompatActivity(), GoogleApiClient.ConnectionCallbacks,
                     db.UserDao().insert(userDB)
                     db.close()
                 }
+            }
+        }
+    }
+
+    class UIUpdate : BroadcastReceiver() {
+        override fun onReceive(context: Context?, intent: Intent?) {
+            if (intent?.action.equals(ACTION_NEW_DATA)) {
+
             }
         }
     }

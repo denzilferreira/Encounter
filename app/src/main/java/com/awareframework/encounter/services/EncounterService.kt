@@ -9,13 +9,10 @@ import android.content.Intent
 import android.os.Build
 import android.os.IBinder
 import androidx.core.app.NotificationCompat
-import androidx.work.ExistingPeriodicWorkPolicy
-import androidx.work.PeriodicWorkRequestBuilder
-import androidx.work.WorkManager
-import com.awareframework.encounter.MainActivity
+import androidx.work.*
+import com.awareframework.encounter.EncounterHome
 import com.awareframework.encounter.R
 import com.awareframework.encounter.workers.EncounterCovidDataWorker
-import org.jetbrains.anko.doAsync
 import java.util.concurrent.TimeUnit
 
 class EncounterService : Service() {
@@ -27,17 +24,27 @@ class EncounterService : Service() {
     override fun onCreate() {
         super.onCreate()
 
-        val notificationManager = applicationContext.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        val notificationManager =
+            applicationContext.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val name = applicationContext.getString(R.string.app_name)
             val descriptionText = applicationContext.getString(R.string.app_name)
-            val channel = NotificationChannel("ENCOUNTER", name, NotificationManager.IMPORTANCE_DEFAULT).apply {
+            val channel = NotificationChannel(
+                "ENCOUNTER",
+                name,
+                NotificationManager.IMPORTANCE_DEFAULT
+            ).apply {
                 description = descriptionText
             }
             notificationManager.createNotificationChannel(channel)
         }
 
-        val foregroundIntent = PendingIntent.getActivity(applicationContext, 0, Intent(applicationContext, MainActivity::class.java),0)
+        val foregroundIntent = PendingIntent.getActivity(
+            applicationContext,
+            0,
+            Intent(applicationContext, EncounterHome::class.java),
+            0
+        )
         val notification = NotificationCompat.Builder(applicationContext, "ENCOUNTER")
         notification.setSmallIcon(R.drawable.ic_stat_encounter)
         notification.setOngoing(true)
@@ -52,10 +59,15 @@ class EncounterService : Service() {
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        doAsync {
-            val covidData = PeriodicWorkRequestBuilder<EncounterCovidDataWorker>(15, TimeUnit.MINUTES).build()
-            WorkManager.getInstance(applicationContext).enqueueUniquePeriodicWork("ENCOUNTER-COVID", ExistingPeriodicWorkPolicy.KEEP, covidData)
-        }
+        val networkAvailable =
+            Constraints.Builder().setRequiredNetworkType(NetworkType.CONNECTED).build()
+        val data = PeriodicWorkRequestBuilder<EncounterCovidDataWorker>(
+            15,
+            TimeUnit.MINUTES
+        ).setConstraints(networkAvailable).build()
+
+        WorkManager.getInstance(applicationContext)
+            .enqueueUniquePeriodicWork("ENCOUNTER-COVID", ExistingPeriodicWorkPolicy.KEEP, data)
 
         return super.onStartCommand(intent, flags, startId)
     }

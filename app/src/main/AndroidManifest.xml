@@ -27,7 +27,7 @@
             tools:replace="android:value" />
 
         <!-- Covid19 views -->
-        <activity android:name="com.awareframework.encounter.MainActivity">
+        <activity android:name="com.awareframework.encounter.EncounterHome">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />

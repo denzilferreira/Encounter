@@ -1,10 +1,10 @@
-package com.awareframework.covid19.receivers
+package com.awareframework.encounter.receivers
 
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.os.Build
-import com.awareframework.covid19.services.EncounterService
+import com.awareframework.encounter.services.EncounterService
 
 class EncounterReboot : BroadcastReceiver() {
     override fun onReceive(context: Context?, intent: Intent?) {

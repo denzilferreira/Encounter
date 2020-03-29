@@ -1,4 +1,4 @@
-package com.awareframework.covid19.database
+package com.awareframework.encounter.database
 
 import androidx.room.Database
 import androidx.room.RoomDatabase

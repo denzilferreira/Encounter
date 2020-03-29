@@ -1,18 +1,16 @@
-package com.awareframework.covid19
+package com.awareframework.encounter
 
 import android.app.Activity
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.os.Bundle
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.room.Room
-import androidx.room.RoomDatabase
-import com.awareframework.covid19.database.CovidDatabase
-import com.awareframework.covid19.database.User
+import com.awareframework.encounter.database.CovidDatabase
+import com.awareframework.encounter.database.User
+import com.awareframework.encounter.services.EncounterService
 import com.firebase.ui.auth.AuthUI
-import com.firebase.ui.auth.IdpResponse
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.api.GoogleApiClient
 import com.google.android.gms.nearby.Nearby
@@ -67,7 +65,6 @@ class MainActivity : AppCompatActivity(), GoogleApiClient.ConnectionCallbacks,
                 val providers = arrayListOf(
                     AuthUI.IdpConfig.GoogleBuilder().build(),
                     AuthUI.IdpConfig.FacebookBuilder().build(),
-                    AuthUI.IdpConfig.MicrosoftBuilder().build(),
                     AuthUI.IdpConfig.TwitterBuilder().build()
                 )
                 startActivityForResult(
@@ -78,6 +75,9 @@ class MainActivity : AppCompatActivity(), GoogleApiClient.ConnectionCallbacks,
             }
             db.close()
         }
+
+        startService(Intent(applicationContext, EncounterService::class.java))
+
     }
 
     fun getGoogleClient() {

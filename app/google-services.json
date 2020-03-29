@@ -15,10 +15,63 @@
       },
       "oauth_client": [
         {
+          "client_id": "424798413176-38aoijb27acrq2g29955i0gb93ae6ch8.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.awareframework.covid19",
+            "certificate_hash": "b2f9e96b646c53cc85b33be45afde6a648a7ab6f"
+          }
+        },
+        {
           "client_id": "424798413176-5fkrih4hg85dk4cti9e849qp4hb7jddi.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.awareframework.covid19",
+            "certificate_hash": "b2714c3fa12ea901f87f578930151f7813f0fd49"
+          }
+        },
+        {
+          "client_id": "424798413176-lmstb5fn97l31eg157qppgc2gdtc47ff.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB7rCTrfWycGPhZnn9b3cN80zUiEmc7znU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "424798413176-lmstb5fn97l31eg157qppgc2gdtc47ff.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:424798413176:android:7ae9aa312263d815b9e88d",
+        "android_client_info": {
+          "package_name": "com.awareframework.encounter"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "424798413176-ddqja81mnbp51812insq64s89iq3mbqf.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.awareframework.encounter",
+            "certificate_hash": "b2f9e96b646c53cc85b33be45afde6a648a7ab6f"
+          }
+        },
+        {
+          "client_id": "424798413176-kcf8gsm3neldg2r7ckfu3ni37od1i02b.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.awareframework.encounter",
             "certificate_hash": "b2714c3fa12ea901f87f578930151f7813f0fd49"
           }
         },

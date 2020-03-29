@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.awareframework.covid19">
+    package="com.awareframework.encounter">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
@@ -27,7 +27,7 @@
             tools:replace="android:value" />
 
         <!-- Covid19 views -->
-        <activity android:name=".MainActivity">
+        <activity android:name="com.awareframework.encounter.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -62,6 +62,7 @@
                 android:resource="@xml/provider_paths" />
         </provider>
 
+        <service android:name="com.awareframework.encounter.services.EncounterService" />
     </application>
 
 </manifest>

@@ -18,7 +18,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.awareframework.covid19"
+        applicationId "com.awareframework.encounter"
         minSdkVersion 21
         targetSdkVersion 29
         versionCode 1

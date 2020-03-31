@@ -10,7 +10,7 @@
     <string name="deaths">Deaths</string>
     <string name="recovered">Recovered</string>
 
-
+    <string name="count_number" translatable="false">%d</string>
 
     <string name="facebook_application_id" translatable="false">244589726704648</string>
     <string name="facebook_login_protocol_scheme" translatable="false">fb244589726704648</string>

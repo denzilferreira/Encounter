@@ -10,13 +10,13 @@ import com.android.volley.Response
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import com.awareframework.encounter.EncounterHome
-import com.awareframework.encounter.database.CovidDatabase
+import com.awareframework.encounter.database.EncounterDatabase
 import com.awareframework.encounter.database.Stats
 import org.jetbrains.anko.doAsync
 import java.text.SimpleDateFormat
 import java.util.*
 
-class EncounterCovidDataWorker(appContext: Context, workerParameters: WorkerParameters) :
+class EncounterDataWorker(appContext: Context, workerParameters: WorkerParameters) :
     Worker(appContext, workerParameters) {
     override fun doWork(): Result {
         val data_source = "https://pomber.github.io/covid19/timeseries.json"
@@ -25,7 +25,7 @@ class EncounterCovidDataWorker(appContext: Context, workerParameters: WorkerPara
             Response.Listener { dataObj ->
                 doAsync {
                     val db =
-                        Room.databaseBuilder(applicationContext, CovidDatabase::class.java, "covid")
+                        Room.databaseBuilder(applicationContext, EncounterDatabase::class.java, "covid")
                             .build()
                     db.StatsDao().clear()
 

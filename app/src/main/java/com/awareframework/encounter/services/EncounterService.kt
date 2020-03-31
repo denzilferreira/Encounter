@@ -12,7 +12,7 @@ import androidx.core.app.NotificationCompat
 import androidx.work.*
 import com.awareframework.encounter.EncounterHome
 import com.awareframework.encounter.R
-import com.awareframework.encounter.workers.EncounterCovidDataWorker
+import com.awareframework.encounter.workers.EncounterDataWorker
 import java.util.concurrent.TimeUnit
 
 class EncounterService : Service() {
@@ -61,13 +61,13 @@ class EncounterService : Service() {
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         val networkAvailable =
             Constraints.Builder().setRequiredNetworkType(NetworkType.CONNECTED).build()
-        val data = PeriodicWorkRequestBuilder<EncounterCovidDataWorker>(
+        val data = PeriodicWorkRequestBuilder<EncounterDataWorker>(
             15,
             TimeUnit.MINUTES
         ).setConstraints(networkAvailable).build()
 
         WorkManager.getInstance(applicationContext)
-            .enqueueUniquePeriodicWork("ENCOUNTER-COVID", ExistingPeriodicWorkPolicy.KEEP, data)
+            .enqueueUniquePeriodicWork("ENCOUNTER-DATA", ExistingPeriodicWorkPolicy.KEEP, data)
 
         return super.onStartCommand(intent, flags, startId)
     }

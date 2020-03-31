@@ -7,12 +7,13 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.os.Bundle
-import android.view.ContextMenu
 import android.view.View
+import android.view.ViewStub
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import androidx.appcompat.app.AppCompatActivity
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.room.Room
-import com.awareframework.encounter.database.CovidDatabase
+import com.awareframework.encounter.database.EncounterDatabase
 import com.awareframework.encounter.database.User
 import com.awareframework.encounter.services.EncounterService
 import com.firebase.ui.auth.AuthUI
@@ -25,22 +26,21 @@ import com.google.android.material.badge.BadgeDrawable
 import com.google.firebase.auth.FirebaseAuth
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_main.*
-import org.jetbrains.anko.doAsync
-import org.jetbrains.anko.imageBitmap
-import org.jetbrains.anko.toast
-import org.jetbrains.anko.uiThread
+import kotlinx.android.synthetic.main.layout_stats.*
+import org.jetbrains.anko.*
 import java.io.ByteArrayOutputStream
 import java.util.*
+import kotlin.collections.ArrayList
 
 class EncounterHome : AppCompatActivity(), GoogleApiClient.ConnectionCallbacks,
     GoogleApiClient.OnConnectionFailedListener {
 
     lateinit var googleApiClient: GoogleApiClient
     lateinit var encounterCounter: BadgeDrawable
-    lateinit var db: CovidDatabase
+    lateinit var db: EncounterDatabase
     lateinit var user: User
 
-    lateinit var tab_view : View
+    lateinit var tabView: ViewStub
 
     val RC_SIGN_IN = 12345
 
@@ -52,32 +52,62 @@ class EncounterHome : AppCompatActivity(), GoogleApiClient.ConnectionCallbacks,
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        tab_view = tab_view_container.inflate()
+        tabView = find(R.id.tab_view_container)
+        tabView.inflate()
 
         bottom_nav.setOnNavigationItemSelectedListener { menuItem ->
-            when(menuItem.itemId) {
+            when (menuItem.itemId) {
                 R.id.bottom_stats -> {
-                    tab_view = layoutInflater.inflate(R.layout.layout_stats, null)
-
-                    toast("Killing the virus, a country at a time").show()
-                    true
+                    tabView.layoutResource = R.layout.layout_stats
+                    tabView.visibility = View.VISIBLE
                 }
                 R.id.bottom_encounters -> {
-                    tab_view = layoutInflater.inflate(R.layout.layout_encounters, null)
-
-                    toast("Encounters with strangers...").show()
-                    true
+                    tabView.layoutResource = R.layout.layout_encounters
+                    tabView.visibility = View.VISIBLE
                 }
                 R.id.bottom_symptoms -> {
-                    tab_view = layoutInflater.inflate(R.layout.layout_symptoms, null)
-
-                    toast("Your symptoms...").show()
-                    true
-                }
-                else -> {
-                    true
+                    tabView.layoutResource = R.layout.layout_symptoms
+                    tabView.visibility = View.VISIBLE
                 }
             }
+            true
+        }
+
+        country_selector.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+                count_confirmed.text = getString(R.string.count_number, 0)
+                count_deaths.text = getString(R.string.count_number, 0)
+                count_recovered.text = getString(R.string.count_number, 0)
+            }
+
+            override fun onItemSelected(
+                parent: AdapterView<*>?,
+                view: View?,
+                position: Int,
+                id: Long
+            ) {
+                val selectedCountry = country_selector.selectedItem.toString()
+                println("Chosen: $selectedCountry")
+
+                doAsync {
+                    db =
+                        Room.databaseBuilder(
+                            applicationContext,
+                            EncounterDatabase::class.java,
+                            "covid"
+                        ).build()
+
+                    val data = db.StatsDao().getCountryData(selectedCountry).last()
+                    uiThread {
+                        count_confirmed.text = getString(R.string.count_number, data.confirmed)
+                        count_recovered.text = getString(R.string.count_number, data.recovered)
+                        count_deaths.text = getString(R.string.count_number, data.deaths)
+                    }
+
+                    db.close()
+                }
+            }
+
         }
 
         val messageListener = object : MessageListener() {
@@ -94,7 +124,8 @@ class EncounterHome : AppCompatActivity(), GoogleApiClient.ConnectionCallbacks,
 
         doAsync {
             db =
-                Room.databaseBuilder(applicationContext, CovidDatabase::class.java, "covid").build()
+                Room.databaseBuilder(applicationContext, EncounterDatabase::class.java, "covid")
+                    .build()
             val users = db.UserDao().getUser()
             if (users.isNotEmpty()) {
                 user = users.first()
@@ -115,6 +146,21 @@ class EncounterHome : AppCompatActivity(), GoogleApiClient.ConnectionCallbacks,
                         .build(), RC_SIGN_IN
                 )
             }
+
+            val countries = db.StatsDao().getCountries()
+            val countryAdapter = ArrayList<String>()
+            for (country in countries) {
+                countryAdapter.add(country.country)
+            }
+            Collections.sort(countryAdapter, String.CASE_INSENSITIVE_ORDER)
+            uiThread {
+                country_selector.adapter =
+                    ArrayAdapter(applicationContext, R.layout.spinner_country, countryAdapter)
+                //TODO: auto select the last selection
+                //country_selector.setSelection(countryIndex, true)
+                //country_selector.dispatchSetSelected(true)
+            }
+
             db.close()
         }
 
@@ -153,7 +199,7 @@ class EncounterHome : AppCompatActivity(), GoogleApiClient.ConnectionCallbacks,
 
                     val db = Room.databaseBuilder(
                         applicationContext,
-                        CovidDatabase::class.java,
+                        EncounterDatabase::class.java,
                         "covid"
                     ).build()
 

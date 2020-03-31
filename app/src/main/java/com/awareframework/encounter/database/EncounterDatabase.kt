@@ -11,7 +11,7 @@ import androidx.room.RoomDatabase
     ], version = 1, exportSchema = true
 )
 
-abstract class CovidDatabase : RoomDatabase() {
+abstract class EncounterDatabase : RoomDatabase() {
     abstract fun UserDao(): UserDao
     abstract fun StatsDao() : StatsDao
     abstract fun SymptomsDao() : SymptomsDao

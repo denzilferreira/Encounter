@@ -20,12 +20,12 @@ interface StatsDao {
     @Query("DELETE FROM stats")
     fun clear()
 
-    @Query("SELECT * FROM stats WHERE timestamp = :timestamp and country like :country")
-    fun getCountryDataDay(timestamp: Long, country: String) : Array<Stats>
-
     @Query("UPDATE stats SET confirmed=:confirmed, deaths=:deaths, recovered=:recovered WHERE timestamp=:timestamp AND country LIKE :country")
     fun update(confirmed: Long, deaths: Long, recovered: Long, timestamp: Long, country: String)
 
     @Query("SELECT * FROM stats where country like :country ORDER BY timestamp ASC")
     fun getCountryData(country: String) : Array<Stats>
+
+    @Query("SELECT * FROM stats GROUP BY country")
+    fun getCountries() : Array<Stats>
 }

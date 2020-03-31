@@ -6,6 +6,7 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.Color
 import android.os.Bundle
 import android.view.View
 import android.view.ViewStub
@@ -17,6 +18,11 @@ import com.awareframework.encounter.database.EncounterDatabase
 import com.awareframework.encounter.database.User
 import com.awareframework.encounter.services.EncounterService
 import com.firebase.ui.auth.AuthUI
+import com.github.mikephil.charting.charts.LineChart
+import com.github.mikephil.charting.data.Entry
+import com.github.mikephil.charting.data.LineData
+import com.github.mikephil.charting.data.LineDataSet
+import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.api.GoogleApiClient
 import com.google.android.gms.nearby.Nearby
@@ -27,7 +33,10 @@ import com.google.firebase.auth.FirebaseAuth
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.layout_stats.*
-import org.jetbrains.anko.*
+import org.jetbrains.anko.doAsync
+import org.jetbrains.anko.find
+import org.jetbrains.anko.imageBitmap
+import org.jetbrains.anko.uiThread
 import java.io.ByteArrayOutputStream
 import java.util.*
 import kotlin.collections.ArrayList
@@ -41,6 +50,7 @@ class EncounterHome : AppCompatActivity(), GoogleApiClient.ConnectionCallbacks,
     lateinit var user: User
 
     lateinit var tabView: ViewStub
+    lateinit var spread_char : LineChart
 
     val RC_SIGN_IN = 12345
 
@@ -87,7 +97,6 @@ class EncounterHome : AppCompatActivity(), GoogleApiClient.ConnectionCallbacks,
                 id: Long
             ) {
                 val selectedCountry = country_selector.selectedItem.toString()
-                println("Chosen: $selectedCountry")
 
                 doAsync {
                     db =
@@ -102,6 +111,33 @@ class EncounterHome : AppCompatActivity(), GoogleApiClient.ConnectionCallbacks,
                         count_confirmed.text = getString(R.string.count_number, data.confirmed)
                         count_recovered.text = getString(R.string.count_number, data.recovered)
                         count_deaths.text = getString(R.string.count_number, data.deaths)
+                    }
+
+                    val values = ArrayList<Entry>()
+                    for (record in db.StatsDao().getCountryData(selectedCountry)) {
+                        values.add(Entry(record.uid!!.toFloat(), record.confirmed.toFloat()))
+                    }
+
+                    val lineData = LineDataSet(values, selectedCountry)
+                    lineData.setCircleColor(Color.BLUE)
+                    lineData.setDrawCircleHole(true)
+
+                    val dataset = ArrayList<ILineDataSet>()
+                    dataset.add(lineData)
+
+                    val lineChart = LineData(dataset)
+
+                    uiThread {
+                        spread_char = findViewById<LineChart>(R.id.spread_chart)
+                        spread_char.setBackgroundColor(Color.WHITE)
+                        spread_char.description.isEnabled = false
+                        spread_char.setTouchEnabled(true)
+                        spread_char.setDrawGridBackground(true)
+                        spread_char.isDragEnabled = true
+                        spread_char.setScaleEnabled(true)
+                        spread_char.setPinchZoom(true)
+                        spread_char.data = lineChart
+                        spread_char.invalidate()
                     }
 
                     db.close()

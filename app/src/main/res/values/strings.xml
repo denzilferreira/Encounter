@@ -14,11 +14,14 @@
     <string name="inspired_by">https://www.youtube.com/watch?v=54XLXg4fYsc</string>
     <string name="country_trajectory">Trajectory of confirmed cases</string>
     <string name="total_confirmed_cases">Total confirmed cases</string>
-    <string name="weekly_confirmed">New confirmed cases</string>
+    <string name="weekly_confirmed">New confirmed cases (weekly)</string>
     <string name="data_updated">Data is up-to-date</string>
 
     <string name="facebook_application_id" translatable="false">244589726704648</string>
     <string name="facebook_login_protocol_scheme" translatable="false">fb244589726704648</string>
     <string name="com.twitter.sdk.android.CONSUMER_KEY" translatable="false">0o7y6OO2gYSihUj4lHXX0rMwv</string>
     <string name="com.twitter.sdk.android.CONSUMER_SECRET" translatable="false">4zhhyxzr0Os6ezzKQ6y46ybLrAhTn2bPQuJ6lJ9KpcTcCBYpLG</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

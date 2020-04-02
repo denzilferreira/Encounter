@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.awareframework.encounter.R
+import org.jetbrains.anko.support.v4.defaultSharedPreferences
 
 /**
  * A simple [Fragment] subclass.
@@ -16,8 +17,14 @@ class EncountersFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_encounters, container, false)
     }
 
+    override fun onResume() {
+        super.onResume()
+
+        defaultSharedPreferences.edit().putString("active", "encounters").apply()
+
+
+    }
 }

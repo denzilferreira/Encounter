@@ -50,7 +50,7 @@ class EncounterService : Service() {
         notification.setOngoing(true)
         notification.setOnlyAlertOnce(true)
         notification.setContentIntent(foregroundIntent)
-        notification.setPriority(NotificationCompat.PRIORITY_MIN)
+        notification.priority = NotificationCompat.PRIORITY_MIN
         notification.setContentTitle(getString(R.string.app_name))
         notification.setContentText(getString(R.string.app_running))
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) notification.setChannelId("ENCOUNTER")

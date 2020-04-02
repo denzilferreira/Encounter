@@ -153,14 +153,22 @@ class EncounterHome : AppCompatActivity() {
     private val guiUpdateReceiver = UIUpdate()
     class UIUpdate : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
-            if (intent?.action.equals(EncounterHome.ACTION_NEW_DATA)) {
-                if (context?.defaultSharedPreferences?.getString("active","").equals("stats")) {
-                    Snackbar.make(
-                        StatsFragment.frameContainer,
-                        context?.getString(R.string.data_updated).toString(),
-                        Snackbar.LENGTH_SHORT
-                    ).show()
-                    viewManager.beginTransaction().replace(R.id.tab_view_container, StatsFragment()).commit()
+            if (intent?.action.equals(ACTION_NEW_DATA)) {
+                when(context?.defaultSharedPreferences?.getString("active","")) {
+                    "stats" -> {
+                        Snackbar.make(
+                            StatsFragment.frameContainer,
+                            context?.getString(R.string.data_updated).toString(),
+                            Snackbar.LENGTH_SHORT
+                        ).show()
+                        viewManager.beginTransaction().replace(R.id.tab_view_container, StatsFragment()).commit()
+                    }
+                    "encounters" -> {
+                        viewManager.beginTransaction().replace(R.id.tab_view_container, EncountersFragment()).commit()
+                    }
+                    "symptoms" -> {
+                        viewManager.beginTransaction().replace(R.id.tab_view_container, SymptomsFragment()).commit()
+                    }
                 }
             }
         }

@@ -4,6 +4,8 @@ import android.app.Activity
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
+import android.database.DatabaseUtils
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Color
@@ -22,6 +24,9 @@ import com.github.mikephil.charting.charts.LineChart
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
+import com.github.mikephil.charting.formatter.IAxisValueFormatter
+import com.github.mikephil.charting.formatter.LargeValueFormatter
+import com.github.mikephil.charting.formatter.ValueFormatter
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.api.GoogleApiClient
@@ -29,6 +34,7 @@ import com.google.android.gms.nearby.Nearby
 import com.google.android.gms.nearby.messages.Message
 import com.google.android.gms.nearby.messages.MessageListener
 import com.google.android.material.badge.BadgeDrawable
+import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_main.*
@@ -38,8 +44,13 @@ import org.jetbrains.anko.find
 import org.jetbrains.anko.imageBitmap
 import org.jetbrains.anko.uiThread
 import java.io.ByteArrayOutputStream
+import java.text.DecimalFormat
 import java.util.*
 import kotlin.collections.ArrayList
+import kotlin.collections.HashMap
+import kotlin.collections.HashSet
+import kotlin.math.log10
+import kotlin.math.pow
 
 class EncounterHome : AppCompatActivity(), GoogleApiClient.ConnectionCallbacks,
     GoogleApiClient.OnConnectionFailedListener {
@@ -53,14 +64,18 @@ class EncounterHome : AppCompatActivity(), GoogleApiClient.ConnectionCallbacks,
     lateinit var spread_char : LineChart
 
     val RC_SIGN_IN = 12345
+    val guiUpdateReceiver = UIUpdate()
 
     companion object {
         val ACTION_NEW_DATA = "ACTION_NEW_DATA"
+        lateinit var mainContainer : View
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        mainContainer = main_container
 
         tabView = find(R.id.tab_view_container)
         tabView.inflate()
@@ -106,19 +121,44 @@ class EncounterHome : AppCompatActivity(), GoogleApiClient.ConnectionCallbacks,
                             "covid"
                         ).build()
 
-                    val data = db.StatsDao().getCountryData(selectedCountry).last()
+                    val data = db.StatsDao().getCountryData(selectedCountry)
                     uiThread {
-                        count_confirmed.text = getString(R.string.count_number, data.confirmed)
-                        count_recovered.text = getString(R.string.count_number, data.recovered)
-                        count_deaths.text = getString(R.string.count_number, data.deaths)
+                        count_confirmed.text = getString(R.string.count_number, data.last().confirmed)
+                        count_recovered.text = getString(R.string.count_number, data.last().recovered)
+                        count_deaths.text = getString(R.string.count_number, data.last().deaths)
                     }
 
-                    val values = ArrayList<Entry>()
-                    for (record in db.StatsDao().getCountryData(selectedCountry)) {
-                        values.add(Entry(record.uid!!.toFloat(), record.confirmed.toFloat()))
+                    val weeklyData = db.StatsDao().getWeekly(selectedCountry)
+                    val weeklyCounts = HashMap<Int, ArrayList<Int>>()
+                    weeklyData.moveToFirst()
+                    do {
+                        val weekNumber = weeklyData.getString(weeklyData.getColumnIndex("week")).toInt()
+                        val confirmedAmount = weeklyData.getString(weeklyData.getColumnIndex("confirmed")).toInt()
+                        if (weeklyCounts.containsKey(weekNumber)) {
+                            weeklyCounts[weekNumber]?.add(confirmedAmount)
+                        } else {
+                            weeklyCounts[weekNumber] = ArrayList<Int>().apply {
+                                add(confirmedAmount)
+                            }
+                        }
+                    } while(weeklyData.moveToNext())
+                    weeklyData.close()
+
+                    val weeklyDelta = ArrayList<Float>()
+                    val weeklyTotals = ArrayList<Float>()
+                    for(week in weeklyCounts) {
+                        val min = week.value.min()
+                        val max = week.value.max()
+                        weeklyTotals.add(max!!.toFloat())
+                        weeklyDelta.add(max.toFloat()-min!!.toFloat())
                     }
 
-                    val lineData = LineDataSet(values, selectedCountry)
+                    val plotDataPoints = ArrayList<Entry>()
+                    for (i in 0 until weeklyDelta.size) {
+                        plotDataPoints.add(Entry(scaleCbr(weeklyTotals[i]), scaleCbr(weeklyDelta[i]))) //convert both axis data points to logarithmic scale
+                    }
+
+                    val lineData = LineDataSet(plotDataPoints, selectedCountry)
                     lineData.setCircleColor(Color.BLUE)
                     lineData.setDrawCircleHole(true)
 
@@ -129,7 +169,33 @@ class EncounterHome : AppCompatActivity(), GoogleApiClient.ConnectionCallbacks,
 
                     uiThread {
                         spread_char = findViewById<LineChart>(R.id.spread_chart)
-                        spread_char.setBackgroundColor(Color.WHITE)
+
+                        title = getString(R.string.country_trajectory)
+                        spread_char.axisRight.isEnabled = false
+
+                        spread_char.animateX(1500)
+
+                        spread_char.axisLeft.valueFormatter = object : ValueFormatter() {
+                            override fun getFormattedValue(value: Float): String {
+                                val format = DecimalFormat("##.###")
+                                return format.format(unScaleCbr(value))
+                            }
+                        }
+                        spread_char.xAxis.valueFormatter = object : ValueFormatter() {
+                            override fun getFormattedValue(value: Float): String {
+                                val format = DecimalFormat("#.#")
+                                return format.format(unScaleCbr(value))
+                            }
+                        }
+
+                        spread_char.axisLeft.axisMinimum = scaleCbr(10.toFloat())
+                        spread_char.axisLeft.axisMaximum = scaleCbr(1000000.toFloat())
+                        spread_char.axisLeft.setLabelCount(5, true)
+
+                        spread_char.xAxis.axisMinimum = scaleCbr(10.toFloat())
+                        spread_char.xAxis.axisMaximum = scaleCbr(1000000.toFloat())
+                        spread_char.xAxis.setLabelCount(5, true)
+
                         spread_char.description.isEnabled = false
                         spread_char.setTouchEnabled(true)
                         spread_char.setDrawGridBackground(true)
@@ -138,12 +204,14 @@ class EncounterHome : AppCompatActivity(), GoogleApiClient.ConnectionCallbacks,
                         spread_char.setPinchZoom(true)
                         spread_char.data = lineChart
                         spread_char.invalidate()
+
+                        val legend = spread_char.legend
+                        legend.isEnabled = false
                     }
 
                     db.close()
                 }
             }
-
         }
 
         val messageListener = object : MessageListener() {
@@ -214,8 +282,19 @@ class EncounterHome : AppCompatActivity(), GoogleApiClient.ConnectionCallbacks,
             .build()
     }
 
+    fun scaleCbr(value: Float) : Float {
+        return log10(value)
+    }
+
+    fun unScaleCbr(value: Float) : Float {
+        return 10.0.pow(value.toDouble()).toFloat()
+    }
+
     override fun onResume() {
         super.onResume()
+
+        val guiRefresh = IntentFilter(ACTION_NEW_DATA)
+        registerReceiver(guiUpdateReceiver, guiRefresh)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -259,10 +338,15 @@ class EncounterHome : AppCompatActivity(), GoogleApiClient.ConnectionCallbacks,
         }
     }
 
+    override fun onPause() {
+        super.onPause()
+        unregisterReceiver(guiUpdateReceiver)
+    }
+
     class UIUpdate : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
             if (intent?.action.equals(ACTION_NEW_DATA)) {
-
+                Snackbar.make(mainContainer, context?.getString(R.string.data_updated).toString(), Snackbar.LENGTH_SHORT).show()
             }
         }
     }

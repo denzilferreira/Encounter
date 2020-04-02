@@ -25,25 +25,59 @@ class EncounterDataWorker(appContext: Context, workerParameters: WorkerParameter
             Response.Listener { dataObj ->
                 doAsync {
                     val db =
-                        Room.databaseBuilder(applicationContext, EncounterDatabase::class.java, "covid")
-                            .build()
-                    db.StatsDao().clear()
+                        Room.databaseBuilder(
+                            applicationContext,
+                            EncounterDatabase::class.java,
+                            "covid"
+                        ).build()
 
                     val countries = dataObj.keys()
-                    countries.forEach {
-                        val recordsCountry = dataObj.getJSONArray(it)
+                    countries.forEach { country ->
+                        val recordsCountry = dataObj.getJSONArray(country)
                         for (i in 0 until recordsCountry.length()) {
                             val record = recordsCountry.getJSONObject(i)
-                            val formatter = SimpleDateFormat("yyyy-M-d", Locale.US).parse(record.getString("date"))
-                            val entry = Stats(
-                                null,
-                                it,
-                                formatter.time,
-                                record.getLong("confirmed"),
-                                record.getLong("deaths"),
-                                record.getLong("recovered")
-                            )
-                            db.StatsDao().insert(entry)
+                            val formatter = SimpleDateFormat(
+                                "yyyy-M-d",
+                                Locale.US
+                            ).parse(record.getString("date"))!!
+
+                            val existingDayData = db.StatsDao().getCountryDayData(country, formatter.time)
+                            if (existingDayData.isNotEmpty()) {
+                                var updated = false
+
+                                val currentStats = existingDayData.last()
+                                if (currentStats.confirmed != record.getLong("confirmed")) {
+                                    currentStats.confirmed = record.getLong("confirmed")
+                                    updated = true
+                                }
+
+                                if (currentStats.deaths != record.getLong("deaths")) {
+                                    currentStats.deaths = record.getLong("deaths")
+                                    updated = true
+                                }
+
+                                if (currentStats.recovered != record.getLong("recovered")) {
+                                    currentStats.recovered = record.getLong("recovered")
+                                    updated = true
+                                }
+
+                                if (updated) {
+                                    db.StatsDao().update(currentStats)
+                                    println("Updated $country: $currentStats")
+                                }
+                            } else {
+                                val entry = Stats(
+                                    null,
+                                    country,
+                                    formatter.time,
+                                    record.getLong("confirmed"),
+                                    record.getLong("deaths"),
+                                    record.getLong("recovered")
+                                )
+                                db.StatsDao().insert(entry)
+
+                                println("Inserted: $entry")
+                            }
                         }
                     }
 

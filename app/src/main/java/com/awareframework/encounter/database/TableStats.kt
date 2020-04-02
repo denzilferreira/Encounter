@@ -1,5 +1,6 @@
 package com.awareframework.encounter.database
 
+import android.database.Cursor
 import androidx.room.*
 
 @Entity(tableName = "stats")
@@ -20,12 +21,18 @@ interface StatsDao {
     @Query("DELETE FROM stats")
     fun clear()
 
-    @Query("UPDATE stats SET confirmed=:confirmed, deaths=:deaths, recovered=:recovered WHERE timestamp=:timestamp AND country LIKE :country")
-    fun update(confirmed: Long, deaths: Long, recovered: Long, timestamp: Long, country: String)
-
     @Query("SELECT * FROM stats where country like :country ORDER BY timestamp ASC")
     fun getCountryData(country: String) : Array<Stats>
 
+    @Query("SELECT * FROM stats where country like :country AND timestamp = :timestamp")
+    fun getCountryDayData(country: String, timestamp: Long) : Array<Stats>
+
+    @Transaction @Update
+    fun update(data : Stats)
+
     @Query("SELECT * FROM stats GROUP BY country")
     fun getCountries() : Array<Stats>
+
+    @Query("SELECT STRFTIME('%W', datetime(timestamp/1000, 'unixepoch','localtime')) AS week, confirmed FROM stats WHERE country LIKE :country ORDER BY timestamp ASC")
+    fun getWeekly(country: String) : Cursor
 }

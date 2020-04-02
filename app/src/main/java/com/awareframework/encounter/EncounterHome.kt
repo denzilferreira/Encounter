@@ -11,6 +11,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
 import androidx.room.Room
 import com.awareframework.encounter.database.EncounterDatabase
 import com.awareframework.encounter.database.User
@@ -19,33 +20,26 @@ import com.awareframework.encounter.ui.EncountersFragment
 import com.awareframework.encounter.ui.StatsFragment
 import com.awareframework.encounter.ui.SymptomsFragment
 import com.firebase.ui.auth.AuthUI
-import com.google.android.gms.common.ConnectionResult
-import com.google.android.gms.common.api.GoogleApiClient
-import com.google.android.gms.nearby.Nearby
-import com.google.android.gms.nearby.messages.Message
-import com.google.android.gms.nearby.messages.MessageListener
+import com.google.android.gms.dynamic.SupportFragmentWrapper
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_main.*
+import org.jetbrains.anko.defaultSharedPreferences
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.imageBitmap
 import org.jetbrains.anko.uiThread
 import java.io.ByteArrayOutputStream
 import java.util.*
 
-class EncounterHome : AppCompatActivity(), GoogleApiClient.ConnectionCallbacks,
-    GoogleApiClient.OnConnectionFailedListener {
-
-    lateinit var googleApiClient: GoogleApiClient
-    lateinit var user: User
+class EncounterHome : AppCompatActivity() {
 
     private val RC_SIGN_IN = 12345
-    private val guiUpdateReceiver = UIUpdate()
 
     companion object {
         val ACTION_NEW_DATA = "ACTION_NEW_DATA"
         lateinit var mainContainer: View
+        lateinit var viewManager: FragmentManager
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -53,8 +47,13 @@ class EncounterHome : AppCompatActivity(), GoogleApiClient.ConnectionCallbacks,
         setContentView(R.layout.activity_main)
 
         mainContainer = main_container
-        supportFragmentManager.beginTransaction().replace(R.id.tab_view_container, StatsFragment())
+
+        viewManager = supportFragmentManager
+        viewManager.beginTransaction().replace(R.id.tab_view_container, StatsFragment())
             .commit()
+
+        val guiRefresh = IntentFilter(EncounterHome.ACTION_NEW_DATA)
+        registerReceiver(guiUpdateReceiver, guiRefresh)
 
         bottom_nav.setOnNavigationItemSelectedListener { menuItem ->
             lateinit var selectedFragment: Fragment
@@ -74,25 +73,13 @@ class EncounterHome : AppCompatActivity(), GoogleApiClient.ConnectionCallbacks,
             true
         }
 
-        val messageListener = object : MessageListener() {
-            override fun onFound(p0: Message?) {
-                super.onFound(p0)
-            }
-
-            override fun onLost(p0: Message?) {
-                super.onLost(p0)
-            }
-        }
-
-        getGoogleClient()
-
         doAsync {
             val db =
                 Room.databaseBuilder(applicationContext, EncounterDatabase::class.java, "covid")
                     .build()
             val users = db.UserDao().getUser()
             if (users.isNotEmpty()) {
-                user = users.first()
+                val user = users.first()
                 uiThread {
                     user_photo.imageBitmap =
                         BitmapFactory.decodeByteArray(user.photo, 0, user.photo?.size!!)
@@ -116,29 +103,12 @@ class EncounterHome : AppCompatActivity(), GoogleApiClient.ConnectionCallbacks,
         startService(Intent(applicationContext, EncounterService::class.java))
     }
 
-    fun getGoogleClient() {
-        if (::googleApiClient.isInitialized) {
-            return
-        }
-        googleApiClient = GoogleApiClient.Builder(this)
-            .addApi(Nearby.MESSAGES_API)
-            .addConnectionCallbacks(this)
-            .enableAutoManage(this, this)
-            .build()
-    }
-
-    override fun onResume() {
-        super.onResume()
-
-        val guiRefresh = IntentFilter(ACTION_NEW_DATA)
-        registerReceiver(guiUpdateReceiver, guiRefresh)
-    }
-
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
         if (requestCode == RC_SIGN_IN) {
             if (resultCode == Activity.RESULT_OK) {
+
                 val user = FirebaseAuth.getInstance().currentUser
 
                 doAsync {
@@ -180,27 +150,19 @@ class EncounterHome : AppCompatActivity(), GoogleApiClient.ConnectionCallbacks,
         unregisterReceiver(guiUpdateReceiver)
     }
 
+    private val guiUpdateReceiver = UIUpdate()
     class UIUpdate : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
-            if (intent?.action.equals(ACTION_NEW_DATA)) {
-                Snackbar.make(
-                    mainContainer,
-                    context?.getString(R.string.data_updated).toString(),
-                    Snackbar.LENGTH_SHORT
-                ).show()
+            if (intent?.action.equals(EncounterHome.ACTION_NEW_DATA)) {
+                if (context?.defaultSharedPreferences?.getString("active","").equals("stats")) {
+                    Snackbar.make(
+                        StatsFragment.frameContainer,
+                        context?.getString(R.string.data_updated).toString(),
+                        Snackbar.LENGTH_SHORT
+                    ).show()
+                    viewManager.beginTransaction().replace(R.id.tab_view_container, StatsFragment()).commit()
+                }
             }
         }
-    }
-
-    override fun onConnected(p0: Bundle?) {
-        println("Connected GoogleApiClient")
-    }
-
-    override fun onConnectionSuspended(errorCode: Int) {
-        println("Connection stopped: error $errorCode")
-    }
-
-    override fun onConnectionFailed(connectionResult: ConnectionResult) {
-        println("Connection failed: ${connectionResult.errorMessage}")
     }
 }

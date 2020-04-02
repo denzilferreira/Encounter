@@ -1,7 +1,5 @@
 package com.awareframework.encounter.ui
 
-import android.content.Context
-import android.content.SharedPreferences
 import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -9,10 +7,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import androidx.core.content.edit
+import android.widget.FrameLayout
 import androidx.fragment.app.Fragment
 import androidx.room.Room
-import com.awareframework.encounter.EncounterHome
 import com.awareframework.encounter.R
 import com.awareframework.encounter.database.EncounterDatabase
 import com.github.mikephil.charting.components.XAxis
@@ -36,6 +33,10 @@ import kotlin.math.pow
  */
 class StatsFragment : Fragment() {
 
+    companion object {
+        lateinit var frameContainer : FrameLayout
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -45,6 +46,9 @@ class StatsFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
+        frameContainer = frame_stats
+
+        defaultSharedPreferences.edit().putString("active", "stats").apply()
 
         doAsync {
             val db = Room.databaseBuilder(context!!, EncounterDatabase::class.java, "covid").build()

@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "1171f92fad6e868dbc474a875ab57db1",
+    "identityHash": "246bae3b54a32a91d50651e63a06044d",
     "entities": [
       {
         "tableName": "user",
@@ -105,8 +105,8 @@
         "foreignKeys": []
       },
       {
-        "tableName": "symptoms",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`uid` INTEGER PRIMARY KEY AUTOINCREMENT, `uuid` TEXT NOT NULL, `timestamp` INTEGER NOT NULL, `fever` INTEGER NOT NULL, `cough` INTEGER NOT NULL, `fatigue` INTEGER NOT NULL, `breathless` INTEGER NOT NULL, `smell` INTEGER NOT NULL, `taste` INTEGER NOT NULL, `headache` INTEGER NOT NULL, `throat` INTEGER NOT NULL, `body` INTEGER NOT NULL)",
+        "tableName": "encounters",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`uid` INTEGER PRIMARY KEY AUTOINCREMENT, `uuid` TEXT NOT NULL, `timestamp` INTEGER NOT NULL, `is_found` INTEGER NOT NULL, `is_lost` INTEGER NOT NULL, `uuid_detected` TEXT NOT NULL, `distance_meters` REAL, `distance_accuracy` INTEGER, `signal_rssi` INTEGER, `signal_tx_power` INTEGER)",
         "fields": [
           {
             "fieldPath": "uid",
@@ -127,58 +127,46 @@
             "notNull": true
           },
           {
-            "fieldPath": "fever",
-            "columnName": "fever",
+            "fieldPath": "isFound",
+            "columnName": "is_found",
             "affinity": "INTEGER",
             "notNull": true
           },
           {
-            "fieldPath": "cough",
-            "columnName": "cough",
+            "fieldPath": "isLost",
+            "columnName": "is_lost",
             "affinity": "INTEGER",
             "notNull": true
           },
           {
-            "fieldPath": "fatigue",
-            "columnName": "fatigue",
-            "affinity": "INTEGER",
+            "fieldPath": "uuid_detected",
+            "columnName": "uuid_detected",
+            "affinity": "TEXT",
             "notNull": true
           },
           {
-            "fieldPath": "breath",
-            "columnName": "breathless",
-            "affinity": "INTEGER",
-            "notNull": true
+            "fieldPath": "distance_meters",
+            "columnName": "distance_meters",
+            "affinity": "REAL",
+            "notNull": false
           },
           {
-            "fieldPath": "smell",
-            "columnName": "smell",
+            "fieldPath": "distance_accuracy",
+            "columnName": "distance_accuracy",
             "affinity": "INTEGER",
-            "notNull": true
+            "notNull": false
           },
           {
-            "fieldPath": "taste",
-            "columnName": "taste",
+            "fieldPath": "signal_rssi",
+            "columnName": "signal_rssi",
             "affinity": "INTEGER",
-            "notNull": true
+            "notNull": false
           },
           {
-            "fieldPath": "head",
-            "columnName": "headache",
+            "fieldPath": "signal_power",
+            "columnName": "signal_tx_power",
             "affinity": "INTEGER",
-            "notNull": true
-          },
-          {
-            "fieldPath": "throat",
-            "columnName": "throat",
-            "affinity": "INTEGER",
-            "notNull": true
-          },
-          {
-            "fieldPath": "body",
-            "columnName": "body",
-            "affinity": "INTEGER",
-            "notNull": true
+            "notNull": false
           }
         ],
         "primaryKey": {
@@ -194,7 +182,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '1171f92fad6e868dbc474a875ab57db1')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '246bae3b54a32a91d50651e63a06044d')"
     ]
   }
 }

@@ -18,9 +18,7 @@ import com.awareframework.encounter.database.User
 import com.awareframework.encounter.services.EncounterService
 import com.awareframework.encounter.ui.EncountersFragment
 import com.awareframework.encounter.ui.StatsFragment
-import com.awareframework.encounter.ui.SymptomsFragment
 import com.firebase.ui.auth.AuthUI
-import com.google.android.gms.dynamic.SupportFragmentWrapper
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.squareup.picasso.Picasso
@@ -52,7 +50,7 @@ class EncounterHome : AppCompatActivity() {
         viewManager.beginTransaction().replace(R.id.tab_view_container, StatsFragment())
             .commit()
 
-        val guiRefresh = IntentFilter(EncounterHome.ACTION_NEW_DATA)
+        val guiRefresh = IntentFilter(ACTION_NEW_DATA)
         registerReceiver(guiUpdateReceiver, guiRefresh)
 
         bottom_nav.setOnNavigationItemSelectedListener { menuItem ->
@@ -63,9 +61,6 @@ class EncounterHome : AppCompatActivity() {
                 }
                 R.id.bottom_encounters -> {
                     selectedFragment = EncountersFragment()
-                }
-                R.id.bottom_symptoms -> {
-                    selectedFragment = SymptomsFragment()
                 }
             }
             supportFragmentManager.beginTransaction()
@@ -165,9 +160,6 @@ class EncounterHome : AppCompatActivity() {
                     }
                     "encounters" -> {
                         viewManager.beginTransaction().replace(R.id.tab_view_container, EncountersFragment()).commit()
-                    }
-                    "symptoms" -> {
-                        viewManager.beginTransaction().replace(R.id.tab_view_container, SymptomsFragment()).commit()
                     }
                 }
             }

@@ -9,8 +9,4 @@
         android:id="@+id/bottom_encounters"
         android:icon="@drawable/ic_action_encounters"
         android:title="@string/encounters" />
-    <item
-        android:id="@+id/bottom_symptoms"
-        android:icon="@drawable/ic_action_self_log"
-        android:title="@string/symptoms" />
 </menu>

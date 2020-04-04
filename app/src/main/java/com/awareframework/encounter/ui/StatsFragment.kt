@@ -24,7 +24,6 @@ import org.jetbrains.anko.support.v4.defaultSharedPreferences
 import org.jetbrains.anko.uiThread
 import java.util.*
 import kotlin.collections.ArrayList
-import kotlin.collections.HashMap
 import kotlin.math.log10
 import kotlin.math.pow
 
@@ -34,7 +33,7 @@ import kotlin.math.pow
 class StatsFragment : Fragment() {
 
     companion object {
-        lateinit var frameContainer : FrameLayout
+        lateinit var frameContainer: FrameLayout
     }
 
     override fun onCreateView(
@@ -64,7 +63,14 @@ class StatsFragment : Fragment() {
                     ArrayAdapter(context!!, R.layout.spinner_country, countryAdapter)
 
                 if (defaultSharedPreferences.contains("country")) {
-                    country_selector.setSelection(countryAdapter.indexOf(defaultSharedPreferences.getString("country","")), true)
+                    country_selector.setSelection(
+                        countryAdapter.indexOf(
+                            defaultSharedPreferences.getString(
+                                "country",
+                                ""
+                            )
+                        ), true
+                    )
                     country_selector.dispatchSetSelected(true)
                 }
             }
@@ -96,51 +102,40 @@ class StatsFragment : Fragment() {
                             count_deaths.text = getString(R.string.count_number, data.last().deaths)
                         }
 
-                        val weeklyData = db.StatsDao().getWeekly(selectedCountry)
-                        val weeklyCounts = HashMap<Int, ArrayList<Int>>()
-                        weeklyData.moveToFirst()
+                        val dailyData = db.StatsDao().getDailyCounts(selectedCountry)
+                        dailyData.moveToFirst()
+
+                        val dataDayCount = ArrayList<Int>()
                         do {
-                            val weekNumber =
-                                weeklyData.getString(weeklyData.getColumnIndex("week")).toInt()
                             val confirmedAmount =
-                                weeklyData.getString(weeklyData.getColumnIndex("confirmed")).toInt()
-                            if (weeklyCounts.containsKey(weekNumber)) {
-                                weeklyCounts[weekNumber]?.add(confirmedAmount)
-                            } else {
-                                weeklyCounts[weekNumber] = ArrayList<Int>().apply {
-                                    add(confirmedAmount)
-                                }
-                            }
-                        } while (weeklyData.moveToNext())
-                        weeklyData.close()
+                                dailyData.getString(dailyData.getColumnIndex("confirmed")).toInt()
+                            dataDayCount.add(confirmedAmount)
+                        } while (dailyData.moveToNext())
+                        dailyData.close()
 
-                        val weeklyDelta = ArrayList<Float>()
-                        val weeklyTotals = ArrayList<Float>()
-
-                        var weeksCount = 0
-                        for (week in weeklyCounts) {
-                            weeksCount++
-                            if (weeksCount != weeklyCounts.size-1) { //don't consider the ongoing week data
-                                val min = week.value.min()
-                                val max = week.value.max()
-                                weeklyTotals.add(max!!.toFloat())
-                                weeklyDelta.add(max.toFloat() - min!!.toFloat())
-                            }
+                        val growth = ArrayList<Float>()
+                        val confirmed = ArrayList<Float>()
+                        for(i in 8 until dataDayCount.size) {
+                            val weekGrowth = dataDayCount.get(i)-dataDayCount.get(i-7)
+                            val weekConfirmed = dataDayCount.get(i)
+                            growth.add(weekGrowth.toFloat())
+                            confirmed.add(weekConfirmed.toFloat())
                         }
 
                         val plotDataPoints = ArrayList<Entry>()
-                        for (i in 0 until weeklyDelta.size) {
+                        for (i in 0 until growth.size) {
                             plotDataPoints.add(
                                 Entry(
-                                    scaleCbr(weeklyTotals[i]),
-                                    scaleCbr(weeklyDelta[i])
+                                    scaleCbr(confirmed[i]), //convert axis data points to logarithmic scale
+                                    scaleCbr(growth[i]) //convert axis data points to logarithmic scale
                                 )
-                            ) //convert both axis data points to logarithmic scale
+                            )
                         }
 
                         val lineData = LineDataSet(plotDataPoints, selectedCountry)
                         lineData.setCircleColor(Color.BLUE)
                         lineData.setDrawCircleHole(true)
+                        lineData.enableDashedLine(0f, 1f, 0f)
 
                         val dataset = ArrayList<ILineDataSet>()
                         dataset.add(lineData)

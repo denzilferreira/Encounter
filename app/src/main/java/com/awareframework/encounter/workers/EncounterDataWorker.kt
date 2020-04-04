@@ -24,12 +24,6 @@ class EncounterDataWorker(appContext: Context, workerParameters: WorkerParameter
         val serverRequest = JsonObjectRequest(Request.Method.GET, data_source, null,
             Response.Listener { dataObj ->
                 doAsync {
-                    val db =
-                        Room.databaseBuilder(
-                            applicationContext,
-                            EncounterDatabase::class.java,
-                            "covid"
-                        ).build()
 
                     val countries = dataObj.keys()
                     countries.forEach { country ->
@@ -40,6 +34,13 @@ class EncounterDataWorker(appContext: Context, workerParameters: WorkerParameter
                                 "yyyy-M-d",
                                 Locale.US
                             ).parse(record.getString("date"))!!
+
+                            val db =
+                                Room.databaseBuilder(
+                                    applicationContext,
+                                    EncounterDatabase::class.java,
+                                    "covid"
+                                ).build()
 
                             val existingDayData = db.StatsDao().getCountryDayData(country, formatter.time)
                             if (existingDayData.isNotEmpty()) {
@@ -60,11 +61,7 @@ class EncounterDataWorker(appContext: Context, workerParameters: WorkerParameter
                                     currentStats.recovered = record.getLong("recovered")
                                     updated = true
                                 }
-
-                                if (updated) {
-                                    db.StatsDao().update(currentStats)
-                                    println("Updated $country: $currentStats")
-                                }
+                                if (updated) db.StatsDao().update(currentStats)
                             } else {
                                 val entry = Stats(
                                     null,
@@ -75,14 +72,10 @@ class EncounterDataWorker(appContext: Context, workerParameters: WorkerParameter
                                     record.getLong("recovered")
                                 )
                                 db.StatsDao().insert(entry)
-
-                                println("Inserted: $entry")
                             }
+                            db.close()
                         }
                     }
-
-                    db.close()
-
                     applicationContext.sendBroadcast(Intent(EncounterHome.ACTION_NEW_DATA))
                 }
             },

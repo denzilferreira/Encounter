@@ -33,6 +33,6 @@ interface StatsDao {
     @Query("SELECT * FROM stats GROUP BY country")
     fun getCountries() : Array<Stats>
 
-    @Query("SELECT STRFTIME('%W', datetime(timestamp/1000, 'unixepoch','localtime')) AS week, confirmed FROM stats WHERE country LIKE :country ORDER BY timestamp ASC")
-    fun getWeekly(country: String) : Cursor
+    @Query("SELECT confirmed FROM stats WHERE country LIKE :country ORDER BY timestamp ASC")
+    fun getDailyCounts(country: String) : Cursor
 }

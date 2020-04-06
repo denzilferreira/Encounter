@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "246bae3b54a32a91d50651e63a06044d",
+    "identityHash": "a4cbe2eeb59f0a3952f11c1bae6aeda0",
     "entities": [
       {
         "tableName": "user",
@@ -106,7 +106,7 @@
       },
       {
         "tableName": "encounters",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`uid` INTEGER PRIMARY KEY AUTOINCREMENT, `uuid` TEXT NOT NULL, `timestamp` INTEGER NOT NULL, `is_found` INTEGER NOT NULL, `is_lost` INTEGER NOT NULL, `uuid_detected` TEXT NOT NULL, `distance_meters` REAL, `distance_accuracy` INTEGER, `signal_rssi` INTEGER, `signal_tx_power` INTEGER)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`uid` INTEGER PRIMARY KEY AUTOINCREMENT, `uuid` TEXT NOT NULL, `timestamp` INTEGER NOT NULL, `uuid_detected` TEXT NOT NULL)",
         "fields": [
           {
             "fieldPath": "uid",
@@ -127,46 +127,10 @@
             "notNull": true
           },
           {
-            "fieldPath": "isFound",
-            "columnName": "is_found",
-            "affinity": "INTEGER",
-            "notNull": true
-          },
-          {
-            "fieldPath": "isLost",
-            "columnName": "is_lost",
-            "affinity": "INTEGER",
-            "notNull": true
-          },
-          {
             "fieldPath": "uuid_detected",
             "columnName": "uuid_detected",
             "affinity": "TEXT",
             "notNull": true
-          },
-          {
-            "fieldPath": "distance_meters",
-            "columnName": "distance_meters",
-            "affinity": "REAL",
-            "notNull": false
-          },
-          {
-            "fieldPath": "distance_accuracy",
-            "columnName": "distance_accuracy",
-            "affinity": "INTEGER",
-            "notNull": false
-          },
-          {
-            "fieldPath": "signal_rssi",
-            "columnName": "signal_rssi",
-            "affinity": "INTEGER",
-            "notNull": false
-          },
-          {
-            "fieldPath": "signal_power",
-            "columnName": "signal_tx_power",
-            "affinity": "INTEGER",
-            "notNull": false
           }
         ],
         "primaryKey": {
@@ -182,7 +146,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '246bae3b54a32a91d50651e63a06044d')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'a4cbe2eeb59f0a3952f11c1bae6aeda0')"
     ]
   }
 }

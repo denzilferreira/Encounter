@@ -2,20 +2,25 @@
     <string name="app_name">Encounter</string>
     <string name="app_running">Encounter is active! Let\'s fight this thing.</string>
     <string name="user_photo">Your photo</string>
-    <string name="covid_stats">Stats</string>
+    <string name="latest_stats">Stats</string>
     <string name="encounters">Encounters</string>
     <string name="greeting">Hi %s</string>
     <string name="confirmed">Confirmed</string>
     <string name="deaths">Deaths</string>
     <string name="recovered">Recovered</string>
-    <string name="inspired_by">Plot as described by https://www.youtube.com/watch?v=54XLXg4fYsc, updated always with the latest official numbers.</string>
+    <string name="inspired_by">Plot as described by https://www.youtube.com/watch?v=54XLXg4fYsc, updated always with the latest official numbers as reported by John Hopkins.</string>
     <string name="country_trajectory">Trajectory of confirmed cases</string>
     <string name="total_confirmed_cases">Total confirmed cases</string>
     <string name="weekly_confirmed">New confirmed cases (weekly)</string>
     <string name="data_updated">Data is up-to-date</string>
     <string name="encounters_today">encounters today</string>
-    <string name="google_nearby_brief">Using Google\'s Nearby API, we detect anonymously people around you that have this app installed using Bluetooth, WiFi and ultra-sound (please keep Bluetooth ON for accuracy). By keeping this number low every day, you are keeping everyone safe from this pandemic</string>
+    <string name="google_nearby_brief">Using Google\'s Nearby APIs, we enable anonymous detection of surrounding people that also have this app installed using Bluetooth, WiFi and ultrasound (please keep Bluetooth, Location and WiFi ON for the best accuracy). By keeping this number low every day, you are keeping everyone safe from this pandemic</string>
+    <string name="enable_location">Without Location enabled, Bluetooth scanning does not work. We do not log your location! Please enable it.</string>
+    <string name="enable_bluetooth">Without Bluetooth enabled, nearby devices are not detected. Please enable it.</string>
+
     <string name="count_number" translatable="false">%d</string>
+
+    <!-- Allow social media login -->
     <string name="facebook_application_id" translatable="false">244589726704648</string>
     <string name="facebook_login_protocol_scheme" translatable="false">fb244589726704648</string>
     <string name="com.twitter.sdk.android.CONSUMER_KEY" translatable="false">0o7y6OO2gYSihUj4lHXX0rMwv</string>

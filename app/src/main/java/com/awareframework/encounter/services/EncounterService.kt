@@ -13,7 +13,6 @@ import androidx.room.Room
 import androidx.work.*
 import com.awareframework.encounter.EncounterHome
 import com.awareframework.encounter.R
-import com.awareframework.encounter.database.Encounter
 import com.awareframework.encounter.database.EncounterDatabase
 import com.awareframework.encounter.database.User
 import com.awareframework.encounter.ui.EncountersFragment
@@ -27,124 +26,24 @@ class EncounterService : Service() {
 
     companion object {
         val ENCOUNTER_FOREGROUND = 210712
-        lateinit var ping: Message
-        lateinit var user: User
+        val ACTION_NEW_ENCOUNTER = "ACTION_NEW_ENCOUNTER"
     }
 
-    val messageListener = object : MessageListener() {
-        override fun onDistanceChanged(message: Message?, distance: Distance?) {
-            super.onDistanceChanged(message, distance)
-
-            val encounter = Encounter(
-                null,
-                user.uuid,
-                System.currentTimeMillis(),
-                isFound = true,
-                isLost = false,
-                uuid_detected = message?.content!!.contentToString(),
-                distance_meters = distance?.meters,
-                distance_accuracy = distance?.accuracy,
-                signal_rssi = -1,
-                signal_power = -1
-            )
-
-            doAsync {
-                val db =
-                    Room.databaseBuilder(applicationContext, EncounterDatabase::class.java, "covid")
-                        .build()
-                db.EncounterDao().insert(encounter)
-
-                println("onDistanceChanged: $encounter")
-                sendBroadcast(Intent(EncountersFragment.ACTION_NEW_ENCOUNTER))
-            }
-        }
-
-        override fun onBleSignalChanged(message: Message?, bleSignal: BleSignal?) {
-            super.onBleSignalChanged(message, bleSignal)
-
-            val encounter = Encounter(
-                null,
-                user.uuid,
-                System.currentTimeMillis(),
-                isFound = true,
-                isLost = false,
-                uuid_detected = message?.content!!.contentToString(),
-                distance_meters = -1.0,
-                distance_accuracy = -1,
-                signal_rssi = bleSignal!!.rssi,
-                signal_power = bleSignal.txPower
-            )
-
-            doAsync {
-                val db =
-                    Room.databaseBuilder(applicationContext, EncounterDatabase::class.java, "covid")
-                        .build()
-                db.EncounterDao().insert(encounter)
-
-                println("onBleSignalChanged: $encounter")
-                sendBroadcast(Intent(EncountersFragment.ACTION_NEW_ENCOUNTER))
-            }
-        }
-
-        override fun onFound(message: Message?) {
-            super.onFound(message)
-
-            val encounter = Encounter(
-                null,
-                user.uuid,
-                System.currentTimeMillis(),
-                isFound = true,
-                isLost = false,
-                uuid_detected = message?.content!!.contentToString(),
-                distance_meters = -1.0,
-                distance_accuracy = -1,
-                signal_rssi = -1,
-                signal_power = -1
-            )
-
-            doAsync {
-                val db =
-                    Room.databaseBuilder(applicationContext, EncounterDatabase::class.java, "covid")
-                        .build()
-                db.EncounterDao().insert(encounter)
-
-                println("onFound: $encounter")
-                sendBroadcast(Intent(EncountersFragment.ACTION_NEW_ENCOUNTER))
-            }
-        }
-
-        override fun onLost(message: Message?) {
-            super.onLost(message)
-
-            val encounter = Encounter(
-                null,
-                user.uuid,
-                System.currentTimeMillis(),
-                isFound = false,
-                isLost = true,
-                uuid_detected = message?.content!!.contentToString(),
-                distance_meters = -1.0,
-                distance_accuracy = -1,
-                signal_rssi = -1,
-                signal_power = -1
-            )
-
-            doAsync {
-                val db =
-                    Room.databaseBuilder(applicationContext, EncounterDatabase::class.java, "covid")
-                        .build()
-                db.EncounterDao().insert(encounter)
-
-                println("onLost: $encounter")
-                sendBroadcast(Intent(EncountersFragment.ACTION_NEW_ENCOUNTER))
-            }
-        }
-    }
+    private lateinit var user: User
 
     override fun onCreate() {
         super.onCreate()
 
-        Nearby.getMessagesClient(applicationContext)
+        doAsync {
+            val db =
+                Room.databaseBuilder(applicationContext, EncounterDatabase::class.java, "encounters")
+                    .build()
+            val users = db.UserDao().getUser()
+            if (users.isNotEmpty()) {
+                user = users.first()
+            }
+            db.close()
+        }
 
         val notificationManager =
             applicationContext.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
@@ -167,6 +66,7 @@ class EncounterService : Service() {
             Intent(applicationContext, EncounterHome::class.java),
             0
         )
+
         val notification = NotificationCompat.Builder(applicationContext, "ENCOUNTER")
         notification.setSmallIcon(R.drawable.ic_stat_encounter)
         notification.setOngoing(true)
@@ -178,23 +78,13 @@ class EncounterService : Service() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) notification.setChannelId("ENCOUNTER")
 
         startForeground(ENCOUNTER_FOREGROUND, notification.build())
-
-        doAsync {
-            val db =
-                Room.databaseBuilder(applicationContext, EncounterDatabase::class.java, "covid")
-                    .build()
-
-            val users = db.UserDao().getUser()
-            user = users.first()
-
-            ping = Message(user.uuid.toByteArray())
-            Nearby.getMessagesClient(applicationContext).publish(ping, PublishOptions.DEFAULT)
-        }
-
-        Nearby.getMessagesClient(applicationContext).subscribe(messageListener)
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+        if (intent?.action.equals(ACTION_NEW_ENCOUNTER)) {
+            Nearby.getMessagesClient(applicationContext).handleIntent(intent!!, EncounterHome.messageListener)
+        }
+
         val networkAvailable =
             Constraints.Builder().setRequiredNetworkType(NetworkType.CONNECTED).build()
         val data = PeriodicWorkRequestBuilder<EncounterDataWorker>(
@@ -206,12 +96,6 @@ class EncounterService : Service() {
             .enqueueUniquePeriodicWork("ENCOUNTER-DATA", ExistingPeriodicWorkPolicy.KEEP, data)
 
         return super.onStartCommand(intent, flags, startId)
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        Nearby.getMessagesClient(applicationContext).unpublish(ping)
-        Nearby.getMessagesClient(applicationContext).unsubscribe(messageListener)
     }
 
     override fun onBind(intent: Intent?): IBinder? {

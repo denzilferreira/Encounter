@@ -7,6 +7,21 @@
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+
+    <uses-feature android:name="android.hardware.bluetooth" />
+
+    <uses-feature
+        android:name="android.hardware.bluetooth_le"
+        android:required="false" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -18,7 +33,7 @@
         <!-- Google Nearby -->
         <meta-data
             android:name="com.google.android.nearby.message.API_KEY"
-            android:value="AIzaSyA9MojUMyPZDD6uoD4Xl37YRtu2pskgrRo" />
+            android:value="AIzaSyB7rCTrfWycGPhZnn9b3cN80zUiEmc7znU" />
 
         <!-- Facebook API -->
         <meta-data
@@ -26,7 +41,6 @@
             android:value="@string/facebook_application_id"
             tools:replace="android:value" />
 
-        <!-- Covid19 views -->
         <activity android:name="com.awareframework.encounter.EncounterHome">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -52,6 +66,8 @@
             </intent-filter>
         </activity>
 
+        <activity android:name=".ui.EncounterPublisher" />
+
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="${applicationId}.provider.storage"
@@ -63,6 +79,7 @@
         </provider>
 
         <service android:name="com.awareframework.encounter.services.EncounterService" />
+
     </application>
 
 </manifest>

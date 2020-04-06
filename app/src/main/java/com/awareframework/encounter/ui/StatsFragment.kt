@@ -50,14 +50,16 @@ class StatsFragment : Fragment() {
         defaultSharedPreferences.edit().putString("active", "stats").apply()
 
         doAsync {
-            val db = Room.databaseBuilder(context!!, EncounterDatabase::class.java, "covid").build()
-
+            val db = Room.databaseBuilder(context!!, EncounterDatabase::class.java, "encounters").build()
             val countries = db.StatsDao().getCountries()
             val countryAdapter = ArrayList<String>()
             for (country in countries) {
                 countryAdapter.add(country.country)
             }
+            db.close()
+
             Collections.sort(countryAdapter, String.CASE_INSENSITIVE_ORDER)
+
             uiThread {
                 country_selector.adapter =
                     ArrayAdapter(context!!, R.layout.spinner_country, countryAdapter)
@@ -93,7 +95,8 @@ class StatsFragment : Fragment() {
                     defaultSharedPreferences.edit().putString("country", selectedCountry).apply()
 
                     doAsync {
-                        val data = db.StatsDao().getCountryData(selectedCountry)
+                        val encounterDatabase = Room.databaseBuilder(context!!, EncounterDatabase::class.java, "encounters").build()
+                        val data = encounterDatabase.StatsDao().getCountryData(selectedCountry)
                         uiThread {
                             count_confirmed.text =
                                 getString(R.string.count_number, data.last().confirmed)
@@ -102,7 +105,7 @@ class StatsFragment : Fragment() {
                             count_deaths.text = getString(R.string.count_number, data.last().deaths)
                         }
 
-                        val dailyData = db.StatsDao().getDailyCounts(selectedCountry)
+                        val dailyData = encounterDatabase.StatsDao().getDailyCounts(selectedCountry)
                         dailyData.moveToFirst()
 
                         val dataDayCount = ArrayList<Int>()
@@ -211,7 +214,7 @@ class StatsFragment : Fragment() {
                             legend.isEnabled = false
                         }
 
-                        db.close()
+                        encounterDatabase.close()
                     }
                 }
             }

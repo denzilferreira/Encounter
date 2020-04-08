@@ -14,13 +14,15 @@
     <string name="weekly_confirmed">New confirmed cases (weekly)</string>
     <string name="data_updated">Data is up-to-date</string>
     <string name="encounters_today">encounters today</string>
-    <string name="google_nearby_brief">Using Google\'s Nearby APIs, we enable anonymous detection of surrounding people that also have this app installed using Bluetooth, WiFi and ultrasound (please keep Bluetooth, Location and WiFi ON for the best accuracy). By keeping this number low every day, you are keeping everyone safe from this pandemic</string>
-    <string name="enable_location">Without Location enabled, Bluetooth scanning does not work. We do not log your location! Please enable it.</string>
-    <string name="enable_bluetooth">Without Bluetooth enabled, nearby devices are not detected. Please enable it.</string>
+    <string name="google_nearby_brief">Using Google\'s Nearby APIs, we enable anonymous detection of surrounding people that also have this app installed using Bluetooth, WiFi and ultrasound audio - please keep Bluetooth, Location and WiFi ON for the best accuracy. Thanks for keeping the encounters number low every day!</string>
+    <string name="enable_location">Without Location enabled, Bluetooth scanning does not work. We do not log your location! Tap here to enable it.</string>
+    <string name="enable_bluetooth">Without Bluetooth enabled, nearby devices are not detected. Tap here to enable it.</string>
+    <string name="enable_doze">Tap here to add Encounter to the list of ignored applications (whitelisted) on the battery manager. This will ensure we can keep the application running.</string>
+    <string name="encounter_detected">Found %s</string>
 
     <string name="count_number" translatable="false">%d</string>
 
-    <!-- Allow social media login -->
+    <!-- Allow passwordless social media login -->
     <string name="facebook_application_id" translatable="false">244589726704648</string>
     <string name="facebook_login_protocol_scheme" translatable="false">fb244589726704648</string>
     <string name="com.twitter.sdk.android.CONSUMER_KEY" translatable="false">0o7y6OO2gYSihUj4lHXX0rMwv</string>

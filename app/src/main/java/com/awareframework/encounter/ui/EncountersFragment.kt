@@ -22,11 +22,6 @@ import java.util.*
 
 class EncountersFragment : Fragment() {
 
-    companion object {
-        val ACTION_NEW_ENCOUNTER = "ACTION_NEW_ENCOUNTER"
-        lateinit var debugText : TextView
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -38,11 +33,6 @@ class EncountersFragment : Fragment() {
         super.onResume()
 
         defaultSharedPreferences.edit().putString("active", "encounters").apply()
-
-        debugText = encounter_realtime
-
-        val encounterFilter = IntentFilter(ACTION_NEW_ENCOUNTER)
-        context!!.registerReceiver(encounterListener, encounterFilter)
 
         doAsync {
             val db =
@@ -59,23 +49,6 @@ class EncountersFragment : Fragment() {
             }
 
             db.close()
-        }
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        context!!.unregisterReceiver(encounterListener)
-    }
-
-    private val encounterListener = EncounterListener()
-    class EncounterListener : BroadcastReceiver() {
-        override fun onReceive(context: Context?, intent: Intent?) {
-            if(intent?.action.equals(ACTION_NEW_ENCOUNTER)) {
-                val data = intent?.extras?.get("message")
-                context?.runOnUiThread {
-                    debugText.text = debugText.editableText.append(data.toString())
-                }
-            }
         }
     }
 }

@@ -13,8 +13,8 @@ import androidx.room.Room
 import androidx.work.*
 import com.awareframework.encounter.EncounterHome
 import com.awareframework.encounter.R
+import com.awareframework.encounter.database.Encounter
 import com.awareframework.encounter.database.EncounterDatabase
-import com.awareframework.encounter.database.User
 import com.awareframework.encounter.ui.EncountersFragment
 import com.awareframework.encounter.workers.EncounterDataWorker
 import com.google.android.gms.nearby.Nearby
@@ -26,27 +26,15 @@ class EncounterService : Service() {
 
     companion object {
         val ENCOUNTER_FOREGROUND = 210712
-        val ACTION_NEW_ENCOUNTER = "ACTION_NEW_ENCOUNTER"
+        val ENCOUNTER_WARNING = 1104
     }
-
-    private lateinit var user: User
 
     override fun onCreate() {
         super.onCreate()
 
-        doAsync {
-            val db =
-                Room.databaseBuilder(applicationContext, EncounterDatabase::class.java, "encounters")
-                    .build()
-            val users = db.UserDao().getUser()
-            if (users.isNotEmpty()) {
-                user = users.first()
-            }
-            db.close()
-        }
-
         val notificationManager =
             applicationContext.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val name = applicationContext.getString(R.string.app_name)
             val descriptionText = applicationContext.getString(R.string.app_name)
@@ -78,12 +66,11 @@ class EncounterService : Service() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) notification.setChannelId("ENCOUNTER")
 
         startForeground(ENCOUNTER_FOREGROUND, notification.build())
+
+        startActivity(Intent(applicationContext, EncounterHome::class.java).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        if (intent?.action.equals(ACTION_NEW_ENCOUNTER)) {
-            Nearby.getMessagesClient(applicationContext).handleIntent(intent!!, EncounterHome.messageListener)
-        }
 
         val networkAvailable =
             Constraints.Builder().setRequiredNetworkType(NetworkType.CONNECTED).build()

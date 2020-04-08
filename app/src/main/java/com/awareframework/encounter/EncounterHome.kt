@@ -69,6 +69,8 @@ class EncounterHome : AppCompatActivity() {
         lateinit var encounterContext: Context
         lateinit var message: Message
 
+        lateinit var handler : Handler
+        lateinit var repeatedTask : Runnable
         val PUBLISH_INTERVAL : Long = 1000*60*2 //two minutes
     }
 
@@ -157,13 +159,16 @@ class EncounterHome : AppCompatActivity() {
             db.close()
         }
 
-        val handler = Handler()
-        handler.postDelayed(object : Runnable {
-            override fun run() {
-                publish()
-                handler.postDelayed(this, PUBLISH_INTERVAL)
+        handler = Handler()
+        repeatedTask = Runnable() {
+            kotlin.run {
+                runOnUiThread {
+                    publish()
+                }
+                handler.postDelayed(repeatedTask, PUBLISH_INTERVAL)
             }
-        }, PUBLISH_INTERVAL)
+        }
+        handler.postDelayed(repeatedTask, PUBLISH_INTERVAL)
 
         startService(Intent(applicationContext, EncounterService::class.java))
     }

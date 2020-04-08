@@ -55,10 +55,8 @@ class EncounterHome : AppCompatActivity() {
     companion object {
         val ACTION_NEW_DATA = "ACTION_NEW_DATA"
         val ACTION_ENCOUNTER_PUBLISH = "ACTION_ENCOUNTER_PUBLISH"
-
         val VIEW_ENCOUNTERS = "VIEW_ENCOUNTERS"
 
-        val ENCOUNTER_LOCATION = 1111
         val ENCOUNTER_BLUETOOTH = 1112
         val ENCOUNTER_BATTERY = 1113
 
@@ -66,12 +64,6 @@ class EncounterHome : AppCompatActivity() {
         lateinit var user: User
 
         lateinit var messageListener: MessageListener
-        lateinit var encounterContext: Context
-        lateinit var message: Message
-
-        lateinit var handler : Handler
-        lateinit var repeatedTask : Runnable
-        val PUBLISH_INTERVAL : Long = 1000*60*2 //two minutes
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -91,7 +83,7 @@ class EncounterHome : AppCompatActivity() {
         }
 
         user_photo.setOnClickListener {
-            message = Message(user.uuid.toByteArray())
+            val message = Message(user.uuid.toByteArray())
             Nearby.getMessagesClient(this@EncounterHome)
                 .publish(
                     message,
@@ -108,6 +100,7 @@ class EncounterHome : AppCompatActivity() {
 
         val guiRefresh = IntentFilter()
         guiRefresh.addAction(ACTION_NEW_DATA)
+        guiRefresh.addAction(ACTION_ENCOUNTER_PUBLISH)
         registerReceiver(guiUpdateReceiver, guiRefresh)
 
         bottom_nav.setOnNavigationItemSelectedListener { menuItem ->
@@ -136,9 +129,6 @@ class EncounterHome : AppCompatActivity() {
             val users = db.UserDao().getUser()
             if (users.isNotEmpty()) {
                 user = users.first()
-
-                message = Message(user.uuid.toByteArray())
-
                 uiThread {
                     user_photo.imageBitmap =
                         BitmapFactory.decodeByteArray(user.photo, 0, user.photo?.size!!)
@@ -159,39 +149,16 @@ class EncounterHome : AppCompatActivity() {
             db.close()
         }
 
-        handler = Handler()
-        repeatedTask = Runnable() {
-            kotlin.run {
-                runOnUiThread {
-                    publish()
-                }
-                handler.postDelayed(repeatedTask, PUBLISH_INTERVAL)
+        val timer = Timer()
+        timer.scheduleAtFixedRate(object : TimerTask() {
+            override fun run() {
+                println("Publishing encounter UUID...")
+                publish()
             }
-        }
-        handler.postDelayed(repeatedTask, PUBLISH_INTERVAL)
+        }, 0, 5*60*1000)
 
         startService(Intent(applicationContext, EncounterService::class.java))
-    }
 
-    fun publish() {
-        Nearby.getMessagesClient(encounterContext)
-            .publish(
-                message,
-                PublishOptions.Builder()
-                    .setStrategy(
-                        Strategy.Builder()
-                            .setTtlSeconds(Strategy.TTL_SECONDS_DEFAULT)
-                            .setDistanceType(Strategy.DISTANCE_TYPE_DEFAULT)
-                            .build()
-                    )
-                    .build()
-            )
-    }
-
-    override fun onStart() {
-        super.onStart()
-
-        encounterContext = this
         messageListener = object : MessageListener() {
             override fun onFound(message: Message?) {
                 super.onFound(message)
@@ -220,9 +187,49 @@ class EncounterHome : AppCompatActivity() {
         }
 
         Nearby.getMessagesClient(
-            this,
+            this@EncounterHome,
             MessagesOptions.Builder().setPermissions(NearbyPermissions.DEFAULT).build()
         ).subscribe(messageListener)
+
+        val pendingIntent = PendingIntent.getBroadcast(applicationContext, 0, Intent(ACTION_ENCOUNTER_PUBLISH), PendingIntent.FLAG_UPDATE_CURRENT)
+        Nearby.getMessagesClient(applicationContext).subscribe(pendingIntent).addOnSuccessListener {
+            println("Subscribed background PendingIntent")
+        }
+    }
+
+    fun publish() {
+        doAsync {
+            val db =
+                Room.databaseBuilder(
+                    applicationContext,
+                    EncounterDatabase::class.java,
+                    "encounters"
+                )
+                    .build()
+            val users = db.UserDao().getUser()
+            if (users.isNotEmpty()) {
+                uiThread { activity ->
+                    val message = Message(users.first().uuid.toByteArray())
+                    Nearby.getMessagesClient(activity)
+                        .publish(
+                            message,
+                            PublishOptions.Builder()
+                                .setStrategy(
+                                    Strategy.Builder()
+                                        .setTtlSeconds(Strategy.TTL_SECONDS_DEFAULT)
+                                        .setDistanceType(Strategy.DISTANCE_TYPE_DEFAULT)
+                                        .build()
+                                )
+                                .build()
+                        ).addOnFailureListener {
+                            println("Failed to publish: ${it.message}")
+                        }.addOnSuccessListener {
+                            println("Published success!")
+                        }
+                }
+            }
+            db.close()
+        }
     }
 
     fun sendNotification(message: String) {
@@ -240,7 +247,6 @@ class EncounterHome : AppCompatActivity() {
         notification.priority = NotificationCompat.PRIORITY_DEFAULT
         notification.setContentTitle(getString(R.string.app_name))
         notification.setContentText(message)
-        notification.setOngoing(true)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) notification.setChannelId("ENCOUNTER")
 
         val notificationManager =
@@ -250,11 +256,13 @@ class EncounterHome : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-
         checkPermissions()
         checkBluetooth()
-        checkLocation()
         checkDoze()
+
+        if (intent.action.equals(ACTION_ENCOUNTER_PUBLISH)) {
+            publish()
+        }
     }
 
     private fun checkPermissions() {
@@ -286,51 +294,6 @@ class EncounterHome : AppCompatActivity() {
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (grantResults.contains(PackageManager.PERMISSION_DENIED)) checkPermissions()
-    }
-
-    private fun checkLocation() {
-        val locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
-        val isLocationEnabled =
-            locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER) && locationManager.isProviderEnabled(
-                LocationManager.GPS_PROVIDER
-            )
-        if (!isLocationEnabled) {
-            val notificationManager =
-                applicationContext.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                val name = applicationContext.getString(R.string.app_name)
-                val descriptionText = applicationContext.getString(R.string.app_name)
-                val channel = NotificationChannel(
-                    "ENCOUNTER",
-                    name,
-                    NotificationManager.IMPORTANCE_HIGH
-                ).apply {
-                    description = descriptionText
-                }
-                notificationManager.createNotificationChannel(channel)
-            }
-
-            val locationIntent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS).apply {
-                flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
-            }
-            val pendingLocation = PendingIntent.getActivity(
-                applicationContext,
-                0,
-                locationIntent,
-                PendingIntent.FLAG_UPDATE_CURRENT
-            )
-            val builder = NotificationCompat.Builder(applicationContext, "ENCOUNTER")
-                .setSmallIcon(R.drawable.ic_stat_encounter_limited)
-                .setContentTitle(getString(R.string.app_name))
-                .setContentText(getString(R.string.enable_location))
-                .setContentIntent(pendingLocation)
-                .setAutoCancel(true)
-                .setOnlyAlertOnce(true)
-                .setDefaults(NotificationCompat.DEFAULT_ALL)
-                .setPriority(NotificationCompat.PRIORITY_HIGH)
-
-            notificationManager.notify(ENCOUNTER_LOCATION, builder.build())
-        }
     }
 
     private fun checkBluetooth() {
@@ -469,7 +432,6 @@ class EncounterHome : AppCompatActivity() {
                 }
 
                 checkPermissions()
-                checkLocation()
                 checkBluetooth()
                 checkDoze()
             }
@@ -481,28 +443,15 @@ class EncounterHome : AppCompatActivity() {
         unregisterReceiver(guiUpdateReceiver)
 
         //Start app again so that we can continue broadcasting UUID
-        startActivity(Intent(applicationContext, EncounterHome::class.java))
+        startActivity(Intent(applicationContext, EncounterHome::class.java).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP))
     }
 
     private val guiUpdateReceiver = UIUpdate()
-
     class UIUpdate : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
             if (intent?.action.equals(ACTION_ENCOUNTER_PUBLISH)) {
-                Nearby.getMessagesClient(encounterContext)
-                    .publish(
-                        message,
-                        PublishOptions.Builder()
-                            .setStrategy(
-                                Strategy.Builder()
-                                    .setTtlSeconds(Strategy.TTL_SECONDS_DEFAULT)
-                                    .setDistanceType(Strategy.DISTANCE_TYPE_DEFAULT)
-                                    .build()
-                            )
-                            .build()
-                    )
+                Nearby.getMessagesClient(context!!).handleIntent(intent!!, messageListener)
             }
-
             if (intent?.action.equals(ACTION_NEW_DATA)) {
                 when (context?.defaultSharedPreferences?.getString("active", "")) {
                     "stats" -> {

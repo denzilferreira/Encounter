@@ -15,7 +15,6 @@ import com.awareframework.encounter.EncounterHome
 import com.awareframework.encounter.R
 import com.awareframework.encounter.database.Encounter
 import com.awareframework.encounter.database.EncounterDatabase
-import com.awareframework.encounter.ui.EncountersFragment
 import com.awareframework.encounter.workers.EncounterDataWorker
 import com.google.android.gms.nearby.Nearby
 import com.google.android.gms.nearby.messages.*
@@ -27,6 +26,8 @@ class EncounterService : Service() {
     companion object {
         val ENCOUNTER_FOREGROUND = 210712
         val ENCOUNTER_WARNING = 1104
+
+        val ACTION_NEW_ENCOUNTER_PUBLISHED = "ACTION_NEW_ENCOUNTER_PUBLISHED"
     }
 
     override fun onCreate() {
@@ -67,10 +68,73 @@ class EncounterService : Service() {
 
         startForeground(ENCOUNTER_FOREGROUND, notification.build())
 
-        startActivity(Intent(applicationContext, EncounterHome::class.java).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
+        startActivity(
+            Intent(
+                applicationContext,
+                EncounterHome::class.java
+            ).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        )
+
+        val pendingIntent = PendingIntent.getService(
+            applicationContext,
+            0,
+            Intent(applicationContext, EncounterService::class.java).setAction(ACTION_NEW_ENCOUNTER_PUBLISHED),
+            PendingIntent.FLAG_UPDATE_CURRENT
+        )
+
+        /**
+         * Subscribe to nearby messages on the background
+         */
+        Nearby.getMessagesClient(applicationContext).subscribe(
+            pendingIntent, SubscribeOptions.Builder()
+                .setCallback(object : SubscribeCallback() {
+                    override fun onExpired() {
+                        super.onExpired()
+                        println("Subscription expired PendingIntent...")
+                    }
+                })
+                .setStrategy(
+                    Strategy.BLE_ONLY //we can only react to BLE messages on the background which is fine
+                ).build()
+        ).addOnSuccessListener {
+            println("Subscribed background PendingIntent")
+        }
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+        if (intent?.action.equals(ACTION_NEW_ENCOUNTER_PUBLISHED)) {
+
+            println("EncounterService: found Encounter published message")
+
+            Nearby.getMessagesClient(applicationContext).handleIntent(intent!!,
+                object : MessageListener() {
+                    override fun onFound(message: Message?) {
+                        super.onFound(message)
+
+                        val uuidDetected = String(message?.content!!)
+                        doAsync {
+                            val db = Room.databaseBuilder(
+                                applicationContext,
+                                EncounterDatabase::class.java,
+                                "encounters"
+                            ).build()
+
+                            val user = db.UserDao().getUser().first()
+                            val encounter = Encounter(
+                                uid = null,
+                                timestamp = System.currentTimeMillis(),
+                                uuid = user.uuid,
+                                uuid_detected = uuidDetected
+                            )
+                            db.EncounterDao().insert(encounter)
+                            db.close()
+                        }
+
+                        sendNotification(getString(R.string.encounter_detected).format(String(message.content)))
+                    }
+                }
+            )
+        }
 
         val networkAvailable =
             Constraints.Builder().setRequiredNetworkType(NetworkType.CONNECTED).build()
@@ -83,6 +147,28 @@ class EncounterService : Service() {
             .enqueueUniquePeriodicWork("ENCOUNTER-DATA", ExistingPeriodicWorkPolicy.KEEP, data)
 
         return super.onStartCommand(intent, flags, startId)
+    }
+
+    fun sendNotification(message: String) {
+        val foregroundIntent = PendingIntent.getActivity(
+            applicationContext, 0,
+            Intent(
+                applicationContext,
+                EncounterHome::class.java
+            ).setAction(EncounterHome.VIEW_ENCOUNTERS),
+            0
+        )
+        val notification = NotificationCompat.Builder(applicationContext, "ENCOUNTER")
+        notification.setSmallIcon(R.drawable.ic_stat_encounter_warning)
+        notification.setContentIntent(foregroundIntent)
+        notification.priority = NotificationCompat.PRIORITY_DEFAULT
+        notification.setContentTitle(getString(R.string.app_name))
+        notification.setContentText(message)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) notification.setChannelId("ENCOUNTER")
+
+        val notificationManager =
+            applicationContext.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        notificationManager.notify(EncounterService.ENCOUNTER_WARNING, notification.build())
     }
 
     override fun onBind(intent: Intent?): IBinder? {

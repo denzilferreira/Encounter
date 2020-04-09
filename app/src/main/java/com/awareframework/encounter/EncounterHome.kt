@@ -54,7 +54,6 @@ class EncounterHome : AppCompatActivity() {
 
     companion object {
         val ACTION_NEW_DATA = "ACTION_NEW_DATA"
-        val ACTION_ENCOUNTER_PUBLISH = "ACTION_ENCOUNTER_PUBLISH"
         val VIEW_ENCOUNTERS = "VIEW_ENCOUNTERS"
 
         val ENCOUNTER_BLUETOOTH = 1112
@@ -100,7 +99,6 @@ class EncounterHome : AppCompatActivity() {
 
         val guiRefresh = IntentFilter()
         guiRefresh.addAction(ACTION_NEW_DATA)
-        guiRefresh.addAction(ACTION_ENCOUNTER_PUBLISH)
         registerReceiver(guiUpdateReceiver, guiRefresh)
 
         bottom_nav.setOnNavigationItemSelectedListener { menuItem ->
@@ -155,7 +153,7 @@ class EncounterHome : AppCompatActivity() {
                 println("Publishing encounter UUID...")
                 publish()
             }
-        }, 0, 5*60*1000)
+        }, 0, 60*1000)
 
         startService(Intent(applicationContext, EncounterService::class.java))
 
@@ -185,16 +183,20 @@ class EncounterHome : AppCompatActivity() {
                 sendNotification(getString(R.string.encounter_detected).format(String(message.content)))
             }
         }
+    }
 
-        Nearby.getMessagesClient(
-            this@EncounterHome,
-            MessagesOptions.Builder().setPermissions(NearbyPermissions.DEFAULT).build()
-        ).subscribe(messageListener)
+    override fun onStart() {
+        super.onStart()
+        checkPermissions()
+        checkBluetooth()
+        checkDoze()
 
-        val pendingIntent = PendingIntent.getBroadcast(applicationContext, 0, Intent(ACTION_ENCOUNTER_PUBLISH), PendingIntent.FLAG_UPDATE_CURRENT)
-        Nearby.getMessagesClient(applicationContext).subscribe(pendingIntent).addOnSuccessListener {
-            println("Subscribed background PendingIntent")
-        }
+        Nearby.getMessagesClient(this@EncounterHome, MessagesOptions.Builder().setPermissions(NearbyPermissions.DEFAULT).build()).subscribe(messageListener)
+    }
+
+    override fun onStop() {
+        super.onStop()
+        Nearby.getMessagesClient(this@EncounterHome, MessagesOptions.Builder().setPermissions(NearbyPermissions.DEFAULT).build()).unsubscribe(messageListener)
     }
 
     fun publish() {
@@ -252,17 +254,6 @@ class EncounterHome : AppCompatActivity() {
         val notificationManager =
             applicationContext.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         notificationManager.notify(EncounterService.ENCOUNTER_WARNING, notification.build())
-    }
-
-    override fun onResume() {
-        super.onResume()
-        checkPermissions()
-        checkBluetooth()
-        checkDoze()
-
-        if (intent.action.equals(ACTION_ENCOUNTER_PUBLISH)) {
-            publish()
-        }
     }
 
     private fun checkPermissions() {
@@ -449,9 +440,6 @@ class EncounterHome : AppCompatActivity() {
     private val guiUpdateReceiver = UIUpdate()
     class UIUpdate : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
-            if (intent?.action.equals(ACTION_ENCOUNTER_PUBLISH)) {
-                Nearby.getMessagesClient(context!!).handleIntent(intent!!, messageListener)
-            }
             if (intent?.action.equals(ACTION_NEW_DATA)) {
                 when (context?.defaultSharedPreferences?.getString("active", "")) {
                     "stats" -> {

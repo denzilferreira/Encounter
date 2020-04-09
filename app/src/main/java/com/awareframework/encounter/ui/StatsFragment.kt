@@ -136,7 +136,7 @@ class StatsFragment : Fragment() {
                         }
 
                         val lineData = LineDataSet(plotDataPoints, selectedCountry)
-                        lineData.setCircleColor(Color.BLUE)
+                        lineData.setCircleColor(resources.getColor(R.color.colorPrimary))
                         lineData.setDrawCircleHole(true)
                         lineData.enableDashedLine(0f, 1f, 0f)
 
@@ -147,9 +147,7 @@ class StatsFragment : Fragment() {
                         lineChart.setDrawValues(false)
 
                         uiThread {
-
                             spread_chart.axisRight.isEnabled = false
-
                             spread_chart.animateX(1500)
 
                             val logScale = ArrayList<String>().apply {

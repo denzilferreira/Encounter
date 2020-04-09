@@ -76,7 +76,6 @@ class EncounterDataWorker(appContext: Context, workerParameters: WorkerParameter
                             db.close()
                         }
                     }
-                    applicationContext.sendBroadcast(Intent(EncounterHome.ACTION_NEW_DATA))
                 }
             },
             Response.ErrorListener {

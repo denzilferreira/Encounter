@@ -130,7 +130,7 @@ class EncounterService : Service() {
                             db.close()
                         }
 
-                        sendNotification(getString(R.string.encounter_detected).format(String(message.content)))
+                        //sendNotification(getString(R.string.encounter_detected).format(String(message.content)))
                     }
                 }
             )
@@ -149,6 +149,9 @@ class EncounterService : Service() {
         return super.onStartCommand(intent, flags, startId)
     }
 
+    /**
+     * Used in debugging
+     */
     fun sendNotification(message: String) {
         val foregroundIntent = PendingIntent.getActivity(
             applicationContext, 0,

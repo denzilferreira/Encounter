@@ -13,12 +13,12 @@ import android.content.IntentFilter
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.location.LocationManager
 import android.os.Build
 import android.os.Bundle
-import android.os.Handler
 import android.os.PowerManager
 import android.provider.Settings
+import android.view.Menu
+import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
@@ -30,6 +30,8 @@ import com.awareframework.encounter.database.Encounter
 import com.awareframework.encounter.database.EncounterDatabase
 import com.awareframework.encounter.database.User
 import com.awareframework.encounter.services.EncounterService
+import com.awareframework.encounter.ui.AccountFragment
+import com.awareframework.encounter.ui.ContactFragment
 import com.awareframework.encounter.ui.EncountersFragment
 import com.awareframework.encounter.ui.StatsFragment
 import com.firebase.ui.auth.AuthUI
@@ -53,7 +55,6 @@ class EncounterHome : AppCompatActivity() {
     private val PERMISSIONS_ENCOUNTER = 1212
 
     companion object {
-        val ACTION_NEW_DATA = "ACTION_NEW_DATA"
         val VIEW_ENCOUNTERS = "VIEW_ENCOUNTERS"
 
         val ENCOUNTER_BLUETOOTH = 1112
@@ -97,10 +98,6 @@ class EncounterHome : AppCompatActivity() {
                 )
         }
 
-        val guiRefresh = IntentFilter()
-        guiRefresh.addAction(ACTION_NEW_DATA)
-        registerReceiver(guiUpdateReceiver, guiRefresh)
-
         bottom_nav.setOnNavigationItemSelectedListener { menuItem ->
             lateinit var selectedFragment: Fragment
             when (menuItem.itemId) {
@@ -136,12 +133,17 @@ class EncounterHome : AppCompatActivity() {
                 val providers = arrayListOf(
                     AuthUI.IdpConfig.GoogleBuilder().build(),
                     AuthUI.IdpConfig.FacebookBuilder().build(),
-                    AuthUI.IdpConfig.TwitterBuilder().build()
+                    AuthUI.IdpConfig.TwitterBuilder().build(),
+                    AuthUI.IdpConfig.EmailBuilder().build()
                 )
                 startActivityForResult(
                     AuthUI.getInstance().createSignInIntentBuilder()
                         .setAvailableProviders(providers)
-                        .build(), RC_SIGN_IN
+                        .setIsSmartLockEnabled(true)
+                        .setLogo(R.mipmap.ic_launcher_round)
+                        .setTheme(R.style.AppTheme)
+                        .build(),
+                    RC_SIGN_IN
                 )
             }
             db.close()
@@ -180,8 +182,29 @@ class EncounterHome : AppCompatActivity() {
                     db.close()
                 }
 
-                sendNotification(getString(R.string.encounter_detected).format(String(message.content)))
+                //sendNotification(getString(R.string.encounter_detected).format(String(message.content)))
             }
+        }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.top_menu, menu)
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when(item.itemId) {
+            R.id.account -> {
+                viewManager.beginTransaction()
+                    .replace(R.id.tab_view_container, AccountFragment()).commit()
+                true
+            }
+            R.id.team -> {
+                viewManager.beginTransaction()
+                    .replace(R.id.tab_view_container, ContactFragment()).commit()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
         }
     }
 
@@ -234,6 +257,9 @@ class EncounterHome : AppCompatActivity() {
         }
     }
 
+    /**
+     * Used for debugging
+     */
     fun sendNotification(message: String) {
         val foregroundIntent = PendingIntent.getActivity(
             applicationContext, 0,
@@ -431,32 +457,7 @@ class EncounterHome : AppCompatActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
-        unregisterReceiver(guiUpdateReceiver)
-
         //Start app again so that we can continue broadcasting UUID
         startActivity(Intent(applicationContext, EncounterHome::class.java).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP))
-    }
-
-    private val guiUpdateReceiver = UIUpdate()
-    class UIUpdate : BroadcastReceiver() {
-        override fun onReceive(context: Context?, intent: Intent?) {
-            if (intent?.action.equals(ACTION_NEW_DATA)) {
-                when (context?.defaultSharedPreferences?.getString("active", "")) {
-                    "stats" -> {
-                        Snackbar.make(
-                            StatsFragment.frameContainer,
-                            context.getString(R.string.data_updated).toString(),
-                            Snackbar.LENGTH_SHORT
-                        ).show()
-                        viewManager.beginTransaction()
-                            .replace(R.id.tab_view_container, StatsFragment()).commit()
-                    }
-                    "encounters" -> {
-                        viewManager.beginTransaction()
-                            .replace(R.id.tab_view_container, EncountersFragment()).commit()
-                    }
-                }
-            }
-        }
     }
 }

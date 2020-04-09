@@ -14,7 +14,6 @@
             android:id="@+id/counter_encounters"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
             android:text="@string/count_number"
             android:textAppearance="@style/TextAppearance.AppCompat.Large"
             android:textSize="36sp"
@@ -26,7 +25,6 @@
             android:id="@+id/textView3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
             android:text="@string/encounters_today"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             app:layout_constraintEnd_toEndOf="@+id/counter_encounters"
@@ -37,10 +35,9 @@
             android:id="@+id/encounters_chart"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:layout_marginStart="8dp"
+            android:layout_marginStart="32dp"
             android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            app:layout_constraintBottom_toTopOf="@+id/encounter_realtime"
+            app:layout_constraintBottom_toTopOf="@+id/encounter_dates"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView3" />
@@ -56,12 +53,48 @@
             app:layout_constraintStart_toStartOf="parent" />
 
         <TextView
-            android:id="@+id/encounter_realtime"
+            android:id="@+id/encounter_dates"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:text="@string/encounter_dates"
             app:layout_constraintBottom_toTopOf="@+id/intro"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:rotation="-90"
+            android:text="@string/unique_encounters"
+            app:layout_constraintBottom_toBottomOf="@+id/encounters_chart"
+            app:layout_constraintEnd_toStartOf="@+id/encounters_chart"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/encounters_chart" />
+
+        <ImageView
+            android:id="@+id/encounter_next"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="24dp"
+            android:scaleX="2"
+            android:scaleY="2"
+            android:src="@drawable/ic_action_next"
+            android:tint="@color/colorPrimary"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/counter_encounters" />
+
+        <ImageView
+            android:id="@+id/encounter_previous"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:scaleX="2"
+            android:scaleY="2"
+            android:src="@drawable/ic_action_previous"
+            android:tint="@color/colorPrimary"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/counter_encounters" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>

@@ -8,8 +8,8 @@
         android:title="@string/encounter_account"
         app:showAsAction="always" />
     <item
-        android:id="@+id/team"
+        android:id="@+id/encounter_info"
         android:icon="@drawable/ic_action_contact"
-        android:title="@string/encounter_team"
+        android:title="@string/encounter_info"
         app:showAsAction="always" />
 </menu>

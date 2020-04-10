@@ -21,7 +21,7 @@
     <string name="encounter_detected">Found %s</string>
     <string name="unique_encounters">Unique encounters</string>
     <string name="encounter_account">Account</string>
-    <string name="encounter_team">Team</string>
+    <string name="encounter_info">Information</string>
     <string name="monday">Mon</string>
     <string name="tuesday">Tue</string>
     <string name="wednesday">Wed</string>
@@ -29,7 +29,15 @@
     <string name="friday">Fri</string>
     <string name="saturday">Sat</string>
     <string name="sunday">Sun</string>
+    <string name="uuid_sharing_instructions">This UUID (Universal Unique ID) was randomly created when you first ran Encounter. Touch the UUID to copy it so that you can use it for any other app.</string>
+    <string name="uuid_toast">UUID copied</string>
+    <string name="share_data">Share my data</string>
+    <string name="sign_out">Sign out</string>
+    <string name="gdpr_sharing">When you press the share button, your data is packaged and compressed allowing you to share it. Following GDPR guidelines, you are in control over who has access to your data.\n\n The data is described here in more detail: \nhttps://encounter.awareframework.com/home/data-format</string>
+    <string name="exporting_wait">Exporting data, please wait…</string>
 
+    <!-- Placeholders for dynamic content -->
+    <string name="uuid_placeholder" translatable="false">%s</string>
     <string name="encounter_dates" translatable="false">%s - %s</string>
     <string name="count_number" translatable="false">%d</string>
 

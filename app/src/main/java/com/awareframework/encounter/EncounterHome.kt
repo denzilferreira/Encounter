@@ -6,10 +6,8 @@ import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
 import android.bluetooth.BluetoothAdapter
-import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import android.content.IntentFilter
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
@@ -31,17 +29,15 @@ import com.awareframework.encounter.database.EncounterDatabase
 import com.awareframework.encounter.database.User
 import com.awareframework.encounter.services.EncounterService
 import com.awareframework.encounter.ui.AccountFragment
-import com.awareframework.encounter.ui.ContactFragment
+import com.awareframework.encounter.ui.InfoFragment
 import com.awareframework.encounter.ui.EncountersFragment
 import com.awareframework.encounter.ui.StatsFragment
 import com.firebase.ui.auth.AuthUI
 import com.google.android.gms.nearby.Nearby
 import com.google.android.gms.nearby.messages.*
-import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_main.*
-import org.jetbrains.anko.defaultSharedPreferences
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.imageBitmap
 import org.jetbrains.anko.uiThread
@@ -65,6 +61,8 @@ class EncounterHome : AppCompatActivity() {
 
         lateinit var messageListener: MessageListener
     }
+
+    private var timer : Timer? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -149,13 +147,15 @@ class EncounterHome : AppCompatActivity() {
             db.close()
         }
 
-        val timer = Timer()
-        timer.scheduleAtFixedRate(object : TimerTask() {
-            override fun run() {
-                println("Publishing encounter UUID...")
-                publish()
-            }
-        }, 0, 60*1000)
+        if (timer == null) {
+            timer = Timer()
+            timer?.scheduleAtFixedRate(object : TimerTask() {
+                override fun run() {
+                    println("Publishing encounter UUID...")
+                    publish()
+                }
+            }, 0, 60*1000)
+        }
 
         startService(Intent(applicationContext, EncounterService::class.java))
 
@@ -199,9 +199,9 @@ class EncounterHome : AppCompatActivity() {
                     .replace(R.id.tab_view_container, AccountFragment()).commit()
                 true
             }
-            R.id.team -> {
+            R.id.encounter_info -> {
                 viewManager.beginTransaction()
-                    .replace(R.id.tab_view_container, ContactFragment()).commit()
+                    .replace(R.id.tab_view_container, InfoFragment()).commit()
                 true
             }
             else -> super.onOptionsItemSelected(item)

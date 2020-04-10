@@ -67,6 +67,7 @@
         </provider>
 
         <service android:name="com.awareframework.encounter.services.EncounterService" />
+        <service android:name=".services.DataExportService" />
 
     </application>
 

@@ -21,4 +21,7 @@ interface EncounterDao {
 
     @Query("SELECT * FROM encounters WHERE timestamp between :start and :end")
     fun getWindow(start: Long, end: Long) : Array<Encounter>
+
+    @Query("SELECT * FROM encounters")
+    fun getAll() : Array<Encounter>
 }

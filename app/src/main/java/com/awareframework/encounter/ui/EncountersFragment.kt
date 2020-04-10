@@ -1,6 +1,5 @@
 package com.awareframework.encounter.ui
 
-import android.graphics.Color
 import android.os.Bundle
 import android.text.format.DateFormat
 import android.view.LayoutInflater

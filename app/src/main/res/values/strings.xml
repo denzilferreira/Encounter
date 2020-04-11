@@ -1,10 +1,10 @@
 <resources>
     <string name="app_name">Encounter</string>
     <string name="app_running">Encounter is active! Let\'s fight this thing.</string>
-    <string name="user_photo">Your photo</string>
     <string name="latest_stats">Stats</string>
     <string name="encounters">Encounters</string>
-    <string name="greeting">Hi %s</string>
+    <string name="greeting">Hello there</string>
+    <string name="encounter_brief">Encounter allows you to anonymously help health officials do pandemic tracking and cutting the chain of transmission.</string>
     <string name="confirmed">Confirmed</string>
     <string name="deaths">Deaths</string>
     <string name="recovered">Recovered</string>
@@ -29,7 +29,7 @@
     <string name="friday">Fri</string>
     <string name="saturday">Sat</string>
     <string name="sunday">Sun</string>
-    <string name="uuid_sharing_instructions">This UUID (Universal Unique ID) was randomly created when you first ran Encounter. Touch the UUID to copy it so that you can use it for any other app.</string>
+    <string name="uuid_sharing_instructions">This UUID (Universal Unique ID) was randomly created when you first ran Encounter. Touch the UUID to copy it so that you can share it if needed.</string>
     <string name="uuid_toast">UUID copied</string>
     <string name="share_data">Share my data</string>
     <string name="sign_out">Sign out</string>
@@ -40,10 +40,4 @@
     <string name="uuid_placeholder" translatable="false">%s</string>
     <string name="encounter_dates" translatable="false">%s - %s</string>
     <string name="count_number" translatable="false">%d</string>
-
-    <!-- Allow passwordless social media login -->
-    <string name="facebook_application_id" translatable="false">244589726704648</string>
-    <string name="facebook_login_protocol_scheme" translatable="false">fb244589726704648</string>
-    <string name="com.twitter.sdk.android.CONSUMER_KEY" translatable="false">0o7y6OO2gYSihUj4lHXX0rMwv</string>
-    <string name="com.twitter.sdk.android.CONSUMER_SECRET" translatable="false">4zhhyxzr0Os6ezzKQ6y46ybLrAhTn2bPQuJ6lJ9KpcTcCBYpLG</string>
 </resources>

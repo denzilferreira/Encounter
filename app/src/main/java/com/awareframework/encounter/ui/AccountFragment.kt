@@ -4,7 +4,6 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
-import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -25,10 +24,8 @@ import org.jetbrains.anko.uiThread
 class AccountFragment : Fragment() {
 
     companion object {
-        val ACTION_EXPORT_COMPLETE = "ACTION_EXPORT_COMPLETE"
-        val EXTRA_DATA_URI = "EXTRA_DATA_URI"
-        lateinit var progress : ProgressBar
-        lateinit var wait : TextView
+        lateinit var progress: ProgressBar
+        lateinit var wait: TextView
     }
 
     override fun onCreateView(
@@ -46,9 +43,6 @@ class AccountFragment : Fragment() {
 
         progress = find(R.id.export_progress)
         wait = find(R.id.export_wait)
-
-        val filter = IntentFilter(ACTION_EXPORT_COMPLETE)
-        context?.registerReceiver(exportCompleteListener, filter)
 
         export_progress.visibility = View.INVISIBLE
         export_wait.visibility = View.INVISIBLE
@@ -80,30 +74,6 @@ class AccountFragment : Fragment() {
             progress.visibility = View.VISIBLE
             wait.visibility = View.VISIBLE
             context?.startService(Intent(context, DataExportService::class.java))
-        }
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        context?.unregisterReceiver(exportCompleteListener)
-    }
-
-    private val exportCompleteListener = ExportCompleteListener()
-
-    class ExportCompleteListener : BroadcastReceiver() {
-        override fun onReceive(context: Context?, intent: Intent?) {
-            if (intent?.action.equals(ACTION_EXPORT_COMPLETE)) {
-                val dataUri = intent?.extras?.get(EXTRA_DATA_URI) as Uri
-                progress.visibility = View.INVISIBLE
-                wait.visibility = View.INVISIBLE
-
-                val share = Intent.createChooser(Intent().apply {
-                    action = Intent.ACTION_SEND
-                    putExtra(Intent.EXTRA_STREAM, dataUri)
-                    type = "text/json"
-                }, "Share your data export with")
-                context?.startActivity(share)
-            }
         }
     }
 }

@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "a4cbe2eeb59f0a3952f11c1bae6aeda0",
+    "identityHash": "15baa90474d42288a2ff58caee4f40c2",
     "entities": [
       {
         "tableName": "user",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`uid` INTEGER PRIMARY KEY AUTOINCREMENT, `uuid` TEXT NOT NULL, `timestamp` INTEGER NOT NULL, `name` TEXT NOT NULL, `contact` TEXT NOT NULL, `photo` BLOB)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`uid` INTEGER PRIMARY KEY AUTOINCREMENT, `uuid` TEXT NOT NULL, `timestamp` INTEGER NOT NULL)",
         "fields": [
           {
             "fieldPath": "uid",
@@ -25,24 +25,6 @@
             "columnName": "timestamp",
             "affinity": "INTEGER",
             "notNull": true
-          },
-          {
-            "fieldPath": "name",
-            "columnName": "name",
-            "affinity": "TEXT",
-            "notNull": true
-          },
-          {
-            "fieldPath": "contact",
-            "columnName": "contact",
-            "affinity": "TEXT",
-            "notNull": true
-          },
-          {
-            "fieldPath": "photo",
-            "columnName": "photo",
-            "affinity": "BLOB",
-            "notNull": false
           }
         ],
         "primaryKey": {
@@ -146,7 +128,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'a4cbe2eeb59f0a3952f11c1bae6aeda0')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '15baa90474d42288a2ff58caee4f40c2')"
     ]
   }
 }

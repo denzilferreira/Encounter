@@ -9,8 +9,6 @@ import android.bluetooth.BluetoothAdapter
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.os.Build
 import android.os.Bundle
 import android.os.PowerManager
@@ -29,25 +27,19 @@ import com.awareframework.encounter.database.EncounterDatabase
 import com.awareframework.encounter.database.User
 import com.awareframework.encounter.services.EncounterService
 import com.awareframework.encounter.ui.AccountFragment
-import com.awareframework.encounter.ui.InfoFragment
 import com.awareframework.encounter.ui.EncountersFragment
+import com.awareframework.encounter.ui.InfoFragment
 import com.awareframework.encounter.ui.StatsFragment
-import com.firebase.ui.auth.AuthUI
 import com.google.android.gms.nearby.Nearby
 import com.google.android.gms.nearby.messages.*
-import com.google.firebase.auth.FirebaseAuth
-import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_main.*
 import org.jetbrains.anko.doAsync
-import org.jetbrains.anko.imageBitmap
 import org.jetbrains.anko.uiThread
-import java.io.ByteArrayOutputStream
 import java.util.*
 import kotlin.collections.ArrayList
 
 class EncounterHome : AppCompatActivity() {
 
-    private val RC_SIGN_IN = 12345
     private val PERMISSIONS_ENCOUNTER = 1212
 
     companion object {
@@ -57,12 +49,10 @@ class EncounterHome : AppCompatActivity() {
         val ENCOUNTER_BATTERY = 1113
 
         lateinit var viewManager: FragmentManager
-        lateinit var user: User
-
         lateinit var messageListener: MessageListener
     }
 
-    private var timer : Timer? = null
+    private var timer: Timer? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -78,22 +68,6 @@ class EncounterHome : AppCompatActivity() {
             supportFragmentManager.beginTransaction()
                 .replace(R.id.tab_view_container, StatsFragment())
                 .commit()
-        }
-
-        user_photo.setOnClickListener {
-            val message = Message(user.uuid.toByteArray())
-            Nearby.getMessagesClient(this@EncounterHome)
-                .publish(
-                    message,
-                    PublishOptions.Builder()
-                        .setStrategy(
-                            Strategy.Builder()
-                                .setTtlSeconds(Strategy.TTL_SECONDS_DEFAULT)
-                                .setDistanceType(Strategy.DISTANCE_TYPE_DEFAULT)
-                                .build()
-                        )
-                        .build()
-                )
         }
 
         bottom_nav.setOnNavigationItemSelectedListener { menuItem ->
@@ -120,29 +94,13 @@ class EncounterHome : AppCompatActivity() {
                 )
                     .build()
             val users = db.UserDao().getUser()
-            if (users.isNotEmpty()) {
-                user = users.first()
-                uiThread {
-                    user_photo.imageBitmap =
-                        BitmapFactory.decodeByteArray(user.photo, 0, user.photo?.size!!)
-                    user_name.text = getString(R.string.greeting).format(user.name)
-                }
-            } else {
-                val providers = arrayListOf(
-                    AuthUI.IdpConfig.GoogleBuilder().build(),
-                    AuthUI.IdpConfig.FacebookBuilder().build(),
-                    AuthUI.IdpConfig.TwitterBuilder().build(),
-                    AuthUI.IdpConfig.EmailBuilder().build()
+            if (users.isEmpty()) {
+                val userDB = User(
+                    null,
+                    UUID.randomUUID().toString(),
+                    System.currentTimeMillis()
                 )
-                startActivityForResult(
-                    AuthUI.getInstance().createSignInIntentBuilder()
-                        .setAvailableProviders(providers)
-                        .setIsSmartLockEnabled(true)
-                        .setLogo(R.mipmap.ic_launcher_round)
-                        .setTheme(R.style.AppTheme)
-                        .build(),
-                    RC_SIGN_IN
-                )
+                db.UserDao().insert(userDB)
             }
             db.close()
         }
@@ -154,7 +112,7 @@ class EncounterHome : AppCompatActivity() {
                     println("Publishing encounter UUID...")
                     publish()
                 }
-            }, 0, 60*1000)
+            }, 0, 60 * 1000)
         }
 
         startService(Intent(applicationContext, EncounterService::class.java))
@@ -193,7 +151,7 @@ class EncounterHome : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when(item.itemId) {
+        return when (item.itemId) {
             R.id.account -> {
                 viewManager.beginTransaction()
                     .replace(R.id.tab_view_container, AccountFragment()).commit()
@@ -214,12 +172,18 @@ class EncounterHome : AppCompatActivity() {
         checkBluetooth()
         checkDoze()
 
-        Nearby.getMessagesClient(this@EncounterHome, MessagesOptions.Builder().setPermissions(NearbyPermissions.DEFAULT).build()).subscribe(messageListener)
+        Nearby.getMessagesClient(
+            this@EncounterHome,
+            MessagesOptions.Builder().setPermissions(NearbyPermissions.DEFAULT).build()
+        ).subscribe(messageListener)
     }
 
     override fun onStop() {
         super.onStop()
-        Nearby.getMessagesClient(this@EncounterHome, MessagesOptions.Builder().setPermissions(NearbyPermissions.DEFAULT).build()).unsubscribe(messageListener)
+        Nearby.getMessagesClient(
+            this@EncounterHome,
+            MessagesOptions.Builder().setPermissions(NearbyPermissions.DEFAULT).build()
+        ).unsubscribe(messageListener)
     }
 
     fun publish() {
@@ -411,53 +375,16 @@ class EncounterHome : AppCompatActivity() {
                 notificationManager.notify(ENCOUNTER_BLUETOOTH, builder.build())
             }
         }
-
-        if (requestCode == RC_SIGN_IN) {
-            if (resultCode == Activity.RESULT_OK) {
-
-                val user = FirebaseAuth.getInstance().currentUser
-
-                doAsync {
-
-                    val photoBitmap = Picasso.get().load(user?.photoUrl).get()
-                    uiThread {
-                        user_photo.imageBitmap = photoBitmap
-                        user_name.text = getString(R.string.greeting).format(user?.displayName)
-                    }
-
-                    val db = Room.databaseBuilder(
-                        applicationContext,
-                        EncounterDatabase::class.java,
-                        "encounters"
-                    ).build()
-
-                    val blobStream = ByteArrayOutputStream()
-                    photoBitmap.compress(Bitmap.CompressFormat.PNG, 100, blobStream)
-
-                    val userDB = User(
-                        null,
-                        UUID.randomUUID().toString(),
-                        System.currentTimeMillis(),
-                        user?.displayName!!,
-                        user.toString(),
-                        blobStream.toByteArray()
-                    )
-                    blobStream.close()
-
-                    db.UserDao().insert(userDB)
-                    db.close()
-                }
-
-                checkPermissions()
-                checkBluetooth()
-                checkDoze()
-            }
-        }
     }
 
     override fun onDestroy() {
         super.onDestroy()
         //Start app again so that we can continue broadcasting UUID
-        startActivity(Intent(applicationContext, EncounterHome::class.java).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP))
+        startActivity(
+            Intent(
+                applicationContext,
+                EncounterHome::class.java
+            ).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP)
+        )
     }
 }

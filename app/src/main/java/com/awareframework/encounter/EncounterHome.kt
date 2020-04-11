@@ -26,7 +26,7 @@ import com.awareframework.encounter.database.Encounter
 import com.awareframework.encounter.database.EncounterDatabase
 import com.awareframework.encounter.database.User
 import com.awareframework.encounter.services.EncounterService
-import com.awareframework.encounter.ui.AccountFragment
+import com.awareframework.encounter.ui.SharingFragment
 import com.awareframework.encounter.ui.EncountersFragment
 import com.awareframework.encounter.ui.InfoFragment
 import com.awareframework.encounter.ui.StatsFragment
@@ -44,15 +44,12 @@ class EncounterHome : AppCompatActivity() {
 
     companion object {
         val VIEW_ENCOUNTERS = "VIEW_ENCOUNTERS"
-
         val ENCOUNTER_BLUETOOTH = 1112
         val ENCOUNTER_BATTERY = 1113
-
         lateinit var viewManager: FragmentManager
         lateinit var messageListener: MessageListener
+        val timer: Timer = Timer()
     }
-
-    private var timer: Timer? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -97,7 +94,7 @@ class EncounterHome : AppCompatActivity() {
             if (users.isEmpty()) {
                 val userDB = User(
                     null,
-                    UUID.randomUUID().toString(),
+                    UUID.randomUUID().toString(), //assign a random UUID to this device
                     System.currentTimeMillis()
                 )
                 db.UserDao().insert(userDB)
@@ -105,15 +102,13 @@ class EncounterHome : AppCompatActivity() {
             db.close()
         }
 
-        if (timer == null) {
-            timer = Timer()
-            timer?.scheduleAtFixedRate(object : TimerTask() {
-                override fun run() {
-                    println("Publishing encounter UUID...")
-                    publish()
-                }
-            }, 0, 60 * 1000)
-        }
+        timer.purge()
+        timer.scheduleAtFixedRate(object : TimerTask() {
+            override fun run() {
+                println("Publishing encounter UUID...")
+                publish()
+            }
+        }, 0, 60 * 1000)
 
         startService(Intent(applicationContext, EncounterService::class.java))
 
@@ -152,9 +147,9 @@ class EncounterHome : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
-            R.id.account -> {
+            R.id.share -> {
                 viewManager.beginTransaction()
-                    .replace(R.id.tab_view_container, AccountFragment()).commit()
+                    .replace(R.id.tab_view_container, SharingFragment()).commit()
                 true
             }
             R.id.encounter_info -> {

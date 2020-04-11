@@ -24,4 +24,7 @@ interface EncounterDao {
 
     @Query("SELECT * FROM encounters")
     fun getAll() : Array<Encounter>
+
+    @Query("DELETE FROM encounters")
+    fun clear()
 }

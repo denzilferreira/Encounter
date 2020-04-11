@@ -8,19 +8,19 @@
     <string name="confirmed">Confirmed</string>
     <string name="deaths">Deaths</string>
     <string name="recovered">Recovered</string>
-    <string name="inspired_by">Plot as described by https://www.youtube.com/watch?v=54XLXg4fYsc, updated always with the latest official numbers as reported by Johns Hopkins.</string>
+    <string name="inspired_by">Plot as described by https://www.youtube.com/watch?v=54XLXg4fYsc, updated always with the latest official numbers as reported by Johns Hopkins\' JHU CSSE.</string>
     <string name="country_trajectory">Trajectory of confirmed cases</string>
     <string name="total_confirmed_cases">Total confirmed cases</string>
     <string name="weekly_confirmed">New confirmed cases (weekly)</string>
     <string name="data_updated">Data is up-to-date</string>
     <string name="encounters_today">encounters today</string>
-    <string name="google_nearby_brief">Using Google\'s Nearby APIs, we enable anonymous detection of surrounding people that also have this app installed using Bluetooth, WiFi and ultrasound audio - please keep Bluetooth, Location and WiFi ON for the best accuracy. Thanks for keeping the encounters number low every day!</string>
-    <string name="enable_location">Without Location enabled, Bluetooth scanning does not work. We do not log your location! Tap here to enable it.</string>
+    <string name="google_nearby_brief">Using Google\'s Nearby APIs, we enable anonymous detection of devices that also have this app installed using Bluetooth, WiFi and ultrasound audio - please keep Bluetooth ON for the best accuracy. Thanks for keeping the encounters number low every day!</string>
     <string name="enable_bluetooth">Without Bluetooth enabled, nearby devices are not detected. Tap here to enable it.</string>
     <string name="enable_doze">Tap here to add Encounter to the list of ignored applications (whitelisted) on the battery manager. This will ensure we can keep the application running.</string>
     <string name="encounter_detected">Found %s</string>
     <string name="unique_encounters">Unique encounters</string>
-    <string name="encounter_account">Account</string>
+    <string name="encounter_share">Share</string>
+    <string name="your_encounter_uuid">Your Encounter UUID</string>
     <string name="encounter_info">Information</string>
     <string name="monday">Mon</string>
     <string name="tuesday">Tue</string>
@@ -29,12 +29,18 @@
     <string name="friday">Fri</string>
     <string name="saturday">Sat</string>
     <string name="sunday">Sun</string>
-    <string name="uuid_sharing_instructions">This UUID (Universal Unique ID) was randomly created when you first ran Encounter. Touch the UUID to copy it so that you can share it if needed.</string>
+    <string name="uuid_sharing_instructions">This UUID (Universal Unique ID) was randomly created when you first ran Encounter. Touch the UUID to copy it so that you can share it.</string>
     <string name="uuid_toast">UUID copied</string>
     <string name="share_data">Share my data</string>
-    <string name="sign_out">Sign out</string>
-    <string name="gdpr_sharing">When you press the share button, your data is packaged and compressed allowing you to share it. Following GDPR guidelines, you are in control over who has access to your data.\n\n The data is described here in more detail: \nhttps://encounter.awareframework.com/home/data-format</string>
+    <string name="delete_data">Delete my data</string>
+    <string name="delete_confirm">Are you sure you want to delete all your encounters\' data? This will also randomize your Encounters UUID.</string>
+    <string name="delete_complete">Encounters data cleared successfully!</string>
+    <string name="yes">Yes</string>
+    <string name="cancel">Cancel</string>
+    <string name="gdpr_sharing">When you press the share button, your data is converted to a JSON file, allowing you to share it. Following GDPR guidelines, you are in control over who has access to your data.\n\nThe data is described here in more detail: \nhttps://encounter.awareframework.com/home/data-format</string>
     <string name="exporting_wait">Exporting data, please wait…</string>
+    <string name="next_week">Next week</string>
+    <string name="previous_week">Previous week</string>
 
     <!-- Placeholders for dynamic content -->
     <string name="uuid_placeholder" translatable="false">%s</string>

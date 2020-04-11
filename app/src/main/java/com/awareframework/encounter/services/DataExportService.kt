@@ -4,16 +4,11 @@ import android.app.IntentService
 import android.content.Intent
 import androidx.core.content.FileProvider
 import androidx.room.Room
-import com.awareframework.encounter.EncounterHome
 import com.awareframework.encounter.database.EncounterDatabase
-import com.awareframework.encounter.ui.AccountFragment
 import com.google.gson.Gson
-import com.google.gson.JsonObject
 import org.json.JSONArray
 import org.json.JSONObject
 import java.io.File
-import java.io.FileInputStream
-import java.io.FileOutputStream
 import java.text.SimpleDateFormat
 import java.util.*
 

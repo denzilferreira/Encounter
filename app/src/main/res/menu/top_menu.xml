@@ -3,9 +3,9 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/account"
-        android:icon="@drawable/ic_action_account"
-        android:title="@string/encounter_account"
+        android:id="@+id/share"
+        android:icon="@drawable/ic_action_share"
+        android:title="@string/encounter_share"
         app:showAsAction="always" />
     <item
         android:id="@+id/encounter_info"

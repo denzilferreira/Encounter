@@ -17,4 +17,8 @@ interface UserDao {
 
     @Query("SELECT * FROM user ORDER BY timestamp DESC LIMIT 1")
     fun getUser(): Array<User>
+
+    @Transaction
+    @Update
+    fun update(user: User)
 }

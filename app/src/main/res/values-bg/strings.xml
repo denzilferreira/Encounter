@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Encounter</string>
+    <string name="app_running">Енкаунтър е активен! Нека се преборим с това нещо.</string>
+    <string name="latest_stats">Статистика</string>
+    <string name="encounters">Срещи</string>
+    <string name="greeting">Здравей</string>
+    <string name="encounter_brief">Енкаунтър (Encounter) ви позволява анонимно да помогнете на здравните служители да проследяват пандемията и да прекъсват веригата на предаване на вируса.</string>
+    <string name="confirmed">Потвърдени</string>
+    <string name="deaths">Смъртни случаи</string>
+    <string name="recovered">Излекувани</string>
+    <string name="inspired_by">Графика както е описано от https://www.youtube.com/watch?v=54XLXg4fYsc, актуализирана винаги с най-новите официални данни, както се съобщава от центъра за системни науки и инженерство към университета Джон Хопкинс (Johns Hopkins\' CSSE).</string>
+    <string name="country_trajectory">Траектория на потвърдените случаи</string>
+    <string name="total_confirmed_cases">Общо потвърдени случаи</string>
+    <string name="weekly_confirmed">Нови потвърдени случаи (седмично)</string>
+    <string name="data_updated">Данните са актуални</string>
+    <string name="encounters_today">Срещи днес</string>
+    <string name="google_nearby_brief">Използвайки Google\'s Nearby APIs, ние даваме възможност за анонимно откриване на устройства, които също имат инсталирано това приложение, с помощта and Bluetooth, WiFi и ултразвуково аудио - моля, дръжте Bluetooth АКТИВИРАН за най-добра точност. Благодарим, че поддържате броя на срещите нисък всеки ден!</string>
+    <string name="enable_bluetooth">Без активиран Bluetooth близките устройства не се засичат. Натиснете тук, за да го активирате.</string>
+    <string name="enable_doze">Докоснете тук, за да добавите Енкаунтър към списъка с игнорирани приложения (одобрени) от мениджъра на батерията. Това ще гарантира, че можем да поддържаме приложението работещо.</string>
+    <string name="encounter_detected">Намерени %s</string>
+    <string name="unique_encounters">Уникални срещи</string>
+    <string name="encounter_share">Сподели</string>
+    <string name="your_encounter_uuid">Твоят Енкаунтър UUID</string>
+    <string name="encounter_info">Информация</string>
+    <string name="monday">Пон</string>
+    <string name="tuesday">Вт</string>
+    <string name="wednesday">Ср</string>
+    <string name="thursday">Четв</string>
+    <string name="friday">Пет</string>
+    <string name="saturday">Съб</string>
+    <string name="sunday">Нед</string>
+    <string name="uuid_sharing_instructions">Този UUID (Universal Unique ID) беше създаден на случаен принцип, когато за първи път стартирахте Енкаунтър. Докоснете UUID, за да го копирате, за да можете да го споделите.</string>
+    <string name="uuid_toast">UUID копирано</string>
+    <string name="share_data">Споделете моите данни</string>
+    <string name="delete_data">Изтриване на моите данни</string>
+    <string name="delete_confirm">Сигурни ли сте, че искате да изтриете всичките си данни от Енкаунтър? Това също ще рандомизира вашето Енкаунтър UUID.</string>
+    <string name="delete_complete">Данните в Енкаунтър са изтрити успешно!</string>
+    <string name="yes">Потвърди</string>
+    <string name="cancel">Откажи</string>
+    <string name="gdpr_sharing">Когато натиснете бутона за споделяне, вашите данни се преобразуват във файл JSON, което ви позволява да ги споделяте. Следвайки указанията на GDPR, вие контролирате кой има достъп до вашите данни.\n\nДанните са описани тук по-подробно: \nhttps://encounter.awareframework.com/home/data-format</string>
+    <string name="exporting_wait">Експортиране на данни, моля изчакайте …</string>
+    <string name="next_week">Следваща седмица</string>
+    <string name="previous_week">Предишна седмица</string>
+</resources>

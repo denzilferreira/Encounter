@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Encounter</string>
+    <string name="app_running">انکاؤنٹر فعال ہے! آئیے اس چیز کا مقابلہ کریں۔</string>
+    <string name="latest_stats">اعدادوشمار</string>
+    <string name="encounters">مقابلے</string>
+    <string name="greeting">خوش آمدید</string>
+    <string name="encounter_brief">انکاؤنٹر سے آپ صحت سے متعلق عہدیداروں کو وبائی بیماری سے باخبر رہنے اور ٹرانسمیشن کی زنجیر کاٹنے میں گمنامی میں رہتے مدد کرسکتے ہیں۔</string>
+    <string name="confirmed">تصدیق ہوگئی</string>
+    <string name="deaths">اموات</string>
+    <string name="recovered">صحت کی بحالی</string>
+    <string name="inspired_by">جیسا کہ بیان کیا گیا پلاٹ https://www.youtube.com/watch?v=54XLXg4fYsc, جان آف ہاپکنز کے مطابق تازہ ترین سرکاری نمبروں کے ساتھ ہمیشہ تازہ کاری کی جاتی ہے</string>
+    <string name="country_trajectory">تصدیق شدہ کیسزکی رفتار</string>
+    <string name="total_confirmed_cases">تصدیق شدہ کل کیسز</string>
+    <string name="weekly_confirmed">ٰنئے تصدیق شدہ کیس ہفتہ وار</string>
+    <string name="data_updated">ڈیٹا تازہ ترین ہے</string>
+    <string name="encounters_today">آج کے دن کیسز</string>
+    <string name="google_nearby_brief">گوگل کے قریبی اے پی آئی کا استعمال کرتے ہوئے ، ہم ان آلات کی شناخت نہیں کرتے ہیں جنہوں نے یہ ایپ بلوٹوتھ ، وائی فائی اور الٹراساؤنڈ آڈیو کا استعمال کرتے ہوئے انسٹال کیا ہے۔ براہ کرم بلوٹوتھ کو بہترین درستگی کے لیئے آن  رکھیں۔ ہر دن کیسز کی تعداد کم رکھنے کا شکریہ!</string>
+    <string name="enable_bluetooth">بلوٹوتھ فعال کیے بغیر ، قریبی آلات کا پتہ نہیں چل سکتا ہے۔ اسے فعال کرنے کے لئے یہاں ٹیپ کریں۔</string>
+    <string name="enable_doze">بیٹری منیجر پر نظر انداز کردہ ایپلی کیشنز (وائٹ لسٹڈ) کی فہرست میں انکاؤنٹر کو شامل کرنے کے لئے یہاں ٹیپ کریں۔ یہ یقینی بنائے گا کہ ہم ایپ کو چلاتے رہ سکتے ہیں۔</string>
+    <string name="encounter_detected">دستیاب %s</string>
+    <string name="unique_encounters">انفرادی کیسز</string>
+    <string name="encounter_share">شیئر کریں</string>
+    <string name="your_encounter_uuid">آپکا کیس نمبر UUID</string>
+    <string name="encounter_info">معلومات</string>
+    <string name="monday">سوموار</string>
+    <string name="tuesday">منگل</string>
+    <string name="wednesday">بدھ</string>
+    <string name="thursday">جمعرات</string>
+    <string name="friday">جمعہ</string>
+    <string name="saturday">ہفتہ</string>
+    <string name="sunday">اتوار</string>
+    <string name="uuid_sharing_instructions">جب آپ نے پہلی بار انکاؤنٹر چلایا تو یہ یو یو ای ڈی (یونیورسل یونیک آئی ڈی) تصادفی طور پر تشکیل دیا گیا تھا۔ یو آئی ڈی ایس کی کاپی کرنے کیلئے ٹچ کریں تاکہ آپ اس کا اشتراک کرسکیں۔</string>
+    <string name="uuid_toast">یو آئی ڈی کاپی کریں</string>
+    <string name="share_data">میرا ڈیٹا شیئر کریں</string>
+    <string name="delete_data">میرا ڈیٹا حذف کریں</string>
+    <string name="delete_confirm">کیا آپ واقعی اپنے تمام کیسز کا ڈیٹا حذف کرنا چاہتے ہیں؟ اس سے آپ کے کیسز کا یو یو ڈی بھی بے ترتیب ہوجائے گا۔</string>
+    <string name="delete_complete">کاؤنٹرز کا ڈیٹا کامیابی کے ساتھ حذف ہوگیا!</string>
+    <string name="yes">ہاں</string>
+    <string name="cancel">منسوخ کریں</string>
+    <string name="gdpr_sharing">جب آپ شیئر کا بٹن دبائیں تو ، آپ کا ڈیٹا جیسن فائل میں تبدیل ہوجاتا ہے ، آپ کو اس کا اشتراک کرنے کی اجازت دیتا ہے۔ جی ڈی پی آر کے رہنما خطوط کے بعد ، آپ اس پر قابو پالیں گے کہ آپ کے ڈیٹا تک کس کی رسائی ہے۔ \ n \n اعداد و شمار کو یہاں مزید تفصیل سے بیان کیا گیا ہے: \nhttps://encounter.awareframework.com/data</string>
+    <string name="exporting_wait">ڈیٹا برآمد ہو رہا ہے ، براہ کرم انتظار کریں…</string>
+    <string name="next_week">آئندہ ہفتہ</string>
+    <string name="previous_week">گزشتہ ہفتہ</string>
+</resources>

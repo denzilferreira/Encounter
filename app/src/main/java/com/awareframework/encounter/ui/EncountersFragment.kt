@@ -45,21 +45,47 @@ class EncountersFragment : Fragment() {
 
         if (!::startDate.isInitialized) {
             val startCalendar = Calendar.getInstance()
-            startCalendar.add(Calendar.DATE, -7)
+            //what day of the week is this today?
+            val dayOfWeek = startCalendar.get(Calendar.DAY_OF_WEEK)
+            //adjust to start of the week (Monday -> Sunday)
+            when(dayOfWeek) {
+                1 -> startCalendar.add(Calendar.DATE, -6) //Sunday
+                2 -> startCalendar.add(Calendar.DATE, 0) //monday
+                3 -> startCalendar.add(Calendar.DATE, -1) //tuesday
+                4 -> startCalendar.add(Calendar.DATE, -2)
+                5 -> startCalendar.add(Calendar.DATE, -3)
+                6 -> startCalendar.add(Calendar.DATE, -4)
+                7 -> startCalendar.add(Calendar.DATE, -5)
+            }
             startDate = startCalendar.time
         }
         if (!::endDate.isInitialized) {
             val endCalendar = Calendar.getInstance()
+            //what day of the week is this today?
+            val dayOfWeek = endCalendar.get(Calendar.DAY_OF_WEEK)
+            //adjust to end of the week (Monday -> Sunday)
+            when(dayOfWeek) {
+                1 -> endCalendar.add(Calendar.DATE, 0) //Sunday
+                2 -> endCalendar.add(Calendar.DATE, +6) //monday
+                3 -> endCalendar.add(Calendar.DATE, +5) //tuesday
+                4 -> endCalendar.add(Calendar.DATE, +4)
+                5 -> endCalendar.add(Calendar.DATE, +3)
+                6 -> endCalendar.add(Calendar.DATE, +2)
+                7 -> endCalendar.add(Calendar.DATE, +1)
+            }
             endDate = endCalendar.time
         }
 
         encounter_previous.setOnClickListener {
-            endDate = startDate
+            val newStart = Calendar.getInstance()
+            newStart.time = startDate
+            newStart.add(Calendar.DATE, -7)
+            startDate = newStart.time
 
-            val startCalendar = Calendar.getInstance()
-            startCalendar.time = startDate
-            startCalendar.add(Calendar.DATE, -7)
-            startDate = startCalendar.time
+            val newEnd = Calendar.getInstance()
+            newEnd.time = endDate
+            newEnd.add(Calendar.DATE, -7)
+            endDate = newEnd.time
 
             encounter_dates.text = getString(R.string.encounter_dates).format(
                 DateFormat.getMediumDateFormat(context).format(startDate),
@@ -77,12 +103,15 @@ class EncountersFragment : Fragment() {
         }
 
         encounter_next.setOnClickListener {
-            startDate = endDate
+            val newStart = Calendar.getInstance()
+            newStart.time = endDate
+            newStart.add(Calendar.DATE, +1)
+            startDate = newStart.time
 
-            val endCalendar = Calendar.getInstance()
-            endCalendar.time = startDate
-            endCalendar.add(Calendar.DATE, +7)
-            endDate = endCalendar.time
+            val newEnd = Calendar.getInstance()
+            newEnd.time = startDate
+            newEnd.add(Calendar.DATE, +6)
+            endDate = newEnd.time
 
             encounter_dates.text = getString(R.string.encounter_dates).format(
                 DateFormat.getMediumDateFormat(context).format(startDate),
@@ -180,13 +209,13 @@ class EncountersFragment : Fragment() {
             encounters_chart.xAxis.valueFormatter = object : ValueFormatter() {
                 override fun getFormattedValue(value: Float): String {
                     return when(value) {
-                        1f -> getString(R.string.sunday)
-                        2f -> getString(R.string.monday)
-                        3f -> getString(R.string.tuesday)
-                        4f -> getString(R.string.wednesday)
-                        5f -> getString(R.string.thursday)
-                        6f -> getString(R.string.friday)
-                        7f -> getString(R.string.saturday)
+                        1f -> getString(R.string.monday)
+                        2f -> getString(R.string.tuesday)
+                        3f -> getString(R.string.wednesday)
+                        4f -> getString(R.string.thursday)
+                        5f -> getString(R.string.friday)
+                        6f -> getString(R.string.saturday)
+                        7f -> getString(R.string.sunday)
                         else -> super.getFormattedValue(value)
                     }
                 }

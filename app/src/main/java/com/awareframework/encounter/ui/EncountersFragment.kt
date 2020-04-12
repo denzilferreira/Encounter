@@ -187,8 +187,20 @@ class EncountersFragment : Fragment() {
         for (encounter in encounters) {
             val cal = Calendar.getInstance()
             cal.timeInMillis = encounter.timestamp
-            if (!weeklyDistribution.get(cal.get(Calendar.DAY_OF_WEEK))?.contains(encounter.uuid_detected)!!) {
-                (weeklyDistribution.get(cal.get(Calendar.DAY_OF_WEEK)) as ArrayList<String>).add(encounter.uuid_detected)
+
+            val weekDayIndex = when(cal.get(Calendar.DAY_OF_WEEK)) {
+                1 -> 7 //Sunday
+                2 -> 1 //monday
+                3 -> 2 //tuesday
+                4 -> 3
+                5 -> 4
+                6 -> 5
+                7 -> 6
+                else -> 0
+            }
+
+            if (!weeklyDistribution.get(weekDayIndex)?.contains(encounter.uuid_detected)!!) {
+                (weeklyDistribution.get(weekDayIndex) as ArrayList<String>).add(encounter.uuid_detected)
             }
         }
 

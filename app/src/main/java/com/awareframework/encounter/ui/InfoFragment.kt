@@ -19,7 +19,7 @@ class InfoFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        encounter_webview.loadUrl("https://encounter.awareframework.com/home/research")
-        encounter_webview.settings.javaScriptEnabled = true
+        encounter_webview.loadUrl("https://encounter.awareframework.com/research")
+        encounter_webview.settings.javaScriptEnabled = false
     }
 }

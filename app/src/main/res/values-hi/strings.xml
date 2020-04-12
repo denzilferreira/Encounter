@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Encounter</string>
+    <string name="app_running">एनकाउंटर सक्रिय है। चलो इस वायरस से लड़ते हैं।</string>
+    <string name="latest_stats">आँकड़े</string>
+    <string name="encounters">आकस्मिक भेंट</string>
+    <string name="greeting">नमस्ते!</string>
+    <string name="encounter_brief">एनकाउंटर आपको स्वास्थ्य अधिकारियों को महामारी पर नज़र रखने और ट्रांसमिशन की श्रृंखला को काटने में मदद करता है</string>
+    <string name="confirmed">पुष्टीकृत</string>
+    <string name="deaths">मृत्यु</string>
+    <string name="recovered">स्वस्थ हुए </string>
+    <string name="inspired_by">प्लॉट जैसा कि https://www.youtube.com/watch?v=54XLXg4fYsc द्वारा वर्णित है, जॉन्स हॉपकिंस के JHU CSSE द्वारा बताए गए नवीनतम आधिकारिक नंबरों के साथ हमेशा अपडेट किया जाता है।</string>
+    <string name="country_trajectory">पुष्ट मामलों के  प्रक्षेप पथ</string>
+    <string name="total_confirmed_cases">कुल पुष्ट मामले </string>
+    <string name="weekly_confirmed">नए पुष्ट मामले (साप्ताहिक)</string>
+    <string name="data_updated">डेटा अप-टू-डेट है</string>
+    <string name="encounters_today">आज के एनकाउंटर</string>
+    <string name="google_nearby_brief">Google के Nearby API का उपयोग करते हुए, हम उन उपकरणों का अनाम पता लगाते  हैं, जिनके पास ब्लूटूथ, वाईफाई और अल्ट्रासाउंड ऑडियो है - कृपया सर्वोत्तम परिणाम  के लिए ब्लूटूथ ऑन रखें। हर दिन एनकाउंटर की संख्या कम रखने के लिए धन्यवाद!</string>
+    <string name="enable_bluetooth">ब्लूटूथ सक्षम किए बिना, पास के उपकरणों का पता नहीं लगाया जाता है। इसे सक्षम करने के लिए यहां टैप करें।</string>
+    <string name="enable_doze">बैटरी मैनेजर पर नजरअंदाज किए गए एप्लिकेशन (श्वेतसूची) की सूची में एनकाउंटर जोड़ने के लिए यहां टैप करें। यह सुनिश्चित करेगा कि हम एप्लिकेशन को चालू रख सकते हैं।</string>
+    <string name="encounter_detected">Found %s</string>
+    <string name="unique_encounters">स्पष्ट एनकाउंटर</string>
+    <string name="encounter_share">शेयर करें </string>
+    <string name="your_encounter_uuid">आपका एनकाउंटर UUID</string>
+    <string name="encounter_info">जानकारी</string>
+    <string name="monday">सोमवार</string>
+    <string name="tuesday">मंगलवार</string>
+    <string name="wednesday">बुधवार</string>
+    <string name="thursday">गुरुवार</string>
+    <string name="friday">शुक्रवार</string>
+    <string name="saturday">शनिवार</string>
+    <string name="sunday">रविवार</string>
+    <string name="uuid_sharing_instructions">जब आपने पहली बार एनकाउंटर इस्तेमाल  किया था तब यह यूयूआईडी (यूनिवर्सल यूनिक आईडी) बनाई गई थी। इसे कॉपी करने के लिए UUID को स्पर्श करें ताकि आप इसे शेयर  कर सकें।</string>
+    <string name="uuid_toast">UUID कॉपी की गई</string>
+    <string name="share_data">मेरा डेटा शेयर करे </string>
+    <string name="delete_data">मेरा डेटा मिटा दें  </string>
+    <string name="delete_confirm">क्या आप वाकई अपने सभी एनकाउंटर  के डेटा को हटाना चाहते हैं? यह आपके एनकाउंटर UUID को भी मिटा देगा ।</string>
+    <string name="delete_complete">एनकाउंटर के डेटा अभी मिटा दिए गए हैं !</string>
+    <string name="yes">हाँ</string>
+    <string name="cancel">रद्द करें</string>
+    <string name="gdpr_sharing">जब आप शेयर बटन दबाते हैं, तो आपका डेटा JSON फ़ाइल में बदल जाता है, जिससे आप इसे शेयर  कर सकते हैं। GDPR दिशानिर्देशों का पालन करते हुए, आप नियंत्रण में हैं कि आपके डेटा तक किसकी पहुंच है। डेटा को और अधिक विस्तार से यहां वर्णित किया गया है: https://encounter.awareframework.com/data</string>
+    <string name="exporting_wait">डेटा तब्दील हो रहा है. कृपया प्रतीक्षा करें … </string>
+    <string name="next_week">अगले सप्ताह</string>
+    <string name="previous_week">पिछला सप्ताह</string>
+</resources>

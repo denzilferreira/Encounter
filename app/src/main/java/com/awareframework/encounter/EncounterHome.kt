@@ -375,11 +375,11 @@ class EncounterHome : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
         //Start app again so that we can continue broadcasting UUID
-        startActivity(
-            Intent(
-                applicationContext,
-                EncounterHome::class.java
-            ).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP)
-        )
+//        startActivity(
+//            Intent(
+//                applicationContext,
+//                EncounterHome::class.java
+//            ).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP)
+//        )
     }
 }

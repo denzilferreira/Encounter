@@ -7,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import android.widget.FrameLayout
 import androidx.fragment.app.Fragment
 import androidx.room.Room
 import com.awareframework.encounter.R
@@ -27,14 +26,7 @@ import kotlin.collections.ArrayList
 import kotlin.math.log10
 import kotlin.math.pow
 
-/**
- * A simple [Fragment] subclass.
- */
 class StatsFragment : Fragment() {
-
-    companion object {
-        lateinit var frameContainer: FrameLayout
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -45,12 +37,12 @@ class StatsFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        frameContainer = frame_stats
 
         defaultSharedPreferences.edit().putString("active", "stats").apply()
 
         doAsync {
-            val db = Room.databaseBuilder(context!!, EncounterDatabase::class.java, "encounters").build()
+            val db =
+                Room.databaseBuilder(context!!, EncounterDatabase::class.java, "encounters").build()
             val countries = db.StatsDao().getCountries()
             val countryAdapter = ArrayList<String>()
             for (country in countries) {
@@ -95,7 +87,11 @@ class StatsFragment : Fragment() {
                     defaultSharedPreferences.edit().putString("country", selectedCountry).apply()
 
                     doAsync {
-                        val encounterDatabase = Room.databaseBuilder(context!!, EncounterDatabase::class.java, "encounters").build()
+                        val encounterDatabase = Room.databaseBuilder(
+                            context!!,
+                            EncounterDatabase::class.java,
+                            "encounters"
+                        ).build()
                         val data = encounterDatabase.StatsDao().getCountryData(selectedCountry)
                         uiThread {
                             count_confirmed.text =
@@ -118,8 +114,8 @@ class StatsFragment : Fragment() {
 
                         val growth = ArrayList<Float>()
                         val confirmed = ArrayList<Float>()
-                        for(i in 8 until dataDayCount.size) {
-                            val weekGrowth = dataDayCount.get(i)-dataDayCount.get(i-7)
+                        for (i in 8 until dataDayCount.size) {
+                            val weekGrowth = dataDayCount.get(i) - dataDayCount.get(i - 7)
                             val weekConfirmed = dataDayCount.get(i)
                             growth.add(weekGrowth.toFloat())
                             confirmed.add(weekConfirmed.toFloat())
@@ -192,16 +188,18 @@ class StatsFragment : Fragment() {
                             spread_chart.axisLeft.axisMaximum = scaleCbr(1000000.toFloat())
                             spread_chart.axisLeft.isGranularityEnabled = true
                             spread_chart.axisLeft.setLabelCount(5, true)
+                            spread_chart.axisLeft.textColor = Color.GRAY
 
                             spread_chart.xAxis.axisMinimum = scaleCbr(10.toFloat())
                             spread_chart.xAxis.axisMaximum = scaleCbr(1000000.toFloat())
                             spread_chart.xAxis.isGranularityEnabled = true
                             spread_chart.xAxis.setLabelCount(5, true)
                             spread_chart.xAxis.position = XAxis.XAxisPosition.BOTTOM
+                            spread_chart.xAxis.textColor = Color.GRAY
 
                             spread_chart.description.isEnabled = false
                             spread_chart.setTouchEnabled(true)
-                            spread_chart.setDrawGridBackground(true)
+                            spread_chart.setDrawGridBackground(false)
                             spread_chart.isDragEnabled = true
                             spread_chart.setScaleEnabled(true)
                             spread_chart.setPinchZoom(true)

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Encounter</string>
+    <string name="app_running">.برخورد فعال است! بیایید مبارزه را شروع کنیم</string>
+    <string name="latest_stats">وضعیت</string>
+    <string name="encounters">برخوردها</string>
+    <string name="greeting">سلام</string>
+    <string name="encounter_brief">.برخورد به شما امکان می دهد تا به طور ناشناس به مقامات بهداشتی کمک کنید، تا ردیابی و قطع زنجیره انتقال این ویروس همه گیر را انجام دهند</string>
+    <string name="confirmed">تایید شده</string>
+    <string name="deaths">فوتی ها</string>
+    <string name="recovered">بهبود یافتگان</string>
+    <string name="inspired_by"> ()نمودار، همانطور که در https://www.youtube.com/watch?v=54XLXg4fYsc شرح داده شده است، بور منظم با آخرین آمار رسمی گزارش شده توسط Johns Hopkins\' JHU CSSE بروز رسانی میشود</string>
+    <string name="country_trajectory">نمودار روند موارد تایید شده</string>
+    <string name="total_confirmed_cases">کل موارد تایید شده</string>
+    <string name="weekly_confirmed">موارد تایید شده جدید (هفتگی)</string>
+    <string name="data_updated">داده ها به روز رسانی شده است</string>
+    <string name="encounters_today">برخوردهای امروز</string>
+    <string name="google_nearby_brief">ما با استفاده از گوگل نیربای، امکان شناسایی ناشناس دستگاه هایی که این اپلیکیشن را نصب کرده باشند،از طریق بلوتوث، وای فای و یا اولتراسوند فراهم میکنیم. لطفاً برای بالا بردن دقت، بلوتوث دستگاه را روشن نگه دارید. با تشکر از اینکه تعداد برخوردهای روزانه تان را کم نگه می دارید </string>
+    <string name="enable_bluetooth">بدون فعال کردن بلوتوث، دستگاههای که در نزدیکی شما هستند شناسایی نمی شوند. برای فعال کردن بلوتوث اینجا را کلیک کنید.</string>
+    <string name="enable_doze">برای افزودن اپلیکیشن برخورد به لیست برنامه های نادیده گرفته شده (لیست سفید) در مدیریت باتری، اینجا را کلیک کنید. این اطمینان میدهد که برنامه در حال اجرا نگه داشته می شود</string>
+    <string name="encounter_detected">Found %s</string>
+    <string name="unique_encounters">برخوردهای غیر تکراری</string>
+    <string name="encounter_share">اشتراک گذاری</string>
+    <string name="your_encounter_uuid">شناسه کاربری "برخورد" شما</string>
+    <string name="encounter_info">اطلاعات</string>
+    <string name="monday">دوشنبه</string>
+    <string name="tuesday">سه شنبه</string>
+    <string name="wednesday">چهارشنبه</string>
+    <string name="thursday">پنج شنبه</string>
+    <string name="friday">جمعه</string>
+    <string name="saturday">شنبه</string>
+    <string name="sunday">یکشنبه</string>
+    <string name="uuid_sharing_instructions">این شناسه کار بری زمانی که برای اولین بار برخورد را اجرا کرده اید، بصورت تصادفی ایجاد شده است. برای کپی کردن آن به منظور اشتراک گذاری، میتوانید روی  شناسه کاربری کلیک کنید</string>
+    <string name="uuid_toast">شناسه کاربری کپی شد</string>
+    <string name="share_data">داده های من را به اشتراک بگذار</string>
+    <string name="delete_data">داده های من را پاک کن</string>
+    <string name="delete_confirm">آیا مطمئن هستید که می خواهید تمام داده های برخوردهای خود را حذف کنید؟ این همچنین شناسه کاربری شما را بصورت تصادفی تغییر می دهد.</string>
+    <string name="delete_complete">داده های برخوردها با موفقیت پاک شدند</string>
+    <string name="yes">بله</string>
+    <string name="cancel">لغو</string>
+    <string name="gdpr_sharing">هنگامی که دکمه اشتراک گذاری را فشار می دهید، داده های شما به یک فایل JSON تبدیل می شوند و به شما امکان می دهد آن را به اشتراک بگذارید. طبق دستورالعمل های GDPR، شما بر این امر نظارت دارید که چه کسی به داده های شما دسترسی دارد. \n\n جزئیات بیشتر درباره داده ها در اینجا شرح داده شد: https://encounter.awareframework.com/data</string>
+    <string name="exporting_wait"> … در حال انتقال داده، لطفا صبر کنید</string>
+    <string name="next_week">هفته بعد</string>
+    <string name="previous_week">هفته قبل</string>
+</resources>

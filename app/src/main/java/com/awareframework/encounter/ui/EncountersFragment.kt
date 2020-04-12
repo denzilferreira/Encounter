@@ -1,5 +1,6 @@
 package com.awareframework.encounter.ui
 
+import android.graphics.Color
 import android.os.Bundle
 import android.text.format.DateFormat
 import android.view.LayoutInflater
@@ -137,8 +138,10 @@ class EncountersFragment : Fragment() {
             encounters_chart.axisLeft.granularity = 1f
             encounters_chart.axisLeft.isGranularityEnabled = true
             encounters_chart.axisLeft.setDrawGridLines(false)
+            encounters_chart.axisLeft.textColor = Color.GRAY
 
             encounters_chart.xAxis.position = XAxis.XAxisPosition.BOTTOM
+            encounters_chart.xAxis.textColor = Color.GRAY
             encounters_chart.xAxis.setDrawGridLines(false)
         }
 

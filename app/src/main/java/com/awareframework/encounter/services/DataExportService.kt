@@ -4,6 +4,7 @@ import android.app.IntentService
 import android.content.Intent
 import androidx.core.content.FileProvider
 import androidx.room.Room
+import com.awareframework.encounter.R
 import com.awareframework.encounter.database.EncounterDatabase
 import com.google.gson.Gson
 import org.json.JSONArray
@@ -36,19 +37,20 @@ class DataExportService : IntentService("Data Export") {
             val gSON = Gson()
             val encounterString = gSON.toJson(encounter)
             val encounterJSONObject = JSONObject(encounterString)
-            encounterJSONObject.put("readable_gmt", encountersReadable[index])
+            encounterJSONObject.put("readable", encountersReadable[index])
             jsonArrayData.put(encounterJSONObject)
         }
         db.close()
 
         export.writeText(jsonArrayData.toString(3))
 
-        val fileUri = FileProvider.getUriForFile(applicationContext, "$packageName.provider.storage", export )
+        val fileUri =
+            FileProvider.getUriForFile(applicationContext, "$packageName.provider.storage", export)
         val share = Intent.createChooser(Intent().apply {
             action = Intent.ACTION_SEND
             putExtra(Intent.EXTRA_STREAM, fileUri)
             type = "text/json"
-        }, "Share your data export by")
+        }, getString(R.string.share_data))
         startActivity(share.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
     }
 
@@ -56,8 +58,8 @@ class DataExportService : IntentService("Data Export") {
      * Extension function to get a human-readable GMT date time for json export
      */
     fun Date.getStringTimeStampWithDate(): String {
-        val dateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault())
-        dateFormat.timeZone = TimeZone.getTimeZone("GMT")
+        val dateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss z", Locale.getDefault())
+        dateFormat.timeZone = TimeZone.getDefault()
         return dateFormat.format(this)
     }
 }

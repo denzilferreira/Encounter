@@ -197,8 +197,8 @@ class StatsFragment : Fragment() {
                             spread_chart.setTouchEnabled(true)
                             spread_chart.setDrawGridBackground(false)
                             spread_chart.isDragEnabled = true
-                            spread_chart.setScaleEnabled(true)
-                            spread_chart.setPinchZoom(true)
+                            spread_chart.setScaleEnabled(false)
+                            spread_chart.setPinchZoom(false)
                             spread_chart.data = lineChart
                             spread_chart.invalidate()
 

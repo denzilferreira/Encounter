@@ -57,8 +57,12 @@ class EncountersFragment : Fragment() {
                 6 -> startCalendar.add(Calendar.DATE, -4)
                 7 -> startCalendar.add(Calendar.DATE, -5)
             }
+            startCalendar.set(Calendar.HOUR_OF_DAY, 0)
+            startCalendar.set(Calendar.MINUTE, 0)
+            startCalendar.set(Calendar.SECOND, 0)
             startDate = startCalendar.time
         }
+
         if (!::endDate.isInitialized) {
             val endCalendar = Calendar.getInstance()
             //what day of the week is this today?
@@ -73,6 +77,9 @@ class EncountersFragment : Fragment() {
                 6 -> endCalendar.add(Calendar.DATE, +2)
                 7 -> endCalendar.add(Calendar.DATE, +1)
             }
+            endCalendar.set(Calendar.HOUR_OF_DAY, 23)
+            endCalendar.set(Calendar.MINUTE, 59)
+            endCalendar.set(Calendar.SECOND, 59)
             endDate = endCalendar.time
         }
 
@@ -80,11 +87,17 @@ class EncountersFragment : Fragment() {
             val newStart = Calendar.getInstance()
             newStart.time = startDate
             newStart.add(Calendar.DATE, -7)
+            newStart.set(Calendar.HOUR_OF_DAY, 0)
+            newStart.set(Calendar.MINUTE, 0)
+            newStart.set(Calendar.SECOND, 0)
             startDate = newStart.time
 
             val newEnd = Calendar.getInstance()
             newEnd.time = endDate
             newEnd.add(Calendar.DATE, -7)
+            newEnd.set(Calendar.HOUR_OF_DAY, 23)
+            newEnd.set(Calendar.MINUTE, 59)
+            newEnd.set(Calendar.SECOND, 59)
             endDate = newEnd.time
 
             encounter_dates.text = getString(R.string.encounter_dates).format(
@@ -106,11 +119,17 @@ class EncountersFragment : Fragment() {
             val newStart = Calendar.getInstance()
             newStart.time = endDate
             newStart.add(Calendar.DATE, +1)
+            newStart.set(Calendar.HOUR_OF_DAY, 0)
+            newStart.set(Calendar.MINUTE, 0)
+            newStart.set(Calendar.SECOND, 0)
             startDate = newStart.time
 
             val newEnd = Calendar.getInstance()
             newEnd.time = startDate
             newEnd.add(Calendar.DATE, +6)
+            newEnd.set(Calendar.HOUR_OF_DAY, 23)
+            newEnd.set(Calendar.MINUTE, 59)
+            newEnd.set(Calendar.SECOND, 59)
             endDate = newEnd.time
 
             encounter_dates.text = getString(R.string.encounter_dates).format(
@@ -158,6 +177,7 @@ class EncountersFragment : Fragment() {
         runOnUiThread {
             encounters_chart.description.isEnabled = false
             encounters_chart.setPinchZoom(false)
+            encounters_chart.setScaleEnabled(false)
 
             encounters_chart.animateXY(200, 300)
             encounters_chart.legend.isEnabled = false
@@ -185,6 +205,7 @@ class EncountersFragment : Fragment() {
         weeklyDistribution.put(7, ArrayList()) //Sunday
 
         for (encounter in encounters) {
+
             val cal = Calendar.getInstance()
             cal.timeInMillis = encounter.timestamp
 
@@ -232,6 +253,7 @@ class EncountersFragment : Fragment() {
                     }
                 }
             }
+
             encounters_chart.invalidate()
         }
     }

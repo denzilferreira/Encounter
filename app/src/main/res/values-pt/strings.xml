@@ -4,7 +4,7 @@
     <string name="app_running">Encounter está ativo! Vamos lutar esta coisa.</string>
     <string name="latest_stats">Estatísticas</string>
     <string name="encounters">Encontros</string>
-    <string name="greeting">Olá aí</string>
+    <string name="greeting">Olá</string>
     <string name="encounter_brief">Encounter permite que possas ajudar anonimamente os oficiais de saúde a monitorizar a evolução desta pandemia e cortar os elos de transmissão.</string>
     <string name="confirmed">Confirmados</string>
     <string name="deaths">Falecidos</string>

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Encounter</string>
+    <string name="app_running">エンカウンターはアクティブです! ウィルスと戦おう</string>
+    <string name="latest_stats">統計</string>
+    <string name="encounters">遭遇</string>
+    <string name="greeting">こんにちは</string>
+    <string name="encounter_brief">エンカウンター(Encounter)を使用すると、保健当局がパンデミック追跡を行い、感染の連鎖を断ち切ることを匿名で支援できます.</string>
+    <string name="confirmed">確認済み</string>
+    <string name="deaths">死亡率</string>
+    <string name="recovered">回復</string>
+    <string name="inspired_by">https://www.youtube.com/watch?v=54XLXg4fYscの説明に従ってグラフ化し、ジョンズホプキンス大学のCSSEによって報告された最新の公式番号で常に更新.</string>
+    <string name="country_trajectory">確定症例の軌跡</string>
+    <string name="total_confirmed_cases">確認されたケースの合計</string>
+    <string name="weekly_confirmed">新たに確認された症例（毎週）</string>
+    <string name="data_updated">データは最新です</string>
+    <string name="encounters_today">今日の遭遇</string>
+    <string name="google_nearby_brief">GoogleのNearby API、Bluetooth、WiFi、超音波オーディオを使用してこのアプリがインストールされているデバイスの匿名検出を有効にします。精度を最大にするためにBluetoothをオンにしてください。 遭遇の数を毎日低く抑えてくれてありがとう！</string>
+    <string name="enable_bluetooth">Bluetoothが有効になっていない場合、近くのデバイスは検出されません。 ここをタップして有効にします。</string>
+    <string name="enable_doze">ここをタップして、バッテリーマネージャーに無視されたアプリケーション（ホワイトリスト）のリストにエンカウンターを追加します。 これにより、アプリケーションを実行し続けることができます。</string>
+    <string name="encounter_detected">見つけた %s</string>
+    <string name="unique_encounters">ユニークな遭遇</string>
+    <string name="encounter_share">シェア</string>
+    <string name="your_encounter_uuid">あなたのエンカウンターUUID</string>
+    <string name="encounter_info">情報</string>
+    <string name="monday">月</string>
+    <string name="tuesday">火</string>
+    <string name="wednesday">水</string>
+    <string name="thursday">木</string>
+    <string name="friday">金</string>
+    <string name="saturday">土</string>
+    <string name="sunday">日</string>
+    <string name="uuid_sharing_instructions">このUUID（Universal Unique ID）は、最初にエンカウンターを実行したときにランダムに作成されました。 UUIDをタップしてコピーし、共有できるようにします。</string>
+    <string name="uuid_toast">UUIDがコピーされました</string>
+    <string name="share_data">データを共有する</string>
+    <string name="delete_data">データを削除</string>
+    <string name="delete_confirm">遭遇のデータをすべて削除してもよろしいですか？ これにより、エンカウンターUUIDもランダム化されます。</string>
+    <string name="delete_complete">遭遇データが正常にクリアされました！</string>
+    <string name="yes">はい</string>
+    <string name="cancel">キャンセル</string>
+    <string name="gdpr_sharing">共有ボタンを押すと、データがJSONファイルに変換され、共有できるようになります。 GDPRガイドラインに従って、データにアクセスできるユーザーを管理できます。\n\nデータについては、ここで詳しく説明します: \nhttps://encounter.awareframework.com/data</string>
+    <string name="exporting_wait">データを書き出しています。お待ちください…</string>
+    <string name="next_week">来週</string>
+    <string name="previous_week">先週</string>
+</resources>

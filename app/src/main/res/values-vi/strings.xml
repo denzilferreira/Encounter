@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Encounter</string>
+    <string name="app_running">Encounter đang hoạt động! Cùng chiến đấu nào.</string>
+    <string name="latest_stats">Thống kê</string>
+    <string name="encounters">Encounters</string>
+    <string name="greeting">Xin chào</string>
+    <string name="encounter_brief">Phần mềm cho phép bạn ẩn danh giúp các quan chức y tế thực hiện theo dõi đại dịch và cắt đứt chuỗi lây truyền.</string>
+    <string name="confirmed">Xác nhận</string>
+    <string name="deaths">Tử vong</string>
+    <string name="recovered">Hồi phục</string>
+    <string name="inspired_by">Biểu đồ được mô tả bỏi https://www.youtube.com/watch?v=54XLXg4fYsc, thông tin được cập nhật liên tục với những số liệu chính thức từ JHU CSSE của Johns Hopkins.</string>
+    <string name="country_trajectory">Quỹ đạo của các ca được xác nhận</string>
+    <string name="total_confirmed_cases">Tổng số ca đã xác nhận</string>
+    <string name="weekly_confirmed">Các ca nhiễm mới (theo tuần)</string>
+    <string name="data_updated">Dữ liệu cập nhật</string>
+    <string name="encounters_today">Encounters hôm nay</string>
+    <string name="google_nearby_brief">Sử dụng Nearby APIs của Google, chúng tôi cho phép phát hiện ẩn danh các thiết bị cũng đã cài đặt ứng dụng này bằng Bluetooth, WiFi và siêu âm (ultrasound audio) - vui lòng giữ Bluetooth ON để có độ chính xác tốt nhất. Cảm ơn vì đã giữ số lượng cuộc gặp gỡ ở mức thấp mỗi ngày!</string>
+    <string name="enable_bluetooth">Không bật chế độ Bluetooth, những thiết bị gần kề không được tìm thấy. Chạm vào đây để bật nó lên.</string>
+    <string name="enable_doze">Chạm vào đây để thêm Encounter vào danh sách các ứng dụng bị bỏ qua (whitelisted) trên trình quản lý pin. Điều này sẽ đảm bảo chúng ta có thể giữ cho ứng dụng hoạt động.</string>
+    <string name="encounter_detected">Đã phát hiện %s</string>
+    <string name="unique_encounters">Duy nhất encounters</string>
+    <string name="encounter_share">Chia sẻ</string>
+    <string name="your_encounter_uuid">UUID của bạn</string>
+    <string name="encounter_info">Thông tin phần mềm</string>
+    <string name="monday">Thứ hai</string>
+    <string name="tuesday">Thứ ba</string>
+    <string name="wednesday">Thứ tư</string>
+    <string name="thursday">Thứ năm</string>
+    <string name="friday">Thứ sáu</string>
+    <string name="saturday">Thứ bảy</string>
+    <string name="sunday">Chủ nhật</string>
+    <string name="uuid_sharing_instructions">UUID (Universal Unique ID) này là duy nhất và được tạo ngẫu nhiên khi bạn sử dụng Encounter lần đầu tiên. Chạm vào UUID này để copy và bạn có thể chia sẻ nó.</string>
+    <string name="uuid_toast">Sao chép UUID</string>
+    <string name="share_data">Chia sẻ dữ liệu của tôi</string>
+    <string name="delete_data">Xóa dữ liệu của tôi</string>
+    <string name="delete_confirm">Bạn muốn xóa tất cả dữ liệu của bạn. Phần mềm sẽ tạo ngẫu nhiên UUID cho bạn.</string>
+    <string name="delete_complete">Dữ liệu Encounters đã xóa thành công!</string>
+    <string name="yes">Đồng ý</string>
+    <string name="cancel">Hủy</string>
+    <string name="gdpr_sharing">Khi bạn chọn nút chia sẻ, dữ liệu của bạn sẽ được chuyển sang tập tin JSON. Điều này cho phép bạn chia sẻ thông tin của bạn. Dựa trên hướng dẫn của GDPR, bạn có thể kiểm soát những người truy cập dữ liệu của bạn.\n\nChi tiết dữ liệu được mô tả ở đây: \nhttps://encounter.awareframework.com/data</string>
+    <string name="exporting_wait">Xuất dữ liệu, Xin đợi…</string>
+    <string name="next_week">Tuần sau</string>
+    <string name="previous_week">Tuần trước</string>
+</resources>

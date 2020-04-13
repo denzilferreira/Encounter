@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Encounter</string>
+    <string name="app_running">Encounter on käynissä! Pystymme tähän yhdessä!</string>
+    <string name="latest_stats">Tilastot</string>
+    <string name="encounters">Kohtaamiset</string>
+    <string name="greeting">Hei</string>
+    <string name="encounter_brief">Encounter-sovelluksen avulla voimme yhdessä kerätä nimettömästi tietoa, joka auttaa terveysviranomaisia pandemian tartuntaketjujen selvittämisessä ja katkaisemisessa.</string>
+    <string name="confirmed">Vahvistetut</string>
+    <string name="deaths">Kuolleet</string>
+    <string name="recovered">Parantuneet</string>
+    <string name="inspired_by">Kaavio (esitetty https://www.youtube.com/watch?v=54XLXg4fYsc) päivitetty uusimmilla virallisilla Johns Hopkins\' JHU CSSE julkaisemilla tiedoilla.</string>
+    <string name="country_trajectory">Vahvistettujen tapausten määrän kehitys</string>
+    <string name="total_confirmed_cases">Vahvistettujen tapausten kokonaismäärä</string>
+    <string name="weekly_confirmed">Uusia vahvistettuja tapauksia (viikossa)</string>
+    <string name="data_updated">Tiedot ovat ajan tasalla</string>
+    <string name="encounters_today">Kohtaamisia tänään</string>
+    <string name="google_nearby_brief">Google Nearby API -rajapinta mahdollistaa toisten tätä sovellusta käyttävien laitteiden nimettömän havaitsemisen Bluetooth-, WiFi- ja ultraääniteknologioiden avulla. Ole hyvä ja pidä Bluetooth päällä mahdollisimman tarkan havaitsemisen mahdollistamiseksi. Kiitos, että pidät kohtaamisten lukumäärän pienenä joka päivä!</string>
+    <string name="enable_bluetooth">Jos Bluetooth-yhteys ei ole käytössä, lähellä olevia laitteita ei havaita. Ota Bluetooth käyttöön tästä.</string>
+    <string name="enable_doze">Siirry tästä virransäästöasetuksiin lisätäksesi Encounter-sovelluksen sallittujen sovellusten listalle, jotta se pysyy käynnissä.</string>
+    <string name="encounter_detected">Havaitut %s</string>
+    <string name="unique_encounters">Yksilölliset kohtaamiset</string>
+    <string name="encounter_share">Jaa</string>
+    <string name="your_encounter_uuid">Encounter UUID</string>
+    <string name="encounter_info">Tiedot</string>
+    <string name="monday">Ma</string>
+    <string name="tuesday">Ti</string>
+    <string name="wednesday">Ke</string>
+    <string name="thursday">To</string>
+    <string name="friday">Pe</string>
+    <string name="saturday">La</string>
+    <string name="sunday">Su</string>
+    <string name="uuid_sharing_instructions">Sinulle luotiin UUID (Universal Unique ID) -tunniste satunnaisesti, kun avasit Encounter-sovelluksen ensimmäisen kerran. Voit kopioida ja jakaa tunnisteesi tästä.</string>
+    <string name="uuid_toast">Kopioitu</string>
+    <string name="share_data">Jaa tietoni</string>
+    <string name="delete_data">Poista tietoni</string>
+    <string name="delete_confirm">Haluatko varmasti poistaa kaikki Encounter tietosi? Tällöin sinulle luodaan myös uusi satunnainen Encounter UUID.</string>
+    <string name="delete_complete">Tietojen poisto onnistui!</string>
+    <string name="yes">Kyllä</string>
+    <string name="cancel">Peruuta</string>
+    <string name="gdpr_sharing">Kun painat Jaa-nappia, tietosi tallennetaan JSON-tiedostoon, jonka voit jakaa. EU:n yleisen tietosuoja-asetuksen (GDPR) nojalla sinulla on oikeus hallinnoida sinusta kerättyjä tietoja. Lisätietoa kerätyistä tiedoista löydät osoitteesta \nhttps://encounter.awareframework.com/data</string>
+    <string name="exporting_wait">Tietoja tallennetaan, ole hyvä ja odota…</string>
+    <string name="next_week">Seuraava viikko</string>
+    <string name="previous_week">Edellinen viikko</string>
+</resources>

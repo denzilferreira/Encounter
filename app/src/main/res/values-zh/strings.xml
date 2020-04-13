@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Encounter</string>
+    <string name="app_running">Encounter已启动！</string>
+    <string name="latest_stats">状态</string>
+    <string name="encounters">Encounters</string>
+    <string name="greeting">Hi，你好！</string>
+    <string name="encounter_brief">Encounter可以让你匿名地帮助官方医疗来追踪流行病的行动轨迹，并切断流行病传播链。</string>
+    <string name="confirmed">已确认</string>
+    <string name="deaths">死亡</string>
+    <string name="recovered">已恢复</string>
+    <string name="inspired_by">图表如此视频所示 https://www.youtube.com/watch?v=54XLXg4fYsc， 数据同步于Johns Hopkins\' JHU CSSE.</string>
+    <string name="country_trajectory">已确认病人的行动轨迹</string>
+    <string name="total_confirmed_cases">已确认病人的总数</string>
+    <string name="weekly_confirmed">新确认病人（本周）</string>
+    <string name="data_updated">数据已更新！</string>
+    <string name="encounters_today">encounters 今日</string>
+    <string name="google_nearby_brief">本应用借助Google的Nearby API，我们可以通过蓝牙、WiFi、超声波等来匿名检测到同时安装了此应用的移动设备—为了达到最高的检测精度，请保持蓝牙处于开启状态。感谢你每天为了保持encounter低数量做出的努力！</string>
+    <string name="enable_bluetooth">不开启蓝牙的话，是没法检测到周边设备的。点击此处来开启蓝牙。</string>
+    <string name="enable_doze">点击此处将Encounter添加到电池管理的白名单中。这可以让此应用在后台持续运行。</string>
+    <string name="encounter_detected">检测到 %s</string>
+    <string name="unique_encounters">当日encounter数量（无重复计入）</string>
+    <string name="encounter_share">分享</string>
+    <string name="your_encounter_uuid">你的Encounter UUID</string>
+    <string name="encounter_info">信息</string>
+    <string name="monday">周一</string>
+    <string name="tuesday">周二</string>
+    <string name="wednesday">周三</string>
+    <string name="thursday">周四</string>
+    <string name="friday">周五</string>
+    <string name="saturday">周六</string>
+    <string name="sunday">周日</string>
+    <string name="uuid_sharing_instructions">这份UUID (Universal Unique ID) 是在你第一次启动Encounter时候随机生成的。 点击UUID来进行复制，以便分享给他人。</string>
+    <string name="uuid_toast">UUID已复制</string>
+    <string name="share_data">分享我的数据</string>
+    <string name="delete_data">删除我的数据</string>
+    <string name="delete_confirm">你确定要删除所有的Encounters数据吗?此操作同时会重置你的Encounters UUID。</string>
+    <string name="delete_complete">Encounters数据已被清除！</string>
+    <string name="yes">确定</string>
+    <string name="cancel">取消</string>
+    <string name="gdpr_sharing">点击分享按钮后，你的数据将会被转换成JSON格式文件，以便你用来分享。根据GDPR原则，你有权决定谁来访问你的数据。\n\n关于数据的更多细节：\nhttps://encounter.awareframework.com/data</string>
+    <string name="exporting_wait">正在导出数据，请稍等…</string>
+    <string name="next_week">下周</string>
+    <string name="previous_week">上周</string>
+</resources>

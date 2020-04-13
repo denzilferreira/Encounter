@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Encounter</string>
+    <string name="app_running">A találkozás aktív! Harcoljunk ezzel a dologgal</string>
+    <string name="latest_stats">Statisztikák</string>
+    <string name="encounters">Találkozás</string>
+    <string name="greeting">Szia</string>
+    <string name="encounter_brief">A találkozás lehetővé teszi, hogy névtelenül segítsen az egészségügyi tisztviselőknek járványok felderítésében és az átviteli lánc megvágásában</string>
+    <string name="confirmed">Megerősített</string>
+    <string name="deaths">Haláleset</string>
+    <string name="recovered">gyógyult</string>
+    <string name="inspired_by">A helyzet leírása a https://www.youtube.com/watch?v=54XLXg4fYsc által leírtak szerint történik, mindig a legújabb hivatalos számokkal frissítve, ahogyan azt Johns Hopkins \'JHU CSSE jelentette.</string>
+    <string name="country_trajectory">A megerősített esetek görbéje</string>
+    <string name="total_confirmed_cases">Összes megerősített eset</string>
+    <string name="weekly_confirmed">Új megerősített esetek (hetente)</string>
+    <string name="data_updated">Az adatok naprakészek</string>
+    <string name="encounters_today">találkozások ma</string>
+    <string name="google_nearby_brief">A Google közeli API-jainak használatával engedélyezhetjük azoknak az eszközöknek a névtelen felismerését, amelyekben ez az alkalmazás Bluetooth, WiFi és ultrahangos audióval is telepítve van - kérjük, tartsa bekapcsolt állapotban a Bluetooth a pontosságért. Köszönjük, hogy minden nap alacsony a találkozók száma!</string>
+    <string name="enable_bluetooth">A Bluetooth engedélyezése nélkül a közeli eszközöket nem észleli. Koppintson ide az engedélyezéshez</string>
+    <string name="enable_doze">Koppintson ide, hogy a Találkozás hozzáadódjon az akkumulátorkezelőnél figyelmen kívül hagyott alkalmazások listájához. Ez biztosítja az alkalmazás futását</string>
+    <string name="encounter_detected">Megtalált %s</string>
+    <string name="unique_encounters">Egyedi találkozások</string>
+    <string name="encounter_share">Ossza meg</string>
+    <string name="your_encounter_uuid">A találkozás UUID</string>
+    <string name="encounter_info">Információ</string>
+    <string name="monday">H</string>
+    <string name="tuesday">K</string>
+    <string name="wednesday">Szer</string>
+    <string name="thursday">Cs</string>
+    <string name="friday">P</string>
+    <string name="saturday">Szo</string>
+    <string name="sunday">V</string>
+    <string name="uuid_sharing_instructions">Ezt a UUID-t (Universal Unique ID) véletlenszerűen hozták létre, amikor először futtatta a Találkozót. Érintse meg az UUID-t, hogy másolja azt, hogy megoszthassa</string>
+    <string name="uuid_toast">Az UUID másolva</string>
+    <string name="share_data">Ossza meg az adataimat</string>
+    <string name="delete_data">Törölje az adataimat</string>
+    <string name="delete_confirm">Biztos benne, hogy törli az összes találkozás adatát? Ez véletlenszerűvé teszi a Encounters UUID-t is</string>
+    <string name="delete_complete">A találkozások sikeresen törlődtek!</string>
+    <string name="yes">Igen</string>
+    <string name="cancel">Törlés</string>
+    <string name="gdpr_sharing">A megosztás gomb megnyomásakor az adatok JSON-fájlká alakulnak, lehetővé téve megosztását. A GDPR irányelveit követve Ön irányíthatja, hogy ki férhet hozzá az adataihoz. \n\n Az adatokat itt részletesebben ismertetjük:\nhttps://encounter.awareframework.com/data</string>
+    <string name="exporting_wait">Adatok exportálása, kérjük, várjon …</string>
+    <string name="next_week">Jövő hét</string>
+    <string name="previous_week">Előző hét</string>
+</resources>

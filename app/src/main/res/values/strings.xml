@@ -37,7 +37,7 @@
     <string name="delete_complete">Encounters data cleared successfully!</string>
     <string name="yes">Yes</string>
     <string name="cancel">Cancel</string>
-    <string name="gdpr_sharing">When you press the share button, your data is converted to a JSON file, allowing you to share it. Following GDPR guidelines, you are in control over who has access to your data.\n\nThe data is described here in more detail: \nhttps://encounter.awareframework.com/data</string>
+    <string name="gdpr_sharing">When you press the share button, your data is converted to a JSON file, allowing you to share it. Following GDPR guidelines, you are in control over who has access to your data. The data is described here in more detail: https://encounter.awareframework.com/data</string>
     <string name="exporting_wait">Exporting data, please wait…</string>
     <string name="next_week">Next week</string>
     <string name="previous_week">Previous week</string>

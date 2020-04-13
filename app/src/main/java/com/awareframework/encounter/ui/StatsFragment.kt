@@ -15,7 +15,7 @@ import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
-import com.github.mikephil.charting.formatter.LargeValueFormatter
+import com.github.mikephil.charting.formatter.ValueFormatter
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
 import kotlinx.android.synthetic.main.fragment_stats.*
 import org.jetbrains.anko.doAsync
@@ -23,6 +23,7 @@ import org.jetbrains.anko.support.v4.defaultSharedPreferences
 import org.jetbrains.anko.uiThread
 import java.util.*
 import kotlin.collections.ArrayList
+import kotlin.math.ceil
 import kotlin.math.log10
 import kotlin.math.pow
 
@@ -114,6 +115,7 @@ class StatsFragment : Fragment() {
 
                         val growth = ArrayList<Float>()
                         val confirmed = ArrayList<Float>()
+
                         for (i in 8 until dataDayCount.size) {
                             val weekGrowth = dataDayCount.get(i) - dataDayCount.get(i - 7)
                             val weekConfirmed = dataDayCount.get(i)
@@ -142,58 +144,52 @@ class StatsFragment : Fragment() {
                         val lineChart = LineData(dataset)
                         lineChart.setDrawValues(false)
 
+                        val logScales = ArrayList<String>()
+                        logScales.add("10")
+                        logScales.add("100")
+                        logScales.add("1000")
+                        logScales.add("10K")
+                        logScales.add("100K")
+                        logScales.add("1M")
+                        logScales.add("10M")
+                        logScales.add("100M")
+
+                        val maxGrowth = 10.0.pow(ceil(log10(growth.last())).toDouble())
+                        val maxConfirmed = 10.0.pow(ceil(log10(confirmed.last())).toDouble())
+
                         uiThread {
                             spread_chart.axisRight.isEnabled = false
                             spread_chart.animateX(1500)
 
-                            val logScale = ArrayList<String>().apply {
-                                add("10") //0
-                                add("100") //1
-                                add("1000") //2
-                                add("10K") //3
-                                add("100K") //4
-                                add("1M") //5
-                            }
-
-                            spread_chart.axisLeft.valueFormatter = object : LargeValueFormatter() {
+                            spread_chart.axisLeft.valueFormatter = object : ValueFormatter() {
                                 override fun getFormattedValue(value: Float): String {
-                                    return when (unScaleCbr(value).toInt()) {
-                                        in 1..10 -> logScale[0]
-                                        in 10..100 -> logScale[0]
-                                        in 100..1000 -> logScale[1]
-                                        in 1000..10000 -> logScale[2]
-                                        in 10000..100000 -> logScale[3]
-                                        in 100000..10000000 -> logScale[4]
-                                        in 1000000..1000000000 -> logScale[5]
-                                        else -> "1M+ :(" //OMG
-                                    }
+                                    return logScales.get(value.toInt()-1)
                                 }
                             }
-                            spread_chart.xAxis.valueFormatter = object : LargeValueFormatter() {
+                            spread_chart.xAxis.valueFormatter = object : ValueFormatter() {
                                 override fun getFormattedValue(value: Float): String {
-                                    return when (unScaleCbr(value).toInt()) {
-                                        in 1..10 -> logScale[0]
-                                        in 10..100 -> logScale[0]
-                                        in 100..1000 -> logScale[1]
-                                        in 1000..10000 -> logScale[2]
-                                        in 10000..100000 -> logScale[3]
-                                        in 100000..10000000 -> logScale[4]
-                                        in 1000000..1000000000 -> logScale[5]
-                                        else -> "1M+ :(" //OMG
-                                    }
+                                    return logScales.get(value.toInt()-1)
                                 }
                             }
 
-                            spread_chart.axisLeft.axisMinimum = scaleCbr(10.toFloat())
-                            spread_chart.axisLeft.axisMaximum = scaleCbr(1000000.toFloat())
+                            spread_chart.axisLeft.axisMinimum = scaleCbr(10f)
+                            spread_chart.axisLeft.axisMaximum = scaleCbr(maxGrowth.toFloat())
+
                             spread_chart.axisLeft.isGranularityEnabled = true
-                            spread_chart.axisLeft.setLabelCount(5, true)
+
+                            val countY = log10(maxGrowth)
+                            spread_chart.axisLeft.setLabelCount(countY.toInt(), true)
+
                             spread_chart.axisLeft.textColor = Color.GRAY
 
-                            spread_chart.xAxis.axisMinimum = scaleCbr(10.toFloat())
-                            spread_chart.xAxis.axisMaximum = scaleCbr(1000000.toFloat())
+                            spread_chart.xAxis.axisMinimum = scaleCbr(10f)
+                            spread_chart.xAxis.axisMaximum = scaleCbr(maxConfirmed.toFloat())
+
                             spread_chart.xAxis.isGranularityEnabled = true
-                            spread_chart.xAxis.setLabelCount(5, true)
+
+                            val countX = log10(maxConfirmed)
+                            spread_chart.xAxis.setLabelCount(countX.toInt(), true)
+
                             spread_chart.xAxis.position = XAxis.XAxisPosition.BOTTOM
                             spread_chart.xAxis.textColor = Color.GRAY
 

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Encounter</string>
+    <string name="app_running">Encounter активен! Победим вирус вместе.</string>
+    <string name="latest_stats">Статистика</string>
+    <string name="encounters">Взаимодействий</string>
+    <string name="greeting">Здравствуйте</string>
+    <string name="encounter_brief">Encounter позволяет вам анонимно помогать медицинским работникам отслеживать пандемию и предотвращать ее распространение.</string>
+    <string name="confirmed">Заразилось</string>
+    <string name="deaths">Умерло</string>
+    <string name="recovered">Выздоровело</string>
+    <string name="inspired_by">Как показано в видео https://www.youtube.com/watch?v=54XLXg4fYsc, график обновляется в соответствии с последними официальными данными университета Джона Хопкинса.</string>
+    <string name="country_trajectory">График заражений</string>
+    <string name="total_confirmed_cases">Общее количество заражений</string>
+    <string name="weekly_confirmed">Новые случаи заражений (за неделю)</string>
+    <string name="data_updated">Актуальные данные</string>
+    <string name="encounters_today">взаимодействий сегодня</string>
+    <string name="google_nearby_brief">С помощью Google API приложение позволяет анонимно обнаруживать устройства на которых оно установлено, используя для этого Bluetooth, WiFi и ультразвуковое аудио. Для обеспечения максимальной точности оставьте Bluetooth включенным. Спасибо за сокращение взаимодействий с окружающими каждый день!</string>
+    <string name="enable_bluetooth">При выключенном Bluetooth близлежащие устройства не будут обнаруживаться. Нажмите здесь, чтобы включить.</string>
+    <string name="enable_doze">Нажмите здесь, чтобы добавить Encounter в список приложений игнорируемых диспетчером энергосбережения. Это позволит работать приложению постоянно.</string>
+    <string name="encounter_detected">Найдено %s</string>
+    <string name="unique_encounters">Уникальных взаимодействий</string>
+    <string name="encounter_share">Поделиться</string>
+    <string name="your_encounter_uuid">Ваш Encounter идентификатор</string>
+    <string name="encounter_info">Информация</string>
+    <string name="monday">Пн</string>
+    <string name="tuesday">Вт</string>
+    <string name="wednesday">Ср</string>
+    <string name="thursday">Чт</string>
+    <string name="friday">Пт</string>
+    <string name="saturday">Сб</string>
+    <string name="sunday">Вс</string>
+    <string name="uuid_sharing_instructions">Этот идентификатор был создан случайным образом при первом запуске Encounter. Нажав на него, вы можете его скопировать чтобы поделиться.</string>
+    <string name="uuid_toast">Идентификатор скопирован</string>
+    <string name="share_data">Поделиться моими данными</string>
+    <string name="delete_data">Удалить мои данные</string>
+    <string name="delete_confirm">Вы уверены, что хотите удалить все данные своих взаимодействий? Это также приведет к переназначению идентификатора приложения.</string>
+    <string name="delete_complete">Данные успешно удалены!</string>
+    <string name="yes">Да</string>
+    <string name="cancel">Отмена</string>
+    <string name="gdpr_sharing">Нажав на кнопку Поделиться, ваши данные будут собраны в JSON-файл,  и вы сможете поделиться ими. Следуя рекомендациям общего регламента по защите данных, вы контролируете кто имеет доступ к вашим данным.\n\nБолее подробно о данных описано здесь:\nhttps://encounter.awareframework.com/data</string>
+    <string name="exporting_wait">Экспорт данных, пожалуйста, подождите…</string>
+    <string name="next_week">Следующая неделя</string>
+    <string name="previous_week">Предыдущая неделя</string>
+</resources>

@@ -6,8 +6,10 @@ import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
 import android.bluetooth.BluetoothAdapter
+import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
@@ -15,6 +17,8 @@ import android.os.PowerManager
 import android.provider.Settings
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
+import android.widget.ProgressBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
@@ -26,13 +30,14 @@ import com.awareframework.encounter.database.Encounter
 import com.awareframework.encounter.database.EncounterDatabase
 import com.awareframework.encounter.database.User
 import com.awareframework.encounter.services.EncounterService
-import com.awareframework.encounter.ui.SharingFragment
 import com.awareframework.encounter.ui.EncountersFragment
 import com.awareframework.encounter.ui.InfoFragment
+import com.awareframework.encounter.ui.SharingFragment
 import com.awareframework.encounter.ui.StatsFragment
 import com.google.android.gms.nearby.Nearby
 import com.google.android.gms.nearby.messages.*
 import kotlinx.android.synthetic.main.activity_main.*
+import org.jetbrains.anko.defaultSharedPreferences
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.uiThread
 import java.util.*
@@ -44,28 +49,25 @@ class EncounterHome : AppCompatActivity() {
 
     companion object {
         val VIEW_ENCOUNTERS = "VIEW_ENCOUNTERS"
+        val ACTION_UPDATE_STARTED = "ACTION_UPDATE_STARTED"
+        val ACTION_UPDATE_FINISHED = "ACTION_UPDATE_FINISHED"
         val ENCOUNTER_BLUETOOTH = 1112
         val ENCOUNTER_BATTERY = 1113
         lateinit var viewManager: FragmentManager
         lateinit var messageListener: MessageListener
-        val timer: Timer = Timer()
+        lateinit var progressBar : ProgressBar
+
+        object timer : Timer()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        viewManager = supportFragmentManager
+        progressBar = encounter_progress
+        progressBar.visibility = View.INVISIBLE
 
-        if (intent?.action.equals(VIEW_ENCOUNTERS)) {
-            supportFragmentManager.beginTransaction()
-                .replace(R.id.tab_view_container, EncountersFragment())
-                .commit()
-        } else {
-            supportFragmentManager.beginTransaction()
-                .replace(R.id.tab_view_container, StatsFragment())
-                .commit()
-        }
+        viewManager = supportFragmentManager
 
         bottom_nav.setOnNavigationItemSelectedListener { menuItem ->
             lateinit var selectedFragment: Fragment
@@ -102,7 +104,6 @@ class EncounterHome : AppCompatActivity() {
             db.close()
         }
 
-        timer.purge()
         timer.scheduleAtFixedRate(object : TimerTask() {
             override fun run() {
                 println("Publishing encounter UUID...")
@@ -161,6 +162,25 @@ class EncounterHome : AppCompatActivity() {
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+
+        if (intent?.action.equals(VIEW_ENCOUNTERS)) {
+            supportFragmentManager.beginTransaction()
+                .replace(R.id.tab_view_container, EncountersFragment())
+                .commit()
+        } else {
+            supportFragmentManager.beginTransaction()
+                .replace(R.id.tab_view_container, StatsFragment())
+                .commit()
+        }
+
+        val filter = IntentFilter()
+        filter.addAction(ACTION_UPDATE_STARTED)
+        filter.addAction(ACTION_UPDATE_FINISHED)
+        registerReceiver(guiUpdate, filter)
+    }
+
     override fun onStart() {
         super.onStart()
         checkPermissions()
@@ -181,6 +201,11 @@ class EncounterHome : AppCompatActivity() {
         ).unsubscribe(messageListener)
     }
 
+    override fun onPause() {
+        super.onPause()
+        unregisterReceiver(guiUpdate)
+    }
+
     fun publish() {
         doAsync {
             val db =
@@ -188,8 +213,8 @@ class EncounterHome : AppCompatActivity() {
                     applicationContext,
                     EncounterDatabase::class.java,
                     "encounters"
-                )
-                    .build()
+                ).build()
+
             val users = db.UserDao().getUser()
             if (users.isNotEmpty()) {
                 uiThread { activity ->
@@ -201,7 +226,7 @@ class EncounterHome : AppCompatActivity() {
                                 .setStrategy(
                                     Strategy.Builder()
                                         .setTtlSeconds(Strategy.TTL_SECONDS_DEFAULT)
-                                        .setDistanceType(Strategy.DISTANCE_TYPE_DEFAULT)
+                                        .setDistanceType(Strategy.DISTANCE_TYPE_EARSHOT) //approx. 1.5 meters proximity according to
                                         .build()
                                 )
                                 .build()
@@ -372,14 +397,19 @@ class EncounterHome : AppCompatActivity() {
         }
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        //Start app again so that we can continue broadcasting UUID
-//        startActivity(
-//            Intent(
-//                applicationContext,
-//                EncounterHome::class.java
-//            ).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP)
-//        )
+    val guiUpdate = GUIUpdate()
+    class GUIUpdate : BroadcastReceiver() {
+        override fun onReceive(context: Context?, intent: Intent?) {
+            if (intent?.action.equals(ACTION_UPDATE_FINISHED)) {
+                progressBar.visibility = View.INVISIBLE
+                if (context?.defaultSharedPreferences?.getString("active", "").equals("stats")) {
+                    viewManager.beginTransaction().replace(R.id.tab_view_container, StatsFragment())
+                        .commit()
+                }
+            }
+            if (intent?.action.equals(ACTION_UPDATE_STARTED)) {
+                progressBar.visibility = View.VISIBLE
+            }
+        }
     }
 }

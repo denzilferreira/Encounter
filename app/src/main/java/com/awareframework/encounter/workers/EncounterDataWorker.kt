@@ -23,6 +23,9 @@ class EncounterDataWorker(appContext: Context, workerParameters: WorkerParameter
         val requestQueue = Volley.newRequestQueue(applicationContext)
         val serverRequest = JsonObjectRequest(Request.Method.GET, data_source, null,
             Response.Listener { dataObj ->
+
+                applicationContext.sendBroadcast(Intent().setAction(EncounterHome.ACTION_UPDATE_STARTED))
+
                 doAsync {
                     val countries = dataObj.keys()
                     countries.forEach { country ->
@@ -77,6 +80,8 @@ class EncounterDataWorker(appContext: Context, workerParameters: WorkerParameter
                         }
                     }
                 }
+
+                applicationContext.sendBroadcast(Intent().setAction(EncounterHome.ACTION_UPDATE_FINISHED))
             },
             Response.ErrorListener {
                 println("Error ${it.message}")

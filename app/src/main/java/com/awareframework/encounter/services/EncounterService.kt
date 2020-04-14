@@ -26,7 +26,6 @@ class EncounterService : Service() {
     companion object {
         val ENCOUNTER_FOREGROUND = 210712
         val ENCOUNTER_WARNING = 1104
-
         val ACTION_NEW_ENCOUNTER_PUBLISHED = "ACTION_NEW_ENCOUNTER_PUBLISHED"
     }
 

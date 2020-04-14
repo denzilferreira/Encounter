@@ -154,8 +154,8 @@ class StatsFragment : Fragment() {
                         logScales.add("10M")
                         logScales.add("100M")
 
-                        val maxGrowth = 10.0.pow(ceil(log10(growth.last())).toDouble())
-                        val maxConfirmed = 10.0.pow(ceil(log10(confirmed.last())).toDouble())
+                        val maxGrowth = 10.0.pow(ceil(log10(growth.max()!!)).toDouble())
+                        val maxConfirmed = 10.0.pow(ceil(log10(confirmed.max()!!)).toDouble())
 
                         uiThread {
                             spread_chart.axisRight.isEnabled = false

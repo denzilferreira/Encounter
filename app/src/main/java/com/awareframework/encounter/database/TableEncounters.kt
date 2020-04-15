@@ -27,4 +27,7 @@ interface EncounterDao {
 
     @Query("DELETE FROM encounters")
     fun clear()
+
+    @Query("SELECT * FROM encounters WHERE uuid_detected like :uuid_positive")
+    fun warning(uuid_positive: String) : Array<Encounter>
 }

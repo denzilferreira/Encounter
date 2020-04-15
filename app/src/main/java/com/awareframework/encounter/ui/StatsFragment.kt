@@ -39,8 +39,6 @@ class StatsFragment : Fragment() {
     override fun onResume() {
         super.onResume()
 
-        val countryDropDown = country_selector
-
         defaultSharedPreferences.edit().putString("active", "stats").apply()
 
         doAsync {
@@ -57,11 +55,11 @@ class StatsFragment : Fragment() {
 
             uiThread {
 
-                countryDropDown?.adapter =
+                country_selector.adapter =
                     ArrayAdapter(context!!, R.layout.spinner_country, countryAdapter)
 
                 if (defaultSharedPreferences.contains("country")) {
-                    countryDropDown?.setSelection(
+                    country_selector.setSelection(
                         countryAdapter.indexOf(
                             defaultSharedPreferences.getString(
                                 "country",
@@ -69,12 +67,12 @@ class StatsFragment : Fragment() {
                             )
                         ), true
                     )
-                    countryDropDown?.dispatchSetSelected(true)
+                    country_selector.dispatchSetSelected(true)
                 }
 
             }
 
-            countryDropDown?.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            country_selector?.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
                 override fun onNothingSelected(parent: AdapterView<*>?) {
                     count_confirmed.text = getString(R.string.count_number, 0)
                     count_deaths.text = getString(R.string.count_number, 0)

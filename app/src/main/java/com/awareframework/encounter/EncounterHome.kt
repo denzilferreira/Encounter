@@ -55,17 +55,14 @@ class EncounterHome : AppCompatActivity() {
         val ENCOUNTER_BATTERY = 1113
         lateinit var viewManager: FragmentManager
         lateinit var messageListener: MessageListener
-        lateinit var progressBar : ProgressBar
+        lateinit var progressBar: ProgressBar
 
-        object timer : Timer()
+        object timer : Timer() //singleton
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
-        progressBar = encounter_progress
-        progressBar.visibility = View.INVISIBLE
 
         viewManager = supportFragmentManager
 
@@ -165,14 +162,20 @@ class EncounterHome : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
 
-        if (intent?.action.equals(VIEW_ENCOUNTERS)) {
-            supportFragmentManager.beginTransaction()
-                .replace(R.id.tab_view_container, EncountersFragment())
-                .commit()
-        } else {
-            supportFragmentManager.beginTransaction()
-                .replace(R.id.tab_view_container, StatsFragment())
-                .commit()
+        progressBar = encounter_progress
+        progressBar.visibility = View.INVISIBLE
+
+        when(intent?.action) {
+            VIEW_ENCOUNTERS -> {
+                supportFragmentManager.beginTransaction()
+                    .replace(R.id.tab_view_container, EncountersFragment())
+                    .commit()
+            }
+            else -> {
+                supportFragmentManager.beginTransaction()
+                    .replace(R.id.tab_view_container, StatsFragment())
+                    .commit()
+            }
         }
 
         val filter = IntentFilter()
@@ -398,14 +401,13 @@ class EncounterHome : AppCompatActivity() {
     }
 
     val guiUpdate = GUIUpdate()
+
     class GUIUpdate : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
             if (intent?.action.equals(ACTION_UPDATE_FINISHED)) {
                 progressBar.visibility = View.INVISIBLE
-                if (context?.defaultSharedPreferences?.getString("active", "").equals("stats")) {
-                    viewManager.beginTransaction().replace(R.id.tab_view_container, StatsFragment())
-                        .commit()
-                }
+                viewManager.beginTransaction().replace(R.id.tab_view_container, StatsFragment())
+                    .commit()
             }
             if (intent?.action.equals(ACTION_UPDATE_STARTED)) {
                 progressBar.visibility = View.VISIBLE

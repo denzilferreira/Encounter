@@ -20,6 +20,7 @@ import com.awareframework.encounter.workers.EncounterDataWorker
 import com.google.android.gms.nearby.Nearby
 import com.google.android.gms.nearby.messages.*
 import com.google.firebase.messaging.FirebaseMessaging
+import com.google.gson.Gson
 import org.jetbrains.anko.doAsync
 import java.util.*
 import java.util.concurrent.TimeUnit
@@ -30,6 +31,7 @@ class EncounterService : Service() {
         val ENCOUNTER_FOREGROUND = 210712
         val ENCOUNTER_WARNING = 1104
         val ACTION_NEW_ENCOUNTER_PUBLISHED = "ACTION_NEW_ENCOUNTER_PUBLISHED"
+        val ACTION_CHECK_WARNING = "ACTION_CHECK_WARNING"
     }
 
     override fun onCreate() {
@@ -112,9 +114,9 @@ class EncounterService : Service() {
                     .build()
             val users = db.UserDao().getUser()
             if (users.isNotEmpty()) {
-                FirebaseMessaging.getInstance().subscribeToTopic(users.first().uuid)
+                FirebaseMessaging.getInstance().subscribeToTopic("positive")
                     .addOnCompleteListener {
-                        println("Subscribed to FCM Encounter warning topic")
+                        println("Subscribed to Encounter awareness topic")
                     }
             }
             db.close()
@@ -154,6 +156,25 @@ class EncounterService : Service() {
                     }
                 }
             )
+        }
+
+        if (intent?.action.equals(ACTION_CHECK_WARNING)) {
+            //parse JSON, check local database for matches with uuid, show notification with instructions on how to proceed
+            val data = Gson().toJsonTree(intent?.extras?.get("data")).asJsonObject
+            val uuid_positive = data.get("uuid").asString
+            val instructions = data.get("instructions").asString
+            doAsync {
+                val db =
+                    Room.databaseBuilder(
+                        applicationContext,
+                        EncounterDatabase::class.java,
+                        "encounters"
+                    ).build()
+                val positiveMatches = db.EncounterDao().warning(uuid_positive)
+                if (positiveMatches.isNotEmpty()) {
+                    sendNotification(instructions)
+                }
+            }
         }
 
         val networkAvailable =

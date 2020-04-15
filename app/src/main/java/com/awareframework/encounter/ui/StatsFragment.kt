@@ -39,6 +39,8 @@ class StatsFragment : Fragment() {
     override fun onResume() {
         super.onResume()
 
+        val countryDropDown = country_selector
+
         defaultSharedPreferences.edit().putString("active", "stats").apply()
 
         doAsync {
@@ -54,11 +56,12 @@ class StatsFragment : Fragment() {
             Collections.sort(countryAdapter, String.CASE_INSENSITIVE_ORDER)
 
             uiThread {
-                country_selector.adapter =
+
+                countryDropDown?.adapter =
                     ArrayAdapter(context!!, R.layout.spinner_country, countryAdapter)
 
                 if (defaultSharedPreferences.contains("country")) {
-                    country_selector.setSelection(
+                    countryDropDown?.setSelection(
                         countryAdapter.indexOf(
                             defaultSharedPreferences.getString(
                                 "country",
@@ -66,11 +69,12 @@ class StatsFragment : Fragment() {
                             )
                         ), true
                     )
-                    country_selector.dispatchSetSelected(true)
+                    countryDropDown?.dispatchSetSelected(true)
                 }
+
             }
 
-            country_selector.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            countryDropDown?.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
                 override fun onNothingSelected(parent: AdapterView<*>?) {
                     count_confirmed.text = getString(R.string.count_number, 0)
                     count_deaths.text = getString(R.string.count_number, 0)
@@ -163,12 +167,13 @@ class StatsFragment : Fragment() {
 
                             spread_chart.axisLeft.valueFormatter = object : ValueFormatter() {
                                 override fun getFormattedValue(value: Float): String {
-                                    return logScales.get(value.toInt()-1)
+                                    return logScales.get(value.toInt() - 1)
                                 }
                             }
                             spread_chart.xAxis.valueFormatter = object : ValueFormatter() {
                                 override fun getFormattedValue(value: Float): String {
-                                    return logScales.get(value.toInt()-1)
+                                    if (value.toInt() == 0) return logScales.get(0)
+                                    return logScales.get(value.toInt() - 1)
                                 }
                             }
 

@@ -15,10 +15,13 @@ import com.awareframework.encounter.EncounterHome
 import com.awareframework.encounter.R
 import com.awareframework.encounter.database.Encounter
 import com.awareframework.encounter.database.EncounterDatabase
+import com.awareframework.encounter.database.User
 import com.awareframework.encounter.workers.EncounterDataWorker
 import com.google.android.gms.nearby.Nearby
 import com.google.android.gms.nearby.messages.*
+import com.google.firebase.messaging.FirebaseMessaging
 import org.jetbrains.anko.doAsync
+import java.util.*
 import java.util.concurrent.TimeUnit
 
 class EncounterService : Service() {
@@ -97,6 +100,24 @@ class EncounterService : Service() {
                 ).build()
         ).addOnSuccessListener {
             println("Subscribed background PendingIntent")
+        }
+
+        doAsync {
+            val db =
+                Room.databaseBuilder(
+                    applicationContext,
+                    EncounterDatabase::class.java,
+                    "encounters"
+                )
+                    .build()
+            val users = db.UserDao().getUser()
+            if (users.isNotEmpty()) {
+                FirebaseMessaging.getInstance().subscribeToTopic(users.first().uuid)
+                    .addOnCompleteListener {
+                        println("Subscribed to FCM Encounter warning topic")
+                    }
+            }
+            db.close()
         }
     }
 

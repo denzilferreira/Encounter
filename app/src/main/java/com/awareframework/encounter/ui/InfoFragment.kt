@@ -17,8 +17,9 @@ class InfoFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_info, container, false)
     }
 
-    override fun onResume() {
-        super.onResume()
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
         encounter_webview.loadUrl("https://encounter.awareframework.com/research")
         encounter_webview.settings.javaScriptEnabled = false
     }

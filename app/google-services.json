@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "424798413176-rr65989ofcp9tiuvtaeqi0s5t9hns870.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.awareframework.encounter",
+            "certificate_hash": "77153aee1ede6e4cf608122865d7833d1447dec2"
+          }
+        },
+        {
           "client_id": "424798413176-fgfriiv1q9cnp46etqctl2im22jc3amb.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {

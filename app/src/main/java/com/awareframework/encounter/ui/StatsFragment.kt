@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.Spinner
 import androidx.fragment.app.Fragment
 import androidx.room.Room
 import com.awareframework.encounter.R
@@ -36,10 +37,12 @@ class StatsFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_stats, container, false)
     }
 
-    override fun onResume() {
-        super.onResume()
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         defaultSharedPreferences.edit().putString("active", "stats").apply()
+
+        val countrySelect = activity?.findViewById(R.id.country_selector) as Spinner
 
         doAsync {
             val db =
@@ -55,11 +58,11 @@ class StatsFragment : Fragment() {
 
             uiThread {
 
-                country_selector.adapter =
+                countrySelect.adapter =
                     ArrayAdapter(context!!, R.layout.spinner_country, countryAdapter)
 
                 if (defaultSharedPreferences.contains("country")) {
-                    country_selector.setSelection(
+                    countrySelect.setSelection(
                         countryAdapter.indexOf(
                             defaultSharedPreferences.getString(
                                 "country",
@@ -67,12 +70,12 @@ class StatsFragment : Fragment() {
                             )
                         ), true
                     )
-                    country_selector.dispatchSetSelected(true)
+                    countrySelect.dispatchSetSelected(true)
                 }
 
             }
 
-            country_selector?.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            countrySelect.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
                 override fun onNothingSelected(parent: AdapterView<*>?) {
                     count_confirmed.text = getString(R.string.count_number, 0)
                     count_deaths.text = getString(R.string.count_number, 0)
@@ -85,7 +88,7 @@ class StatsFragment : Fragment() {
                     position: Int,
                     id: Long
                 ) {
-                    val selectedCountry = country_selector.selectedItem.toString()
+                    val selectedCountry = countrySelect.selectedItem.toString()
 
                     defaultSharedPreferences.edit().putString("country", selectedCountry).apply()
 

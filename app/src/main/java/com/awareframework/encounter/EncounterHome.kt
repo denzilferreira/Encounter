@@ -23,6 +23,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
+import androidx.core.view.isInvisible
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.room.Room
@@ -401,16 +403,19 @@ class EncounterHome : AppCompatActivity() {
     }
 
     val guiUpdate = GUIUpdate()
-
     class GUIUpdate : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
             if (intent?.action.equals(ACTION_UPDATE_FINISHED)) {
-                progressBar.visibility = View.INVISIBLE
-                viewManager.beginTransaction().replace(R.id.tab_view_container, StatsFragment())
-                    .commit()
+                if (progressBar.isVisible) {
+                    progressBar.visibility = View.INVISIBLE
+                    viewManager.beginTransaction().replace(R.id.tab_view_container, StatsFragment())
+                        .commit()
+                }
             }
             if (intent?.action.equals(ACTION_UPDATE_STARTED)) {
-                progressBar.visibility = View.VISIBLE
+                if (progressBar.isInvisible) {
+                    progressBar.visibility = View.VISIBLE
+                }
             }
         }
     }

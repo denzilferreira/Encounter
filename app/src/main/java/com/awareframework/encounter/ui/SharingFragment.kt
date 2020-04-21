@@ -39,8 +39,8 @@ class SharingFragment : Fragment() {
 
     lateinit var user: User
 
-    override fun onResume() {
-        super.onResume()
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         progress = find(R.id.export_progress)
         wait = find(R.id.export_wait)

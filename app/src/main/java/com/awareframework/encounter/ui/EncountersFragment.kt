@@ -38,8 +38,8 @@ class EncountersFragment : Fragment() {
     lateinit var startDate: Date
     lateinit var endDate: Date
 
-    override fun onResume() {
-        super.onResume()
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         defaultSharedPreferences.edit().putString("active", "encounters").apply()
 

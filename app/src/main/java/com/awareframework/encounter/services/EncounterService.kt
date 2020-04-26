@@ -21,7 +21,9 @@ import com.google.android.gms.nearby.Nearby
 import com.google.android.gms.nearby.messages.*
 import com.google.firebase.messaging.FirebaseMessaging
 import com.google.gson.Gson
+import org.jetbrains.anko.defaultSharedPreferences
 import org.jetbrains.anko.doAsync
+import org.jetbrains.anko.support.v4.defaultSharedPreferences
 import java.util.*
 import java.util.concurrent.TimeUnit
 
@@ -172,6 +174,7 @@ class EncounterService : Service() {
                     ).build()
                 val positiveMatches = db.EncounterDao().warning(uuid_positive)
                 if (positiveMatches.isNotEmpty()) {
+                    defaultSharedPreferences.edit().putString("active", "warning").apply()
                     sendNotification(instructions)
                 }
             }

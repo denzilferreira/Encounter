@@ -32,15 +32,13 @@ import com.awareframework.encounter.database.Encounter
 import com.awareframework.encounter.database.EncounterDatabase
 import com.awareframework.encounter.database.User
 import com.awareframework.encounter.services.EncounterService
-import com.awareframework.encounter.ui.EncountersFragment
-import com.awareframework.encounter.ui.InfoFragment
-import com.awareframework.encounter.ui.SharingFragment
-import com.awareframework.encounter.ui.StatsFragment
+import com.awareframework.encounter.ui.*
 import com.google.android.gms.nearby.Nearby
 import com.google.android.gms.nearby.messages.*
 import kotlinx.android.synthetic.main.activity_main.*
 import org.jetbrains.anko.defaultSharedPreferences
 import org.jetbrains.anko.doAsync
+import org.jetbrains.anko.support.v4.defaultSharedPreferences
 import org.jetbrains.anko.uiThread
 import java.util.*
 import kotlin.collections.ArrayList
@@ -178,6 +176,12 @@ class EncounterHome : AppCompatActivity() {
                     .replace(R.id.tab_view_container, StatsFragment())
                     .commit()
             }
+        }
+
+        if(defaultSharedPreferences.getString("active", "").equals("warning")) {
+            supportFragmentManager.beginTransaction()
+                .replace(R.id.tab_view_container, WarningFragment())
+                .commit()
         }
 
         val filter = IntentFilter()

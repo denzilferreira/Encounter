@@ -11,6 +11,8 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.content.pm.PackageManager
+import android.net.Uri
+import android.os.BatteryManager
 import android.os.Build
 import android.os.Bundle
 import android.os.PowerManager
@@ -52,7 +54,7 @@ class EncounterHome : AppCompatActivity() {
         val ACTION_UPDATE_STARTED = "ACTION_UPDATE_STARTED"
         val ACTION_UPDATE_FINISHED = "ACTION_UPDATE_FINISHED"
         val ENCOUNTER_BLUETOOTH = 1112
-        val ENCOUNTER_BATTERY = 1113
+        //val ENCOUNTER_BATTERY = 1113
         lateinit var viewManager: FragmentManager
         lateinit var messageListener: MessageListener
         lateinit var progressBar: ProgressBar
@@ -163,9 +165,8 @@ class EncounterHome : AppCompatActivity() {
         super.onResume()
 
         progressBar = encounter_progress
-        progressBar.visibility = View.INVISIBLE
 
-        when(intent?.action) {
+        when (intent?.action) {
             VIEW_ENCOUNTERS -> {
                 supportFragmentManager.beginTransaction()
                     .replace(R.id.tab_view_container, EncountersFragment())
@@ -178,16 +179,10 @@ class EncounterHome : AppCompatActivity() {
             }
         }
 
-        if(defaultSharedPreferences.getString("active", "").equals("warning")) {
-            supportFragmentManager.beginTransaction()
-                .replace(R.id.tab_view_container, WarningFragment())
-                .commit()
-        }
-
-        val filter = IntentFilter()
-        filter.addAction(ACTION_UPDATE_STARTED)
-        filter.addAction(ACTION_UPDATE_FINISHED)
-        registerReceiver(guiUpdate, filter)
+        registerReceiver(guiUpdate, IntentFilter().apply {
+            addAction(ACTION_UPDATE_STARTED)
+            addAction(ACTION_UPDATE_FINISHED)
+        })
     }
 
     override fun onStart() {
@@ -212,6 +207,7 @@ class EncounterHome : AppCompatActivity() {
 
     override fun onPause() {
         super.onPause()
+
         unregisterReceiver(guiUpdate)
     }
 
@@ -321,42 +317,48 @@ class EncounterHome : AppCompatActivity() {
             val isIgnore = powerManager.isIgnoringBatteryOptimizations(packageName)
 
             if (!isIgnore) {
-                val notificationManager =
-                    applicationContext.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    val name = applicationContext.getString(R.string.app_name)
-                    val descriptionText = applicationContext.getString(R.string.app_name)
-                    val channel = NotificationChannel(
-                        "ENCOUNTER",
-                        name,
-                        NotificationManager.IMPORTANCE_HIGH
-                    ).apply {
-                        description = descriptionText
+                val whitelisting =
+                    Intent(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS).apply {
+                        data = Uri.parse("package:$packageName")
                     }
-                    notificationManager.createNotificationChannel(channel)
-                }
+                startActivity(whitelisting)
 
-                val batteryIntent =
-                    Intent(Settings.ACTION_IGNORE_BATTERY_OPTIMIZATION_SETTINGS).apply {
-                        flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
-                    }
-                val pendingBattery = PendingIntent.getActivity(
-                    applicationContext,
-                    0,
-                    batteryIntent,
-                    PendingIntent.FLAG_UPDATE_CURRENT
-                )
-                val builder = NotificationCompat.Builder(applicationContext, "ENCOUNTER")
-                    .setSmallIcon(R.drawable.ic_stat_encounter_battery)
-                    .setContentTitle(getString(R.string.app_name))
-                    .setContentText(getString(R.string.enable_doze))
-                    .setContentIntent(pendingBattery)
-                    .setAutoCancel(true)
-                    .setOnlyAlertOnce(true)
-                    .setDefaults(NotificationCompat.DEFAULT_ALL)
-                    .setPriority(NotificationCompat.PRIORITY_HIGH)
-
-                notificationManager.notify(ENCOUNTER_BATTERY, builder.build())
+//                val notificationManager =
+//                    applicationContext.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+//                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+//                    val name = applicationContext.getString(R.string.app_name)
+//                    val descriptionText = applicationContext.getString(R.string.app_name)
+//                    val channel = NotificationChannel(
+//                        "ENCOUNTER",
+//                        name,
+//                        NotificationManager.IMPORTANCE_HIGH
+//                    ).apply {
+//                        description = descriptionText
+//                    }
+//                    notificationManager.createNotificationChannel(channel)
+//                }
+//
+//                val batteryIntent =
+//                    Intent(Settings.ACTION_IGNORE_BATTERY_OPTIMIZATION_SETTINGS).apply {
+//                        flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
+//                    }
+//                val pendingBattery = PendingIntent.getActivity(
+//                    applicationContext,
+//                    0,
+//                    batteryIntent,
+//                    PendingIntent.FLAG_UPDATE_CURRENT
+//                )
+//                val builder = NotificationCompat.Builder(applicationContext, "ENCOUNTER")
+//                    .setSmallIcon(R.drawable.ic_stat_encounter_battery)
+//                    .setContentTitle(getString(R.string.app_name))
+//                    .setContentText(getString(R.string.enable_doze))
+//                    .setContentIntent(pendingBattery)
+//                    .setAutoCancel(true)
+//                    .setOnlyAlertOnce(true)
+//                    .setDefaults(NotificationCompat.DEFAULT_ALL)
+//                    .setPriority(NotificationCompat.PRIORITY_HIGH)
+//
+//                notificationManager.notify(ENCOUNTER_BATTERY, builder.build())
             }
         }
     }
@@ -406,19 +408,17 @@ class EncounterHome : AppCompatActivity() {
         }
     }
 
-    val guiUpdate = GUIUpdate()
+    private val guiUpdate = GUIUpdate()
     class GUIUpdate : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
-            if (intent?.action.equals(ACTION_UPDATE_FINISHED)) {
-                if (progressBar.isVisible) {
+            when (intent?.action) {
+                ACTION_UPDATE_STARTED -> {
+                    progressBar.visibility = View.VISIBLE
+                }
+                ACTION_UPDATE_FINISHED -> {
                     progressBar.visibility = View.INVISIBLE
                     viewManager.beginTransaction().replace(R.id.tab_view_container, StatsFragment())
                         .commit()
-                }
-            }
-            if (intent?.action.equals(ACTION_UPDATE_STARTED)) {
-                if (progressBar.isInvisible) {
-                    progressBar.visibility = View.VISIBLE
                 }
             }
         }

@@ -15,35 +15,19 @@
       },
       "oauth_client": [
         {
-          "client_id": "424798413176-rr65989ofcp9tiuvtaeqi0s5t9hns870.apps.googleusercontent.com",
+          "client_id": "424798413176-ebvaff9k42p6vkutel07srde48hcufbo.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.awareframework.encounter",
-            "certificate_hash": "77153aee1ede6e4cf608122865d7833d1447dec2"
+            "certificate_hash": "565c7af639cd2e87af4070c460af16e10d4243aa"
           }
         },
         {
-          "client_id": "424798413176-fgfriiv1q9cnp46etqctl2im22jc3amb.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.awareframework.encounter",
-            "certificate_hash": "64653ba219cbf6e6e414628351364e87e1b5f4bf"
-          }
-        },
-        {
-          "client_id": "424798413176-ddqja81mnbp51812insq64s89iq3mbqf.apps.googleusercontent.com",
+          "client_id": "424798413176-oh65du5mgfbp4jh0s7biluph0md641v3.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.awareframework.encounter",
             "certificate_hash": "b2f9e96b646c53cc85b33be45afde6a648a7ab6f"
-          }
-        },
-        {
-          "client_id": "424798413176-kcf8gsm3neldg2r7ckfu3ni37od1i02b.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.awareframework.encounter",
-            "certificate_hash": "b2714c3fa12ea901f87f578930151f7813f0fd49"
           }
         },
         {

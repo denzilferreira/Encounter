@@ -41,6 +41,8 @@
     <string name="exporting_wait">Exporting data, please wait…</string>
     <string name="next_week">Next week</string>
     <string name="previous_week">Previous week</string>
+    <string name="encounter_attention">Attention</string>
+    <string name="ok">OK</string>
 
     <!-- Placeholders for dynamic content -->
     <string name="uuid_placeholder" translatable="false">%s</string>

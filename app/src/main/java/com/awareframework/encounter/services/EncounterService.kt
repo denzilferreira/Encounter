@@ -16,6 +16,7 @@ import com.awareframework.encounter.R
 import com.awareframework.encounter.database.Encounter
 import com.awareframework.encounter.database.EncounterDatabase
 import com.awareframework.encounter.database.User
+import com.awareframework.encounter.ui.ActivityWarning
 import com.awareframework.encounter.workers.EncounterDataWorker
 import com.google.android.gms.nearby.Nearby
 import com.google.android.gms.nearby.messages.*
@@ -174,8 +175,11 @@ class EncounterService : Service() {
                     ).build()
                 val positiveMatches = db.EncounterDao().warning(uuid_positive)
                 if (positiveMatches.isNotEmpty()) {
-                    defaultSharedPreferences.edit().putString("active", "warning").apply()
-                    sendNotification(instructions)
+                    startActivity(
+                        Intent(applicationContext, ActivityWarning::class.java).putExtra("instructions", instructions).apply {
+                            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                        }
+                    )
                 }
             }
         }

@@ -19,6 +19,7 @@ import java.util.*
 
 class EncounterDataWorker(appContext: Context, workerParameters: WorkerParameters) :
     Worker(appContext, workerParameters) {
+
     override fun doWork(): Result {
         val data_source = "https://pomber.github.io/covid19/timeseries.json"
         val requestQueue = Volley.newRequestQueue(applicationContext)
@@ -27,8 +28,30 @@ class EncounterDataWorker(appContext: Context, workerParameters: WorkerParameter
 
                 doAsync {
 
+                    val db =
+                        Room.databaseBuilder(
+                            applicationContext,
+                            EncounterDatabase::class.java,
+                            "encounters"
+                        ).build()
+
+                    //Randomize UUID every day to a new one
+                    val users = db.UserDao().getUser()
+                    if (users.isNotEmpty()) {
+                        val now = Calendar.getInstance()
+                        val registered = Calendar.getInstance()
+                        val user = users.first()
+                        registered.timeInMillis = user.timestamp
+                        if (now.get(Calendar.DAY_OF_YEAR) != registered.get(Calendar.DAY_OF_YEAR)) {
+                            //Randomize UUID to a new one today
+                            user.uuid = UUID.randomUUID().toString()
+                            user.timestamp = System.currentTimeMillis()
+                            db.UserDao().update(user)
+                        }
+                    }
+                    db.close()
+
                     uiThread {
-                        println("Started sync")
                         applicationContext.sendBroadcast(Intent(EncounterHome.ACTION_UPDATE_STARTED))
                     }
 
@@ -86,7 +109,6 @@ class EncounterDataWorker(appContext: Context, workerParameters: WorkerParameter
                     }
 
                     uiThread {
-                        println("Finished sync")
                         applicationContext.sendBroadcast(Intent(EncounterHome.ACTION_UPDATE_FINISHED))
                     }
                 }

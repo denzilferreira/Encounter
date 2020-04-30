@@ -40,7 +40,6 @@ class DataExportService : IntentService("Data Export") {
             encounterJSONObject.put("readable", encountersReadable[index])
             jsonArrayData.put(encounterJSONObject)
         }
-        db.close()
 
         export.writeText(jsonArrayData.toString(3))
 
@@ -52,6 +51,13 @@ class DataExportService : IntentService("Data Export") {
             type = "text/json"
         }, getString(R.string.share_data))
         startActivity(share.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
+
+        //Randomize UUID to a new one now
+        user.uuid = UUID.randomUUID().toString()
+        user.timestamp = System.currentTimeMillis()
+        db.UserDao().update(user)
+
+        db.close()
     }
 
     /**

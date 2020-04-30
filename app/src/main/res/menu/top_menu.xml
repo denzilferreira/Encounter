@@ -6,10 +6,10 @@
         android:id="@+id/share"
         android:icon="@drawable/ic_action_share"
         android:title="@string/encounter_share"
-        app:showAsAction="always" />
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/encounter_info"
         android:icon="@drawable/ic_action_contact"
         android:title="@string/encounter_info"
-        app:showAsAction="always" />
+        app:showAsAction="ifRoom" />
 </menu>

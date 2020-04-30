@@ -42,4 +42,6 @@
     <string name="exporting_wait">ڈیٹا برآمد ہو رہا ہے ، براہ کرم انتظار کریں…</string>
     <string name="next_week">آئندہ ہفتہ</string>
     <string name="previous_week">گزشتہ ہفتہ</string>
+    <string name="encounter_attention">توجہ</string>
+    <string name="ok">ٹھیک ہے</string>
 </resources>

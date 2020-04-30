@@ -42,4 +42,6 @@
     <string name="exporting_wait"> … در حال انتقال داده، لطفا صبر کنید</string>
     <string name="next_week">هفته بعد</string>
     <string name="previous_week">هفته قبل</string>
+    <string name="encounter_attention">توجه</string>
+    <string name="ok">خوب</string>
 </resources>

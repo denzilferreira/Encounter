@@ -42,4 +42,6 @@
     <string name="exporting_wait">データを書き出しています。お待ちください…</string>
     <string name="next_week">来週</string>
     <string name="previous_week">先週</string>
+    <string name="encounter_attention">注意</string>
+    <string name="ok">OK</string>
 </resources>

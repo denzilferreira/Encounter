@@ -42,4 +42,6 @@
     <string name="exporting_wait">Експортиране на данни, моля изчакайте …</string>
     <string name="next_week">Следваща седмица</string>
     <string name="previous_week">Предишна седмица</string>
+    <string name="encounter_attention">внимание</string>
+    <string name="ok">Добре</string>
 </resources>

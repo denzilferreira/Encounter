@@ -42,4 +42,6 @@
     <string name="exporting_wait">Εξαγωγή δεδομένων, παρακαλώ περιμένετε …</string>
     <string name="next_week">Eπόμενη εβδομάδα</string>
     <string name="previous_week">Προηγούμενη εβδομάδα</string>
+    <string name="encounter_attention">Προσοχή</string>
+    <string name="ok">Εντάξει</string>
 </resources>

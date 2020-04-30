@@ -42,4 +42,6 @@
     <string name="exporting_wait">Adatok exportálása, kérjük, várjon …</string>
     <string name="next_week">Jövő hét</string>
     <string name="previous_week">Előző hét</string>
+    <string name="encounter_attention">Figyelem</string>
+    <string name="ok">Rendben</string>
 </resources>

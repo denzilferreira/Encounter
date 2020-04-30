@@ -42,4 +42,6 @@
     <string name="exporting_wait">Guardando os dados, espere por favor…</string>
     <string name="next_week">Próxima semana</string>
     <string name="previous_week">Semana anterior</string>
+    <string name="encounter_attention">Atenção</string>
+    <string name="ok">OK</string>
 </resources>

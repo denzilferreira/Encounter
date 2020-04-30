@@ -42,4 +42,6 @@
     <string name="exporting_wait">正在导出数据，请稍等…</string>
     <string name="next_week">下周</string>
     <string name="previous_week">上周</string>
+    <string name="encounter_attention">注意</string>
+    <string name="ok">好</string>
 </resources>

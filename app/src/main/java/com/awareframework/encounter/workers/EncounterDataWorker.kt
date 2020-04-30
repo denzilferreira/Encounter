@@ -13,6 +13,7 @@ import com.awareframework.encounter.EncounterHome
 import com.awareframework.encounter.database.EncounterDatabase
 import com.awareframework.encounter.database.Stats
 import org.jetbrains.anko.doAsync
+import org.jetbrains.anko.uiThread
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -24,9 +25,13 @@ class EncounterDataWorker(appContext: Context, workerParameters: WorkerParameter
         val serverRequest = JsonObjectRequest(Request.Method.GET, data_source, null,
             Response.Listener { dataObj ->
 
-                applicationContext.sendBroadcast(Intent().setAction(EncounterHome.ACTION_UPDATE_STARTED))
-
                 doAsync {
+
+                    uiThread {
+                        println("Started sync")
+                        applicationContext.sendBroadcast(Intent(EncounterHome.ACTION_UPDATE_STARTED))
+                    }
+
                     val countries = dataObj.keys()
                     countries.forEach { country ->
                         val recordsCountry = dataObj.getJSONArray(country)
@@ -79,9 +84,12 @@ class EncounterDataWorker(appContext: Context, workerParameters: WorkerParameter
                             db.close()
                         }
                     }
-                }
 
-                applicationContext.sendBroadcast(Intent().setAction(EncounterHome.ACTION_UPDATE_FINISHED))
+                    uiThread {
+                        println("Finished sync")
+                        applicationContext.sendBroadcast(Intent(EncounterHome.ACTION_UPDATE_FINISHED))
+                    }
+                }
             },
             Response.ErrorListener {
                 println("Error ${it.message}")

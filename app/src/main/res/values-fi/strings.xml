@@ -42,4 +42,6 @@
     <string name="exporting_wait">Tietoja tallennetaan, ole hyvä ja odota…</string>
     <string name="next_week">Seuraava viikko</string>
     <string name="previous_week">Edellinen viikko</string>
+    <string name="encounter_attention">Huomio</string>
+    <string name="ok">Kunnossa</string>
 </resources>

@@ -30,11 +30,13 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.room.Room
+import androidx.work.*
 import com.awareframework.encounter.database.Encounter
 import com.awareframework.encounter.database.EncounterDatabase
 import com.awareframework.encounter.database.User
 import com.awareframework.encounter.services.EncounterService
 import com.awareframework.encounter.ui.*
+import com.awareframework.encounter.workers.EncounterDataWorker
 import com.google.android.gms.nearby.Nearby
 import com.google.android.gms.nearby.messages.*
 import kotlinx.android.synthetic.main.activity_main.*
@@ -43,6 +45,7 @@ import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.support.v4.defaultSharedPreferences
 import org.jetbrains.anko.uiThread
 import java.util.*
+import java.util.concurrent.TimeUnit
 import kotlin.collections.ArrayList
 
 class EncounterHome : AppCompatActivity() {
@@ -54,6 +57,7 @@ class EncounterHome : AppCompatActivity() {
         val ACTION_UPDATE_STARTED = "ACTION_UPDATE_STARTED"
         val ACTION_UPDATE_FINISHED = "ACTION_UPDATE_FINISHED"
         val ENCOUNTER_BLUETOOTH = 1112
+
         //val ENCOUNTER_BATTERY = 1113
         lateinit var viewManager: FragmentManager
         lateinit var messageListener: MessageListener
@@ -409,6 +413,7 @@ class EncounterHome : AppCompatActivity() {
     }
 
     private val guiUpdate = GUIUpdate()
+
     class GUIUpdate : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
             when (intent?.action) {

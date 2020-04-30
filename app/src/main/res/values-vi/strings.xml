@@ -42,4 +42,6 @@
     <string name="exporting_wait">Xuất dữ liệu, Xin đợi…</string>
     <string name="next_week">Tuần sau</string>
     <string name="previous_week">Tuần trước</string>
+    <string name="encounter_attention">Chú ý</string>
+    <string name="ok">đồng ý</string>
 </resources>

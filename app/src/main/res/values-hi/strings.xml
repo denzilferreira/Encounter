@@ -42,4 +42,6 @@
     <string name="exporting_wait">डेटा तब्दील हो रहा है. कृपया प्रतीक्षा करें … </string>
     <string name="next_week">अगले सप्ताह</string>
     <string name="previous_week">पिछला सप्ताह</string>
+    <string name="encounter_attention">ध्यान</string>
+    <string name="ok">ठीक</string>
 </resources>

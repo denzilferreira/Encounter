@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Encounter</string>
+    <string name="app_running">Encounter ist nun aktiv! Lass uns die Ausbreitung bekämpfen!</string>
+    <string name="latest_stats">Statistiken</string>
+    <string name="encounters">Begegnungen</string>
+    <string name="greeting">Hallo </string>
+    <string name="encounter_brief">Encounter ermöglicht es dir Gesundheits Beamten anonym zu helfen die Pandemie zu tracken und die Ansteckungskette zu unterbrechen.</string>
+    <string name="confirmed">Bestätigte Infizierte</string>
+    <string name="deaths">Tote</string>
+    <string name="recovered">Wieder Gesund</string>
+    <string name="inspired_by">Grafik nach https://www.youtube.com/watch?v=54XLXg4fYsc, ständig aktualisiert mit den aktuellen Zahlen von Johns Hopkins\' JHU CSSE.</string>
+    <string name="country_trajectory">Kurve der bestätigten Infizierten</string>
+    <string name="total_confirmed_cases">Absolute Zahl der bestätigten Infizierten</string>
+    <string name="weekly_confirmed">Neuinfektionen (wöchentlich)</string>
+    <string name="data_updated">Daten sind geupdatet</string>
+    <string name="encounters_today">Heutige Begegnungen</string>
+    <string name="google_nearby_brief">Die anonyme Erkennung von anderen Geräten, die diese App ebenfalls verwenden wird durch die Verwendung von Google\‘s Nearby APIs und Bluetooth, WiFi und Ultraschall ermöglicht. Deswegen sollte, Bluetooth eingeschaltet bleiben, um die Genauigkeit zu verbessern. Halte die täglichen Begegnungen so gering wie möglich! Vielen Dank!</string>
+    <string name="enable_bluetooth">Wenn Bluetooth nicht eingeschaltet ist, werden Geräte in der Umgebung nicht erkannt. Aktiviere es hier.</string>
+    <string name="enable_doze">Bitte füge Encounter der Liste der Applikaitonen die der Batterie Manager ignoriert hier hinzu. Dies ermöglicht es der Applikation dauerhaft im Hintergrund zu laufen.</string>
+    <string name="encounter_detected">Gefunden %s</string>
+    <string name="unique_encounters">Einmalige Begegnungen</string>
+    <string name="encounter_share">Teilen</string>
+    <string name="your_encounter_uuid">Deine Encounter UUID</string>
+    <string name="encounter_info">Informationen</string>
+    <string name="monday">Mo.</string>
+    <string name="tuesday">Di.</string>
+    <string name="wednesday">Mi.</string>
+    <string name="thursday">Do.</string>
+    <string name="friday">Fr.</string>
+    <string name="saturday">Sa.</string>
+    <string name="sunday">So.</string>
+    <string name="uuid_sharing_instructions">Diese UUID (Universal Unique ID) wurde zufällig generiert als du Encounter das erste mal gestartet hast. Berühre die UUID um sie zu kopieren, so dass du sie Teilen kannst.</string>
+    <string name="uuid_toast">UUID kopiert</string>
+    <string name="share_data">Teile meine Daten</string>
+    <string name="delete_data">Lösche meine Daten</string>
+    <string name="delete_confirm">Bist du dir sicher das du all deine Encounter Daten löschen willst? Dies würde auch deine Encounters UUID zufällig neu erstellen.</string>
+    <string name="delete_complete">Encounter Daten erfolgreich gelöscht!</string>
+    <string name="yes">Ja</string>
+    <string name="cancel">Abbrechen</string>
+    <string name="gdpr_sharing">Wenn du den Teilen button drückst, werden deine Daten in eine JSON Datei umgewandelt, so dass du sie Teilen kannst. Wir befolgen selbstverständlich die GDPR Regeln und du bestimmst wer Zugang zu deinen Daten hat. Wie die Daten genau aussehen kannst du hier nachlesen: https://encounter.awareframework.com/data</string>
+    <string name="exporting_wait">Datan werden exportiert, bitte warten…</string>
+    <string name="next_week">Nächste Woche</string>
+    <string name="previous_week">Letzte Woche</string>
+    <string name="encounter_attention">Achtung</string>
+    <string name="ok">Okay</string>
+</resources>

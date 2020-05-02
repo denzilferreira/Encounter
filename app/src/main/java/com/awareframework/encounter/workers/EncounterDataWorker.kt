@@ -57,6 +57,11 @@ class EncounterDataWorker(appContext: Context, workerParameters: WorkerParameter
 
                     val countries = dataObj.keys()
                     countries.forEach { country ->
+
+                        uiThread {
+                            applicationContext.sendBroadcast(Intent(EncounterHome.ACTION_UPDATE_COUNTRY).putExtra(EncounterHome.EXTRA_COUNTRY, country))
+                        }
+
                         val recordsCountry = dataObj.getJSONArray(country)
                         for (i in 0 until recordsCountry.length()) {
                             val record = recordsCountry.getJSONObject(i)

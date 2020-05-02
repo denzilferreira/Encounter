@@ -21,6 +21,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.ProgressBar
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
@@ -56,12 +57,15 @@ class EncounterHome : AppCompatActivity() {
         val VIEW_ENCOUNTERS = "VIEW_ENCOUNTERS"
         val ACTION_UPDATE_STARTED = "ACTION_UPDATE_STARTED"
         val ACTION_UPDATE_FINISHED = "ACTION_UPDATE_FINISHED"
+        val ACTION_UPDATE_COUNTRY = "ACTION_UPDATE_COUNTRY"
+        val EXTRA_COUNTRY = "EXTRA_COUNTRY"
         val ENCOUNTER_BLUETOOTH = 1112
 
         //val ENCOUNTER_BATTERY = 1113
         lateinit var viewManager: FragmentManager
         lateinit var messageListener: MessageListener
         lateinit var progressBar: ProgressBar
+        lateinit var progressCountry: TextView
 
         object timer : Timer() //singleton
     }
@@ -168,7 +172,14 @@ class EncounterHome : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
 
+        registerReceiver(guiUpdate, IntentFilter().apply {
+            addAction(ACTION_UPDATE_STARTED)
+            addAction(ACTION_UPDATE_FINISHED)
+            addAction(ACTION_UPDATE_COUNTRY)
+        })
+
         progressBar = encounter_progress
+        progressCountry = progress_country
 
         when (intent?.action) {
             VIEW_ENCOUNTERS -> {
@@ -182,15 +193,11 @@ class EncounterHome : AppCompatActivity() {
                     .commit()
             }
         }
-
-        registerReceiver(guiUpdate, IntentFilter().apply {
-            addAction(ACTION_UPDATE_STARTED)
-            addAction(ACTION_UPDATE_FINISHED)
-        })
     }
 
     override fun onStart() {
         super.onStart()
+
         checkPermissions()
         checkBluetooth()
         checkDoze()
@@ -203,6 +210,7 @@ class EncounterHome : AppCompatActivity() {
 
     override fun onStop() {
         super.onStop()
+
         Nearby.getMessagesClient(
             this@EncounterHome,
             MessagesOptions.Builder().setPermissions(NearbyPermissions.DEFAULT).build()
@@ -211,7 +219,6 @@ class EncounterHome : AppCompatActivity() {
 
     override fun onPause() {
         super.onPause()
-
         unregisterReceiver(guiUpdate)
     }
 
@@ -419,11 +426,20 @@ class EncounterHome : AppCompatActivity() {
             when (intent?.action) {
                 ACTION_UPDATE_STARTED -> {
                     progressBar.visibility = View.VISIBLE
+                    progressCountry.visibility = View.VISIBLE
                 }
                 ACTION_UPDATE_FINISHED -> {
                     progressBar.visibility = View.INVISIBLE
+                    progressCountry.visibility = View.INVISIBLE
                     viewManager.beginTransaction().replace(R.id.tab_view_container, StatsFragment())
                         .commit()
+                }
+                ACTION_UPDATE_COUNTRY -> {
+                    progressCountry.text = context?.getString(R.string.text_placeholder)?.format(
+                        intent.extras?.getString(
+                            EXTRA_COUNTRY
+                        )
+                    )
                 }
             }
         }

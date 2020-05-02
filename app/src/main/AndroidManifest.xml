@@ -62,9 +62,17 @@
             </intent-filter>
         </service>
 
-        <receiver android:name="com.awareframework.encounter.receivers.EncounterReboot">
+        <receiver android:name="com.awareframework.encounter.receivers.EncounterReboot" android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
+
+        <receiver android:name=".EncounterHome$GUIUpdate">
+            <intent-filter>
+                <action android:name="ACTION_UPDATE_FINISHED" />
+                <action android:name="ACTION_UPDATE_STARTED" />
+                <action android:name="ACTION_UPDATE_COUNTRY" />
             </intent-filter>
         </receiver>
     </application>

@@ -40,12 +40,12 @@ class StatsFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_stats, container, false)
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
 
         defaultSharedPreferences.edit().putString("active", "stats").apply()
 
-        val countrySelector = view.findViewById<Spinner>(R.id.country_selector)
+        val countrySelector = view?.findViewById<Spinner>(R.id.country_selector)
 
         doAsync {
             val db =
@@ -58,10 +58,8 @@ class StatsFragment : Fragment() {
             Collections.sort(countryAdapter, String.CASE_INSENSITIVE_ORDER)
 
             uiThread {
-
-                countrySelector.adapter = ArrayAdapter(context!!, R.layout.spinner_country, countryAdapter)
-
-                countrySelector.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+                countrySelector?.adapter = ArrayAdapter(context!!, R.layout.spinner_country, countryAdapter)
+                countrySelector?.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
                     override fun onNothingSelected(parent: AdapterView<*>?) {
                         count_confirmed.text = getString(R.string.count_number, 0)
                         count_deaths.text = getString(R.string.count_number, 0)
@@ -74,8 +72,8 @@ class StatsFragment : Fragment() {
                         position: Int,
                         id: Long
                     ) {
-                        val selectedCountry = countrySelector.selectedItem.toString()
 
+                        val selectedCountry = countrySelector?.selectedItem.toString()
                         defaultSharedPreferences.edit().putString("country", selectedCountry).apply()
 
                         doAsync {
@@ -204,7 +202,7 @@ class StatsFragment : Fragment() {
                 }
 
                 if (defaultSharedPreferences.contains("country")) {
-                    countrySelector.setSelection(
+                    countrySelector?.setSelection(
                         countryAdapter.indexOf(
                             defaultSharedPreferences.getString(
                                 "country",
@@ -212,7 +210,7 @@ class StatsFragment : Fragment() {
                             )
                         ), true
                     )
-                    countrySelector.dispatchSetSelected(true)
+                    countrySelector?.dispatchSetSelected(true)
                 }
             }
         }

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Encounter</string>
+    <string name="app_running">Encounter er aktiv! Lad os overvinde det her.</string>
+    <string name="latest_stats">Statistikker</string>
+    <string name="encounters">møder</string>
+    <string name="greeting">Hej</string>
+    <string name="encounter_brief">Encounter tillader dig anonymt at hjælpe sundhedsvæsenet med pandemiovervågning og med at bryde transmissionskæden.</string>
+    <string name="confirmed">Bekræftet</string>
+    <string name="deaths">Dødsfald</string>
+    <string name="recovered">Overståede</string>
+    <string name="inspired_by">Plot som er beskrevet af https://www.youtube.com/watch?v=54XLXg4fYsc, altid opdateret med de seneste officielle tal rapporteret fra Johns Hopkins\' JHU CSSE.</string>
+    <string name="country_trajectory">Bane af bekræftede tilfælde</string>
+    <string name="total_confirmed_cases">Bekræftede tilfælde i alt</string>
+    <string name="weekly_confirmed">Nye bekræftede tilfælde (ugentligt)</string>
+    <string name="data_updated">Dataen er opdateret</string>
+    <string name="encounters_today">Møder i dag</string>
+    <string name="google_nearby_brief">Ved brug af Google\'s Nearby APIs tillader vi anonym opdagelse af enheder som også har denne app installeret ved brug af Bluetooth, WiFi og ultralyd - Hav venligst Bluetooth slået TIL for at opnå den bedste nøjagtighed. Tak fordi du holder sammentræfs tallet lavt hver dag!</string>
+    <string name="enable_bluetooth">Uden Bluetooth slået til kan enheder i nærheden ikke opdages. Tryk her for at slå det til.</string>
+    <string name="enable_doze">Tryk her for at tilføje Encounter til listen over ignorerede applikationer (whitelistet) i batteristyring. Dette vil sikre at vi kan holde applikationen kørende.</string>
+    <string name="encounter_detected">Fundet %s</string>
+    <string name="unique_encounters">Unikke møder</string>
+    <string name="encounter_share">Del</string>
+    <string name="your_encounter_uuid">Dit Encounter UUID</string>
+    <string name="encounter_info">Information</string>
+    <string name="monday">Man</string>
+    <string name="tuesday">Tir</string>
+    <string name="wednesday">Ons</string>
+    <string name="thursday">Tor</string>
+    <string name="friday">Fre</string>
+    <string name="saturday">Lør</string>
+    <string name="sunday">Søn</string>
+    <string name="uuid_sharing_instructions">Dette UUID (Universal Unique ID)blev tilfældigt genereret da du åbnede Encounter for første gang. Tryk på dit UUID for at kopiere det så du kan dele det.</string>
+    <string name="uuid_toast">UUID kopieret</string>
+    <string name="share_data">Del min data</string>
+    <string name="delete_data">Slet min data</string>
+    <string name="delete_confirm">Er du sikker på du vil slette alle data omkring dine møder? Dette vil også generere tilfældige UUIDs for dine møder.</string>
+    <string name="delete_complete">Encounters data er blevet slettet!</string>
+    <string name="yes">Ja</string>
+    <string name="cancel">Annuller</string>
+    <string name="gdpr_sharing">Når du trykker på knappen for at dele, bliver din data konverteret til en JSON fil, hvilket tillader dig at dele den. Som følge af GDPR retningslinjerne kontrollerer du hvem der har adgang til din data.\n\nDataen er beskrevet her i yderligere detaljer: \nhttps://encounter.awareframework.com/data</string>
+    <string name="exporting_wait">Data eksporteres, vent venligst…</string>
+    <string name="next_week">Næste uge</string>
+    <string name="previous_week">Forrige uge</string>
+    <string name="encounter_attention">Omsorg</string>
+    <string name="ok">Okay</string>
+</resources>

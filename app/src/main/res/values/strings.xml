@@ -45,6 +45,7 @@
     <string name="ok">OK</string>
 
     <!-- Placeholders for dynamic content -->
+    <string name="text_placeholder" translatable="false">%s</string>
     <string name="uuid_placeholder" translatable="false">%s</string>
     <string name="encounter_dates" translatable="false">%s - %s</string>
     <string name="count_number" translatable="false">%d</string>

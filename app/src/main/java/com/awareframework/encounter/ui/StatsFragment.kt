@@ -21,7 +21,6 @@ import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
 import kotlinx.android.synthetic.main.fragment_stats.*
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.support.v4.defaultSharedPreferences
-import org.jetbrains.anko.support.v4.find
 import org.jetbrains.anko.uiThread
 import java.util.*
 import kotlin.collections.ArrayList
@@ -30,8 +29,6 @@ import kotlin.math.log10
 import kotlin.math.pow
 
 class StatsFragment : Fragment() {
-
-    val countryAdapter = ArrayList<String>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -51,6 +48,7 @@ class StatsFragment : Fragment() {
             val db =
                 Room.databaseBuilder(context!!, EncounterDatabase::class.java, "encounters").build()
             val countries = db.StatsDao().getCountries()
+            val countryAdapter = ArrayList<String>()
             for (country in countries) {
                 countryAdapter.add(country.country)
             }

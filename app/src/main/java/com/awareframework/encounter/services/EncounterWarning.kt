@@ -3,7 +3,7 @@ package com.awareframework.encounter.services
 import android.content.Intent
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
-import com.google.gson.Gson
+import com.google.gson.JsonObject
 import org.jetbrains.anko.defaultSharedPreferences
 
 class EncounterWarning : FirebaseMessagingService() {
@@ -18,10 +18,14 @@ class EncounterWarning : FirebaseMessagingService() {
          *
          * we start the service to check if we have seen this uuid or not
          */
+
+        val jsonData = JsonObject()
+        jsonData.addProperty("uuid", remoteMessage.data["uuid"])
+        jsonData.addProperty("instructions", remoteMessage.data["instructions"])
         startService(
             Intent(applicationContext, EncounterService::class.java).setAction(
                 EncounterService.ACTION_CHECK_WARNING
-            ).putExtra("data", Gson().toJson(remoteMessage.data))
+            ).putExtra("data", jsonData.toString())
         )
     }
 

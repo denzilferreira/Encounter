@@ -15,17 +15,13 @@ import com.awareframework.encounter.EncounterHome
 import com.awareframework.encounter.R
 import com.awareframework.encounter.database.Encounter
 import com.awareframework.encounter.database.EncounterDatabase
-import com.awareframework.encounter.database.User
 import com.awareframework.encounter.ui.ActivityWarning
 import com.awareframework.encounter.workers.EncounterDataWorker
 import com.google.android.gms.nearby.Nearby
 import com.google.android.gms.nearby.messages.*
 import com.google.firebase.messaging.FirebaseMessaging
-import com.google.gson.Gson
-import org.jetbrains.anko.defaultSharedPreferences
+import com.google.gson.JsonParser
 import org.jetbrains.anko.doAsync
-import org.jetbrains.anko.support.v4.defaultSharedPreferences
-import java.util.*
 import java.util.concurrent.TimeUnit
 
 class EncounterService : Service() {
@@ -163,23 +159,38 @@ class EncounterService : Service() {
 
         if (intent?.action.equals(ACTION_CHECK_WARNING)) {
             //parse JSON, check local database for matches with uuid, show notification with instructions on how to proceed
-            val data = Gson().toJsonTree(intent?.extras?.get("data")).asJsonObject
-            val uuid_positive = data.get("uuid").asString
-            val instructions = data.get("instructions").asString
-            doAsync {
-                val db =
-                    Room.databaseBuilder(
-                        applicationContext,
-                        EncounterDatabase::class.java,
-                        "encounters"
-                    ).build()
-                val positiveMatches = db.EncounterDao().warning(uuid_positive)
-                if (positiveMatches.isNotEmpty()) {
-                    startActivity(
-                        Intent(applicationContext, ActivityWarning::class.java).putExtra("instructions", instructions).apply {
+            val message = intent?.extras?.getString("data")
+            println("Received: $message")
+
+            if (message != null) {
+                val data = JsonParser.parseString(message).asJsonObject
+                val uuidPositive = data.get("uuid").asString
+                val instructions = data.get("instructions").asString
+                doAsync {
+                    val db =
+                        Room.databaseBuilder(
+                            applicationContext,
+                            EncounterDatabase::class.java,
+                            "encounters"
+                        ).build()
+                    val positiveMatches = db.EncounterDao().warning(uuidPositive)
+                    if (positiveMatches.isNotEmpty()) {
+                        val warningIntent = Intent(applicationContext, ActivityWarning::class.java).putExtra("instructions", instructions).apply {
                             addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                            addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
                         }
-                    )
+                        val warningOnTap = PendingIntent.getActivity(applicationContext, 0, warningIntent, 0)
+                        val notification = NotificationCompat.Builder(applicationContext, "ENCOUNTER")
+                        notification.setSmallIcon(R.drawable.ic_stat_encounter_warning)
+                        notification.setContentIntent(warningOnTap)
+                        notification.priority = NotificationCompat.PRIORITY_MAX
+                        notification.setContentTitle("${applicationContext.getString(R.string.app_name)}: ${applicationContext.getString(R.string.encounter_attention)}")
+                        notification.setContentText(instructions)
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) notification.setChannelId("ENCOUNTER")
+                        val notificationManager =
+                            applicationContext.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+                        notificationManager.notify(ENCOUNTER_WARNING, notification.build())
+                    }
                 }
             }
         }

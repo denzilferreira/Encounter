@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Encounter</string>
+    <string name="app_running">Encounter er aktiv!La oss utrydde viruset!</string>
+    <string name="latest_stats">Statistikk</string>
+    <string name="encounters">Encounters (møter)</string>
+    <string name="greeting">Hei der</string>
+    <string name="encounter_brief"> Encounter lar deg hjelpe helsemyndigheter til å spore og stoppe smitte. Det er anonymt.</string>
+    <string name="confirmed">Bekreftet</string>
+    <string name="deaths">Dødsfall</string>
+    <string name="recovered">Friskmeldte</string>
+    <string name="inspired_by">Plott som beskrevet av https://www.youtube.com/watch?v=54XLXg4fYsc, alltid oppdatert med de siste offisielle tallene som rapportert av Johns Hopkins \ 'JHU CSSE.</string>
+    <string name="country_trajectory"> Bekreftede tilfeller over tid</string>
+    <string name="total_confirmed_cases">Totalt antall bekreftede tilfeller </string>
+    <string name="weekly_confirmed">Nye bekreftede tilfeller (weekly)</string>
+    <string name="data_updated">Tallene er oppdaterte</string>
+    <string name="encounters_today">Møtene i dag</string>
+    <string name="google_nearby_brief">Ved å bruke Google\'s Nearby APIs, vil det være mulig å anonymt identifisere enheter med denne appen innstalert. Dette vil skje gjennom Bluetooth, Wifi eller ultralyd. Vennligst ha Bluetooth aktivert hele tiden for best resultater. Tusen takk for din hjelp til å holde  smittetallene ned!</string>
+    <string name="enable_bluetooth"> Uten aktivert Bluetooth vil andre enheter i nærheten ikke bli identifisert. Trykk her for å aktivere Bluetooth.</string>
+    <string name="enable_doze">Trykk her til å tillate at Encounter ikke blir stoppet i hvilemodus. Dette vil sikre at appen har tilgang til nødvendige funksjoner hele tiden.</string>
+    <string name="encounter_detected">Funnet %s</string>
+    <string name="unique_encounters">Engangs møter</string>
+    <string name="encounter_share">Del</string>
+    <string name="your_encounter_uuid">Din Encounter UUID</string>
+    <string name="encounter_info">Informasjon</string>
+    <string name="monday">Man</string>
+    <string name="tuesday">Tirs</string>
+    <string name="wednesday">Ons</string>
+    <string name="thursday">Tors</string>
+    <string name="friday">Fre</string>
+    <string name="saturday">Lør</string>
+    <string name="sunday">Søn</string>
+    <string name="uuid_sharing_instructions">Denne UUID (Universal Unique ID) ble tilfeldig tildelt når appen ble brukt første gang. Trykk på UUID til å kopiere og dele den videre.</string>
+    <string name="uuid_toast">UUID kopiert</string>
+    <string name="share_data">Del min data</string>
+    <string name="delete_data">Slett min data</string>
+    <string name="delete_confirm">Skal all data slettes? Dette vil også forandre din Encounters UUID.</string>
+    <string name="delete_complete">Encounters data ble slettet!</string>
+    <string name="yes">Ja</string>
+    <string name="cancel">Avbryt</string>
+    <string name="gdpr_sharing">Når del knappen trykkes, vil din data bli lagret som en Json fil og deretter delt. Ved å følge GDPR retningslinjer, beholder du kontroll over hvem som har tilgang til din data. Her kan du lese mer om hvilket data som deles: https://encounter.awareframework.com/data</string>
+    <string name="exporting_wait">Eksportering foregår, vennligst vent.</string>
+    <string name="next_week">Neste uke</string>
+    <string name="previous_week">Forrige uke</string>
+    <string name="encounter_attention">Se her!</string>
+    <string name="ok">OK</string>
+</resources>

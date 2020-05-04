@@ -12,7 +12,6 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.content.pm.PackageManager
 import android.net.Uri
-import android.os.BatteryManager
 import android.os.Build
 import android.os.Bundle
 import android.os.PowerManager
@@ -26,27 +25,23 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
-import androidx.core.view.isInvisible
-import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.room.Room
-import androidx.work.*
 import com.awareframework.encounter.database.Encounter
 import com.awareframework.encounter.database.EncounterDatabase
 import com.awareframework.encounter.database.User
 import com.awareframework.encounter.services.EncounterService
-import com.awareframework.encounter.ui.*
-import com.awareframework.encounter.workers.EncounterDataWorker
+import com.awareframework.encounter.ui.EncountersFragment
+import com.awareframework.encounter.ui.InfoFragment
+import com.awareframework.encounter.ui.SharingFragment
+import com.awareframework.encounter.ui.StatsFragment
 import com.google.android.gms.nearby.Nearby
 import com.google.android.gms.nearby.messages.*
 import kotlinx.android.synthetic.main.activity_main.*
-import org.jetbrains.anko.defaultSharedPreferences
 import org.jetbrains.anko.doAsync
-import org.jetbrains.anko.support.v4.defaultSharedPreferences
 import org.jetbrains.anko.uiThread
 import java.util.*
-import java.util.concurrent.TimeUnit
 import kotlin.collections.ArrayList
 
 class EncounterHome : AppCompatActivity() {
@@ -61,14 +56,13 @@ class EncounterHome : AppCompatActivity() {
         val EXTRA_COUNTRY = "EXTRA_COUNTRY"
         val ENCOUNTER_BLUETOOTH = 1112
 
-        //val ENCOUNTER_BATTERY = 1113
         lateinit var viewManager: FragmentManager
         lateinit var messageListener: MessageListener
         lateinit var progressBar: ProgressBar
         lateinit var progressCountry: TextView
-
-        object timer : Timer() //singleton
     }
+
+    private val timer = Timer()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -113,12 +107,9 @@ class EncounterHome : AppCompatActivity() {
 
         timer.scheduleAtFixedRate(object : TimerTask() {
             override fun run() {
-                println("Publishing encounter UUID...")
                 publish()
             }
-        }, 0, 60 * 1000)
-
-        startService(Intent(applicationContext, EncounterService::class.java))
+        }, 15 * 1000, 60 * 1000)
 
         messageListener = object : MessageListener() {
             override fun onFound(message: Message?) {
@@ -193,6 +184,8 @@ class EncounterHome : AppCompatActivity() {
                     .commit()
             }
         }
+
+        startService(Intent(applicationContext, EncounterService::class.java))
     }
 
     override fun onStart() {
@@ -241,8 +234,8 @@ class EncounterHome : AppCompatActivity() {
                             PublishOptions.Builder()
                                 .setStrategy(
                                     Strategy.Builder()
-                                        .setTtlSeconds(Strategy.TTL_SECONDS_DEFAULT)
-                                        .setDistanceType(Strategy.DISTANCE_TYPE_EARSHOT) //approx. 1.5 meters proximity according to
+                                        .setTtlSeconds(59) //we send a broadcast every 1-min so each will be live for 59 seconds
+                                        .setDistanceType(Strategy.DISTANCE_TYPE_EARSHOT) //approx. 1.5 meters proximity
                                         .build()
                                 )
                                 .build()

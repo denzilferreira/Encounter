@@ -29,7 +29,7 @@
         app:layout_constraintBottom_toTopOf="@+id/bottom_nav"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/encounter_progress" />
+        app:layout_constraintTop_toBottomOf="@+id/progress_country" />
 
     <TextView
         android:id="@+id/textView10"

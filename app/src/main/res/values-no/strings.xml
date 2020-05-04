@@ -9,7 +9,7 @@
     <string name="confirmed">Bekreftet</string>
     <string name="deaths">Dødsfall</string>
     <string name="recovered">Friskmeldte</string>
-    <string name="inspired_by">Plott som beskrevet av https://www.youtube.com/watch?v=54XLXg4fYsc, alltid oppdatert med de siste offisielle tallene som rapportert av Johns Hopkins \ 'JHU CSSE.</string>
+    <string name="inspired_by">Plott som beskrevet av https://www.youtube.com/watch?v=54XLXg4fYsc, alltid oppdatert med de siste offisielle tallene som rapportert av Johns Hopkins JHU CSSE.</string>
     <string name="country_trajectory"> Bekreftede tilfeller over tid</string>
     <string name="total_confirmed_cases">Totalt antall bekreftede tilfeller </string>
     <string name="weekly_confirmed">Nye bekreftede tilfeller (weekly)</string>

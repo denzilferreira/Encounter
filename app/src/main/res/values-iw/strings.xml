@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Encounter</string>
+    <string name="app_running">פעיל! בואו נילחם בדבר הזה.</string>
+    <string name="latest_stats">נתונים</string>
+    <string name="encounters">מפגשים</string>
+    <string name="greeting">שלום</string>
+    <string name="encounter_brief">היישומון Encounter מאפשר לך לעזור לרשויות הבריאות לעקוב אחר מהלך המגפה העולמית ולעצור מעגלי הדבקה, בצורה אנונימית ובטוחה.</string>
+    <string name="confirmed">מאומתים</string>
+    <string name="deaths">מקרי מוות</string>
+    <string name="recovered">מחלימים</string>
+    <string name="inspired_by">Plot as described by https://www.youtube.com/watch?v=54XLXg4fYsc, updated always with the latest official numbers as reported by Johns Hopkins\' JHU CSSE.</string>
+    <string name="country_trajectory">כיוון המסלול של מקרים מאומתים</string>
+    <string name="total_confirmed_cases">סה״כ מקרים מאומתים</string>
+    <string name="weekly_confirmed">מקרים מאומתים חדשים (שבועי)</string>
+    <string name="data_updated">המידע מעודכן</string>
+    <string name="encounters_today">מפגשים היום</string>
+    <string name="google_nearby_brief">אנו מאפשרים זיהוי אנונימי של טלפונים עליהם מותקן היישומון הזה בעזרת טכנולוגיות Bluetooth, Wifi, ואולטראסאונד - אנא השאירו את ה-Bluetooth בטלפון שלך עובד לדיור הטוב יותר. תודה על המאמץ להשארת מספר המפגשים נמוך בכל יום! </string>
+    <string name="enable_bluetooth">ללא Bluetooth מופעל, לא ניתן למצוא טלפונים אחרים. לחצו כאן כדי להפעיל.</string>
+
+    <string name="enable_doze">לחצו כאן כדי להוסיף את היישומון לרשימת היישומונים שמותרים על פי מנהל הבטריה. כך, נוכל להבטיח שהיישומון עובד תמיד.</string>
+    <string name="encounter_detected">נמצאו %s</string>
+    <string name="unique_encounters">מפגשים ייחודיים</string>
+    <string name="encounter_share">שתפו</string>
+    <string name="your_encounter_uuid">המספר המזהה שלך</string>
+    <string name="encounter_info">מידע</string>
+    <string name="monday">שני</string>
+    <string name="tuesday">שלישי</string>
+    <string name="wednesday">רביעי</string>
+    <string name="thursday">חמישי</string>
+    <string name="friday">שישי</string>
+    <string name="saturday">שבת</string>
+    <string name="sunday">ראשון</string>
+    <string name="uuid_sharing_instructions">המספר המזהה נוצר באופן מקרי בפעם הראשונה שהיישומון פועלך. לחצו על המספר כדי להעתיק אותו ולשתף.</string>
+    <string name="uuid_toast">מספר מזהה הועתק</string>
+    <string name="share_data">שתפו את המידע שלי</string>
+    <string name="delete_data">מחקו את המידע</string>
+    <string name="delete_confirm">האם אתם בטוחים כי ברצונכם למחוק את כל המידע? ההחלטה תיצור מספר מזהה חדש.</string>
+    <string name="delete_complete">המידע נמחק בהצלחה!</string>
+    <string name="yes">כן</string>
+    <string name="cancel">ביטול</string>
+    <string name="gdpr_sharing">כאשר תלחצו על כפתור השיתוף, המידע שלך יועתק לקובץ JSON שיאפשר לך לשתף אותו. בהתאם לתקנות ה-GDPR, אתה יכול להחליט מי יקבל גישה למידע שלך. תיאור המידע בצורה יותר מפורטת נמצא כאן:https://encounter.awareframework.com/data </string>
+    <string name="exporting_wait">מייצאים מידע, נא לחכות</string>
+    <string name="next_week">שבוע הבא</string>
+    <string name="previous_week">השבוע הקודם</string>
+    <string name="encounter_attention">שימו לב</string>
+    <string name="ok">אוקיי</string>
+</resources>

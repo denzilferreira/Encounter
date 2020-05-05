@@ -48,7 +48,7 @@ class EncountersFragment : Fragment() {
             //what day of the week is this today?
             val dayOfWeek = startCalendar.get(Calendar.DAY_OF_WEEK)
             //adjust to start of the week (Monday -> Sunday)
-            when(dayOfWeek) {
+            when (dayOfWeek) {
                 1 -> startCalendar.add(Calendar.DATE, -6) //Sunday
                 2 -> startCalendar.add(Calendar.DATE, 0) //monday
                 3 -> startCalendar.add(Calendar.DATE, -1) //tuesday
@@ -68,7 +68,7 @@ class EncountersFragment : Fragment() {
             //what day of the week is this today?
             val dayOfWeek = endCalendar.get(Calendar.DAY_OF_WEEK)
             //adjust to end of the week (Monday -> Sunday)
-            when(dayOfWeek) {
+            when (dayOfWeek) {
                 1 -> endCalendar.add(Calendar.DATE, 0) //Sunday
                 2 -> endCalendar.add(Calendar.DATE, +6) //monday
                 3 -> endCalendar.add(Calendar.DATE, +5) //tuesday
@@ -158,9 +158,9 @@ class EncountersFragment : Fragment() {
             today.set(Calendar.SECOND, 0)
             val encounters = db.EncounterDao().getToday(today.timeInMillis)
             uiThread {
-                it.counter_encounters.text =
+                counter_encounters.text =
                     getString(R.string.count_number).format(encounters.size)
-                it.encounter_dates.text = getString(R.string.encounter_dates).format(
+                encounter_dates.text = getString(R.string.encounter_dates).format(
                     DateFormat.getMediumDateFormat(context).format(startDate),
                     DateFormat.getMediumDateFormat(context).format(endDate)
                 )
@@ -209,7 +209,7 @@ class EncountersFragment : Fragment() {
             val cal = Calendar.getInstance()
             cal.timeInMillis = encounter.timestamp
 
-            val weekDayIndex = when(cal.get(Calendar.DAY_OF_WEEK)) {
+            val weekDayIndex = when (cal.get(Calendar.DAY_OF_WEEK)) {
                 1 -> 7 //Sunday
                 2 -> 1 //monday
                 3 -> 2 //tuesday
@@ -241,7 +241,7 @@ class EncountersFragment : Fragment() {
             encounters_chart.data = barData
             encounters_chart.xAxis.valueFormatter = object : ValueFormatter() {
                 override fun getFormattedValue(value: Float): String {
-                    return when(value) {
+                    return when (value) {
                         1f -> getString(R.string.monday)
                         2f -> getString(R.string.tuesday)
                         3f -> getString(R.string.wednesday)

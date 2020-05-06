@@ -1,4 +1,4 @@
-Encounter - yet another cross-platform contact tracing solution
+Encounter - open cross-platform contact tracing solution
 ===============================================================
 	
 Encounter is a free, open-source, cross-platform (Android & iPhone) 
@@ -8,7 +8,7 @@ Encounter is an automated, privacy-aware, non-siloed co-presence contact tracing
 logging tool that could be useful to tackle the spread of this and 
 future virus outbreaks.
 
-![Overview of Encounter](https://drive.google.com/file/d/15voghU6cPrCIqhkRbSSf4gC9xKoAGs6U/view?usp=sharing)
+![Overview](https://drive.google.com/uc?export=view&id=15OHn_xP-Ku7mAk4deIaRp5E77NfEA9-_)
 
 How is this different from DP3T & PEPP-PT
 =========================================

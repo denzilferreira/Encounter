@@ -133,8 +133,6 @@ class EncounterHome : AppCompatActivity() {
                     db.EncounterDao().insert(encounter)
                     db.close()
                 }
-
-                //sendNotification(getString(R.string.encounter_detected).format(String(message.content)))
             }
         }
     }
@@ -250,31 +248,6 @@ class EncounterHome : AppCompatActivity() {
         }
     }
 
-    /**
-     * Used for debugging
-     */
-    fun sendNotification(message: String) {
-        val foregroundIntent = PendingIntent.getActivity(
-            applicationContext, 0,
-            Intent(
-                applicationContext,
-                EncounterHome::class.java
-            ).setAction(EncounterHome.VIEW_ENCOUNTERS),
-            0
-        )
-        val notification = NotificationCompat.Builder(applicationContext, "ENCOUNTER")
-        notification.setSmallIcon(R.drawable.ic_stat_encounter_warning)
-        notification.setContentIntent(foregroundIntent)
-        notification.priority = NotificationCompat.PRIORITY_DEFAULT
-        notification.setContentTitle(getString(R.string.app_name))
-        notification.setContentText(message)
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) notification.setChannelId("ENCOUNTER")
-
-        val notificationManager =
-            applicationContext.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-        notificationManager.notify(EncounterService.ENCOUNTER_WARNING, notification.build())
-    }
-
     private fun checkPermissions() {
         val permissions: MutableList<String> = ArrayList()
         permissions.add(Manifest.permission.BLUETOOTH)
@@ -318,51 +291,14 @@ class EncounterHome : AppCompatActivity() {
         if (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP_MR1) {
             val powerManager =
                 applicationContext.getSystemService(Context.POWER_SERVICE) as PowerManager
-            val isIgnore = powerManager.isIgnoringBatteryOptimizations(packageName)
 
+            val isIgnore = powerManager.isIgnoringBatteryOptimizations(packageName)
             if (!isIgnore) {
                 val whitelisting =
                     Intent(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS).apply {
                         data = Uri.parse("package:$packageName")
                     }
                 startActivity(whitelisting)
-
-//                val notificationManager =
-//                    applicationContext.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-//                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-//                    val name = applicationContext.getString(R.string.app_name)
-//                    val descriptionText = applicationContext.getString(R.string.app_name)
-//                    val channel = NotificationChannel(
-//                        "ENCOUNTER",
-//                        name,
-//                        NotificationManager.IMPORTANCE_HIGH
-//                    ).apply {
-//                        description = descriptionText
-//                    }
-//                    notificationManager.createNotificationChannel(channel)
-//                }
-//
-//                val batteryIntent =
-//                    Intent(Settings.ACTION_IGNORE_BATTERY_OPTIMIZATION_SETTINGS).apply {
-//                        flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
-//                    }
-//                val pendingBattery = PendingIntent.getActivity(
-//                    applicationContext,
-//                    0,
-//                    batteryIntent,
-//                    PendingIntent.FLAG_UPDATE_CURRENT
-//                )
-//                val builder = NotificationCompat.Builder(applicationContext, "ENCOUNTER")
-//                    .setSmallIcon(R.drawable.ic_stat_encounter_battery)
-//                    .setContentTitle(getString(R.string.app_name))
-//                    .setContentText(getString(R.string.enable_doze))
-//                    .setContentIntent(pendingBattery)
-//                    .setAutoCancel(true)
-//                    .setOnlyAlertOnce(true)
-//                    .setDefaults(NotificationCompat.DEFAULT_ALL)
-//                    .setPriority(NotificationCompat.PRIORITY_HIGH)
-//
-//                notificationManager.notify(ENCOUNTER_BATTERY, builder.build())
             }
         }
     }

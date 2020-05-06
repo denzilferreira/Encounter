@@ -208,31 +208,6 @@ class EncounterService : Service() {
         return super.onStartCommand(intent, flags, startId)
     }
 
-    /**
-     * Used in debugging
-     */
-    fun sendNotification(message: String) {
-        val foregroundIntent = PendingIntent.getActivity(
-            applicationContext, 0,
-            Intent(
-                applicationContext,
-                EncounterHome::class.java
-            ).setAction(EncounterHome.VIEW_ENCOUNTERS),
-            0
-        )
-        val notification = NotificationCompat.Builder(applicationContext, "ENCOUNTER")
-        notification.setSmallIcon(R.drawable.ic_stat_encounter_warning)
-        notification.setContentIntent(foregroundIntent)
-        notification.priority = NotificationCompat.PRIORITY_DEFAULT
-        notification.setContentTitle(getString(R.string.app_name))
-        notification.setContentText(message)
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) notification.setChannelId("ENCOUNTER")
-
-        val notificationManager =
-            applicationContext.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-        notificationManager.notify(EncounterService.ENCOUNTER_WARNING, notification.build())
-    }
-
     override fun onBind(intent: Intent?): IBinder? {
         return null
     }

@@ -59,7 +59,12 @@ class EncounterDataWorker(appContext: Context, workerParameters: WorkerParameter
                     countries.forEach { country ->
 
                         uiThread {
-                            applicationContext.sendBroadcast(Intent(EncounterHome.ACTION_UPDATE_COUNTRY).putExtra(EncounterHome.EXTRA_COUNTRY, country))
+                            applicationContext.sendBroadcast(
+                                Intent(EncounterHome.ACTION_UPDATE_COUNTRY).putExtra(
+                                    EncounterHome.EXTRA_COUNTRY,
+                                    country
+                                )
+                            )
                         }
 
                         val recordsCountry = dataObj.getJSONArray(country)
@@ -70,7 +75,7 @@ class EncounterDataWorker(appContext: Context, workerParameters: WorkerParameter
                                 Locale.US
                             ).parse(record.getString("date"))!!
 
-                            val db =
+                            val database =
                                 Room.databaseBuilder(
                                     applicationContext,
                                     EncounterDatabase::class.java,
@@ -78,7 +83,7 @@ class EncounterDataWorker(appContext: Context, workerParameters: WorkerParameter
                                 ).build()
 
                             val existingDayData =
-                                db.StatsDao().getCountryDayData(country, formatter.time)
+                                database.StatsDao().getCountryDayData(country, formatter.time)
                             if (existingDayData.isNotEmpty()) {
                                 var updated = false
 
@@ -97,7 +102,7 @@ class EncounterDataWorker(appContext: Context, workerParameters: WorkerParameter
                                     currentStats.recovered = record.getLong("recovered")
                                     updated = true
                                 }
-                                if (updated) db.StatsDao().update(currentStats)
+                                if (updated) database.StatsDao().update(currentStats)
                             } else {
                                 val entry = Stats(
                                     null,
@@ -107,9 +112,9 @@ class EncounterDataWorker(appContext: Context, workerParameters: WorkerParameter
                                     record.getLong("deaths"),
                                     record.getLong("recovered")
                                 )
-                                db.StatsDao().insert(entry)
+                                database.StatsDao().insert(entry)
                             }
-                            db.close()
+                            database.close()
                         }
                     }
 

@@ -8,18 +8,18 @@ Encounter is an automated, privacy-aware, non-siloed co-presence contact tracing
 logging tool that could be useful to tackle the spread of this and 
 future virus outbreaks.
 
-![Overview of Encounter](https://lh6.googleusercontent.com/dbaBNXml6t5fb1a4CLw4BJ2AqDpqKaelROSsv2cCOMqIGvXqd6QL5ORZKvfcYwVShPb7S3B3CHXFSJKxK4-huy_NjnEC6DS_EUc0cHts-jRYrTb7yHc=w1280)
+![Overview of Encounter](https://drive.google.com/file/d/15voghU6cPrCIqhkRbSSf4gC9xKoAGs6U/view?usp=sharing)
 
 How is this different from DP3T & PEPP-PT
 =========================================
+- **Free**: ready to use, free Android and iOS applications, available in multiple languages
 - **Truly decentralised**: there is no server receiving or analysing data
 - **Voluntary end-to-end**: the only way to access your data is if you willingly share it
-- **No hardware MAC exposure**: even though Bluetooth and WiFi are leveraged, there are no discoverable MAC addresses exchange for contact tracing.
+- **No hardware MAC exposure**: even though Bluetooth and WiFi are leveraged, there are no discoverable MAC addresses exchange for contact tracing
 - **Privacy by design**: daily rotation of UUID (Unique Universal ID), reset on delete and on share of encounter data export JSON files
-- **Autonomous**: the UUID fingerprinting occurs every 1 minute when the application is active, every 15 minutes on the background using Google Nearby API (via an encrypted signal only visible to other Encounter users)
+- **Autonomous**: the UUID fingerprinting occurs every 1 minute when the application is active, every 15 minutes on the background using Google Nearby API. No private information, no location
 - **Useful contact tracing data**: JSON is easy to process, analyse, and integrate with many data science tools
 - **Future-ready**: integrating Google+Apple protocol is possible when available to us
-- **Free**: ready to use, free Android and iOS applications, available in multiple languages
 
 Open to contributions - using GitHub Issues tracker
 ===================================================
@@ -27,7 +27,7 @@ Open to contributions - using GitHub Issues tracker
 - **Open code contributions**: fork, edit, and do a pull-request to integrate your improvements or fixes
 - **Open code review**: suggestions to improve Encounter functionality are welcome
 - **Open tools for analysis**: make the encounters' data more useful for current and future pandemics
-- **More languages**: download this [file](https://drive.google.com/file/d/1PA-gc1kNEfcsNCXV2UNdvq2yt2iaBYZc/view?usp=sharing), edit the text **HERE** <string ...>**HERE**</string> and send it to [us](mailto:denzil.ferreira@oulu.fi?subject=[Encounter]%20New%20translation) 
+- **More languages**: download this [file](https://drive.google.com/file/d/1PA-gc1kNEfcsNCXV2UNdvq2yt2iaBYZc/view?usp=sharing), edit the text, and send it to [us](mailto:denzil.ferreira@oulu.fi?subject=[Encounter]%20New%20translation) 
 
 Open-source (Apache 2.0)
 ========================

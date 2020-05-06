@@ -8,7 +8,9 @@ Encounter is an automated, privacy-aware, non-siloed co-presence contact tracing
 logging tool that could be useful to tackle the spread of this and 
 future virus outbreaks.
 
+<p align="center">
 ![Overview](https://drive.google.com/uc?export=view&id=15OHn_xP-Ku7mAk4deIaRp5E77NfEA9-_)
+</p>
 
 How is this different from DP3T & PEPP-PT
 =========================================

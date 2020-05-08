@@ -8,7 +8,7 @@ Encounter is an automated, privacy-aware, non-siloed co-presence contact tracing
 logging tool that could be useful to tackle the spread of this and 
 future virus outbreaks.
 
-![overview](https://drive.google.com/uc?export=view&id=15OHn_xP-Ku7mAk4deIaRp5E77NfEA9-_)
+<a href="https://drive.google.com/uc?export=view&id=15OHn_xP-Ku7mAk4deIaRp5E77NfEA9-_"><img src="https://drive.google.com/uc?export=view&id=15OHn_xP-Ku7mAk4deIaRp5E77NfEA9-_" style="width: 500px; max-width: 100%; height: auto" title="Click for the larger version." /></a>
 
 How is this different from DP3T & PEPP-PT
 =========================================
@@ -37,7 +37,7 @@ The data takes shape of a JSON Array of JSON Objects (a collection of all the en
 
 It looks like this if you open the exported JSON file:
 
-![json](https://drive.google.com/uc?export=view&id=1KoIZ_KyrMA9YMv28G2wjOJlzSDC7sObj)
+<a href="https://drive.google.com/uc?export=view&id=1KoIZ_KyrMA9YMv28G2wjOJlzSDC7sObj"><img src="https://drive.google.com/uc?export=view&id=1KoIZ_KyrMA9YMv28G2wjOJlzSDC7sObj" style="width: 500px; max-width: 100%; height: auto" title="Click for the larger version." /></a>
 
 When a user shares his data, the encounters data collected on the phone is exported to JSON file and saved in their smartphone internal and protected storage. 
 These files, if shared, can then be opened in many data analysis tools such as Matlab, R, and others. 
